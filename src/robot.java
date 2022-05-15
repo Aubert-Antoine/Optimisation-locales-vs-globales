@@ -5,7 +5,7 @@ import java.util.Arrays;
 /*
 	class robot -> ex 6 TD 5
 */
-public class robot{ 
+public class Robot{ 
 
 	static final int plusInfini = Integer.MAX_VALUE, moinsInfini = Integer.MIN_VALUE;
 
@@ -120,7 +120,7 @@ public class robot{
 		return 1;
 	}	
 
-	public static void main(String[] args){
+	public static void mainRobot(String[] args){
 		System.out.println("Exercice 6 : le petit robot");
 		int L = 5, C = 7; // grille 5 x 7
 		System.out.printf("Grille à %d lignes et %d colonnes\n",L,C);

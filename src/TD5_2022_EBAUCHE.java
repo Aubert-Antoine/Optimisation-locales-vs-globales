@@ -150,7 +150,7 @@ static final int plusInfini = Integer.MAX_VALUE, moinsInfini = Integer.MIN_VALUE
 		if (l == L-1) return 0;
 		return 1;
 	}	
-	public static void main(String[] args){
+	public static void main0(String[] args){
 		{	System.out.println("Exercice 1 : spots & slots");
 			int[] D = {20, 20, 70, 10, 10, 40, 10, 80, 10, 40, 45}, // durées des spots
 				  G = {25, 25, 65, 15, 5, 35, 15, 75, 15, 45, 50}; // gains des spots
