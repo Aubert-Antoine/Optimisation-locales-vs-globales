@@ -23,21 +23,26 @@ public class Somme {
      * @return l'indice descendant gauche
      */
     public static int g(int[] pTAbRef, int pIndice){
-        int l=0;      // ligne/etage dans le triangle
-        int p=0;      // position dans la ligne
+        int l=0;      // ligne/etage de pIndice dans le triangle
+        int p=0;      // position de pIndice dans la ligne
+        int lg=0;     // ligne/etage de g(i) dans le triangle
+        int pgi=0;     // position de g(i) dans la ligne
         int niveau=0; // niveau de la derniere ligne
         int nbElement=0;
         int nbElementMoins1=0;
         int nbElementNM1=0;     //nombre d'élement au niveau n-1
 
         if(pIndice > pTAbRef.length || pIndice < 0) {
-            System.out.println("ERROR \n --> l'indice est superieur a la taille du tableau ou negatif.");
+            System.out.println("ERROR \n --> l'indice est superieur a la taille du tableau ou negative.");
 
             if(debug) System.out.println("indice : "+pIndice+" et taille Tab : "+ pTAbRef.length);
 
             return -1;
         }
-        else if(pIndice == 0) return 0;
+        else if(pIndice == 0) {
+            if(debug) System.out.println("indice : "+0+" et g(i) = "+ 1 );
+            return 1;
+        }
         else{
             //On cherche le niveau max du tableau
             for (niveau = 1; niveau < pTAbRef.length; niveau++) {
@@ -52,7 +57,8 @@ public class Somme {
                 nbElementMoins1 = ((i-1)*i)/2;
                 if(nbElement >= pIndice){        // ==> indice sur cette ligne courante
                     l=i;
-                    p=pIndice-nbElementMoins1;
+                    p=pIndice -nbElementMoins1;
+                    pgi=pIndice;
                     break;
                 }
             }
@@ -68,9 +74,10 @@ public class Somme {
                 System.out.println("L'indice "+pIndice+" est en :");
                 System.out.println("-l : "+l +"\n-p : "+p);
                 System.out.println("Donc l'indice de son descendant gauche est :");
-                System.out.println("-l : "+(l+1) +"\n-p : "+p);
+                if(p==2) System.out.println("-l : "+(l+1) +"\n-p : "+(p-1));
+                else{System.out.println("-l : "+(l+1) +"\n-p : "+p);}
                 System.out.println("avec comme indice");
-                System.out.println(nbElementMoins1+p);
+                System.out.println(nbElementMoins1+pgi);
 
             }
 
@@ -83,10 +90,24 @@ public class Somme {
 
 
 
-
+    /**
+     * mainSomme est la fonction main de la classe, la fonction main du projet est dans la classe Main.java
+     * Cela permet une meilleur gestion des fichiers
+     */
     public static void mainSomme(){
         System.out.println("Hello, World! from Somme Class \n");
         g(MakeTrig(), 5);
+        /**
+         * $$junit test$$ 
+         * nb neg 
+         * 0
+         * nb normal 
+         * nb sur la derniere ligne 
+         * nb plus grd que le tab
+         * 
+         * nb sur les bords de lignes
+         */
+
     }
     
 }
