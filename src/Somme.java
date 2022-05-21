@@ -70,7 +70,8 @@ public class Somme {
                 System.out.println("L'indice "+pIndice+" est en :");
                 System.out.println("-l : "+l +"\n-p : "+p);
                 System.out.println("Donc l'indice de son descendant gauche est :");
-                System.out.println("-l : "+(l+1) +"\n-p : "+p);
+                if(p==2) System.out.println("-l : "+(l+1) +"\n-p : "+(p-1));
+                else{System.out.println("-l : "+(l+1) +"\n-p : "+p);}
                 System.out.println("avec comme indice");
                 System.out.println(((l+2)*(l+1)/2)+p);
             }
