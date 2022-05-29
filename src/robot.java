@@ -54,6 +54,40 @@ public class Robot{
 		}
 	}//accm()
 
+	/** VERSION TD PAULINE A TESTER POUR ACCM
+	 * 
+	 * static void accm(int[][] M, int L, int C, int l, int c){
+	// affiche un chemin de coût minimimum (ccm) de 0,0 à l,c
+	...
+	}
+	/* Fonctions de coût des déplacements.
+	1) depuis la case 00, les déplacements N et E coûtent 1, le déplacement NE coûte 0.
+	2) sur la colonne 0, les autres déplacements coûtent 0
+	3) sur la ligne L-1 les déplacements E coûtent 0
+	4) tous les autres déplacements coûtent 1.
+	Chemin de coût minimum : 
+		00 -1-> 10 -0-> ... -0-> (L-1)0 -0-> (L-1)1 -0-> ... -0-> L(L-1)(C-1).
+	Il est de coût 1.
+	*/ 
+	/**
+	static int n(int l, int c, int L, int C){
+		if (l==L-1) return plusInfini;
+		if (l==0 && c==0) return 1;
+		if (c==0) return 0;
+		return 1;
+	}
+	static int ne(int l, int c, int L, int C){
+		if (l == L-1 || c == C-1) return plusInfini;
+		if (l==0 && c==0) return 0;
+		return 1;
+	}
+	static int e(int l, int c, int L, int C){
+		if (c == C-1) return plusInfini;
+		if (l == L-1) return 0;
+		return 1;
+	}	
+	*/
+
 
 	//
 	/* Methode Greedy */
