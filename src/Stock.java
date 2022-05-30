@@ -53,7 +53,7 @@ public class Stock {
         }
     */
 
-/** Version TD Pauline
+/** Version TD Pauline 
  * 
  * /* Exercice 3 : répartition optimale d'un stock S sur n entrepôts
 	m(k,s) : gain d'une répartition optimale d'un stock s sur le sous-ensemble
