@@ -58,7 +58,7 @@ public class Stock {
  * /* Exercice 3 : répartition optimale d'un stock S sur n entrepôts
 	m(k,s) : gain d'une répartition optimale d'un stock s sur le sous-ensemble
 	des k premiers entrepôts. */
-	**static int[][][] calculerMA(int[][] G){ // G[0:n][0:S+1] de terme général 
+	static int[][][] calculerMA(int[][] G){ // G[0:n][0:S+1] de terme général 
         // G[i][s] = gain d'une livraison d'un stock s à l'entrepôt i.
         // Calcule : M[0:n+1][0:S+1] de tg M[k][s] = m(k,s) et A = arg M.
         // Retourne : int[][][] MA = {M,A}.
