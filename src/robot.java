@@ -131,6 +131,36 @@ public class Robot{
 		return vectDir;
 	}
 	
+
+	/** Méthode Pauline (ne marche pas)
+	static void cheminGreedy(int L, int C){ // une grille L x C
+		int cout = 0;
+        int l = 0;
+        int c = 0;
+        System.out.print("(0,0)");
+        while(l < L && c < C) {
+            int dir = 0;
+            if(l < L-1 && c < C-1 && ne(l, c, L, C) < n(l, c, L, C) && ne(l, c, L, C) < e(l, c, L, C)) {
+                dir = ne(l, c, L, C);
+                l++; c++;
+            }
+            else if(l < L-1 && n(l, c, L, C) < e(l, c, L, C)) {
+                dir = n(l, c, L, C);
+                l++;
+            }
+            else if(c < C-1) {
+                dir = e(l, c, L, C);
+                c++;
+            }
+            cout += dir;
+            System.out.printf(" --%d--> (%d,%d)",dir,l,c);
+        }
+        System.out.printf("\nCoût minimum d'un chemin de (0,0) à (%d,%d) = %d\n", L, C, cout);
+	}//cheminGreedy()
+	*/
+	
+
+
 	/* Fonctions de coût des déplacements.
 	1) depuis la case 00, les déplacements N et E coûtent 1, le déplacement NE coûte 0.
 	2) sur la colonne 0, les autres déplacements coûtent 0
