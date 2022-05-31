@@ -135,22 +135,33 @@ public class Somme {
 
 
     public static int[] calculeTabSMGlouton(int[] pTabRef) {
-        int nbNiveaux = niveau(pTabRef, pTabRef.length-1)+1;
+        int nbNiveaux = Math.max(pTabRef[g(pTabRef, i)], pTabRef[d(pTabRef, i)]);(pTabRef, pTabRef.length-1)+1;
         int[] TabSM = new int[nbNiveaux];
 
-        TabSM[0] = pTabRef[0];
+        if(true) TabSM[0] = pTabRef[0];
 
-        System.out.println("niveau = 0 g(i) = "+pTabRef[g(pTabRef, 0)]+" d(i) = "+
-        pTabRef[d(pTabRef, 0)]+" TabSM[i] = "+TabSM[0] );
+        System.out.println("niveau = 0 TabSM[0] = "+TabSM[0] );
 
-        for (int i = 1; i < nbNiveaux; i++) {
-            TabSM[i] = TabSM[i-1] + Math.max(pTabRef[g(pTabRef, i)], pTabRef[d(pTabRef, i)]);
+        for (int i = 1; i < nbNiveaux; i++) {       //: le prb sont les i : g(i) ne doit pas etre ss la forme i++ mais nv ++
+            TabSM[i] = TabSM[i-1] + Math.max(pTabRef[g(pTabRef, i-1)], pTabRef[d(pTabRef, i-1)]);
 
-            if(true) System.out.println("niveau = "+i+" g(i) = "+pTabRef[g(pTabRef, i)]+" d(i) = "
-                +pTabRef[d(pTabRef, i)]+" TabSM[i] = "+TabSM[i] );
+            if(true) System.out.println("niveau = "+i+" valg(i) = "+pTabRef[g(pTabRef, i-1)]+" vald(i) = "
+                +pTabRef[d(pTabRef, i-1)]+" TabSM[niveau] = "+TabSM[i] );
         }
-        System.out.println("TabSM en mode glouton : "+Arrays.toString(TabSM));
+        System.out.println("\nTabSM en mode glouton : "+Arrays.toString(TabSM));
         return TabSM;
+
+        /** 
+        int i = 0;
+        for(int j=1; j<nbNiveaux; j++){
+            int ig = g(pTabRef, i);
+            int id = g(pTabRef, i);
+            int maxgd = Math.max(pTabRef[ig], pTabRef[id]);
+            if(maxgd == pTabRef[ig]) i = ig;
+            else i = id;
+            TabSM[j] = TabSM[j-1] + maxgd;
+        }
+        */
         
     }//calculeTabSMGlouton
 
