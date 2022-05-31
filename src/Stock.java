@@ -1,141 +1,138 @@
+import java.util.Arrays;
+
+
 public class Stock {
 
-    /*
-    Methode Dynamique : 
-     */
-
-
-    
-	static int[][][] calculerMA(int[][] G){ // G[0:n][0:S+1] de terme général 
-        // G[i][s] = gain d'une livraison d'un stock s à l'entrepôt i.
-        // Calcule : M[0:n+1][0:S+1] de tg M[k][s] = m(k,s) et A = arg M.
-        // Retourne : int[][][] MA = {M,A}.
-            int n = G.length; int S = G[0].length - 1;
-            int[][] M = new int[n+1][S+1], A =  new int[n+1][S+1];
-            // Base : 
-            
-            // cas général
-            
-            return new int[][][] {M,A};
-        }
-        static void aro(int[][] M, int[][] A, int[][] G){
-
-            int n = G.length, S = G.length - 1;
-            aro(M,A,G,n,S); 
-            // afficher une répartition optimale du stock S sur le 
-            // sous-ensemble des n premiers entrepôts. Autrement dit : afficher une
-            // répartition optimale du stock S sur tous les entrepôts (sans contrainte.)
-        }
-        static void aro(int[][] M, int[][] A, int[][] G, int k, int s){ /* affichage d'une 
-            répartition optimale du stock s sur le sous-ensemble des k premiers entrepôts.
-            Notation : ro(k,s) = répartition optimale du stock s sur le sous-ensemble [0:k] */
-            
-            // base = condition d'arrêt
-                
-            // cas général : récursion
-        }
-
-
     public static void mainStock(){
-        System.out.println("Hello, World! from Stock Class");
-    }
-}
+		System.out.println("\n\nExercice : répartition optimale d'un stock");
+        int[][] G = new int[][] // g(k,s) = gain obtenu d'une livraison d'une quantité de stock s à l'entrepôt k
+            {	{0, 5, 5, 7, 7,10,10,12,12,13,13},
+                {0, 8,10,10,10,12,12,14,14,14,14},
+                {0,10,10,12,12,13,13,14,15,16,16},
+                {0,14,14,14,16,16,16,16,16,16,16},
+                {0,10,14,14,14,14,14,14,14,16,16},
+                {0,10,12,12,16,16,16,16,16,16,16},
+                {0,12,12,14,14,15,15,15,17,17,17}
+            } ;		
+        int K = G.length, S = G[0].length - 1;
+        System.out.println("\nTableau des gains : g(k,s) = gain obtenu en livrant s à k");
+        afficher(G);
+
+		// Méthode dynamique
+		System.out.println("\n\nMETHODE DYNAMIQUE");
+        int[][][] MA = calculerMA(G);
+        int[][] M = MA[0], A = MA[1];
+        System.out.printf("\nGain total maximum : %d\n", M[K][S]);
+        System.out.println("\nTableau M des gains maximums :");
+        afficher(M);
+        System.out.println("\nUne affectation optimale :");
+		aro(M,A,G,K,S);
+		
+		//Méthode Greedy
+		System.out.println("\n\nMETHODE GREEDY");
+		repartitionGreedy(G);
+		
+		System.out.println();
+	}//mainRobot()
 
 
+    //
+	/* Methode Dynamique */
+	//
 
+    // Exercice : répartition optimale d'un stock S sur n entrepôts
+	// m(k,s) : gain d'une répartition optimale d'un stock s sur le sous-ensemble des k premiers entrepôts.
 
-/* Exercice 3 : répartition optimale d'un stock S sur n entrepôts
-	m(k,s) : gain d'une répartition optimale d'un stock s sur le sous-ensemble
-	des k premiers entrepôts. 
-	static int[][][] calculerMA(int[][] G){ // G[0:n][0:S+1] de terme général 
-        // G[i][s] = gain d'une livraison d'un stock s à l'entrepôt i.
-        // Calcule : M[0:n+1][0:S+1] de tg M[k][s] = m(k,s) et A = arg M.
-        // Retourne : int[][][] MA = {M,A}.
-            int n = G.length; int S = G[0].length - 1;
-            int[][] M = new int[n+1][S+1], A =  new int[n+1][S+1];
-            // Base : 
-            
-            // cas général
-            
-            return new int[][][] {M,A};
-        }
-        static void aro(int[][] M, int[][] A, int[][] G){ /* affichage d'une répartition
-        optimale du stock S sur les n entrepôts. G
-        G : tableau des gains (g(i,s) = gain d'une livraison d'un stock s à l'entrepôt i)
-        G est à n lignes et S+1 colonnes où n est le nombre d'entrepôts et S le stock total. 
-        M est le tableau de terme général m(k,s) = gain d'une répartition optimale d'un
-        stock s sur le sous-ensemble des k premiers entrepôts. M est à n+1 lignes et S+1 col.
-        A = arg M : a(k,s) = quantité de stock livré au k-ème entrepôt (de numéro k-1)
-        dans une répartition optimale du stock s sur les k premiers entrepôts. */
+	static int[][][] calculerMA(int[][] G){
+    // G[0:n][0:S+1] de terme général 
+    // G[i][s] = gain d'une livraison d'un stock s à l'entrepôt i
+    // Calcule : M[0:n+1][0:S+1] de tg M[k][s] = m(k,s) et A = arg M
+    // Retourne : int[][][] MA = {M,A}
+        int n = G.length; int S = G[0].length - 1;
+        int[][] M = new int[n+1][S+1], A =  new int[n+1][S+1];
 
-    /*
-            int n = G.length, S = G.length - 1;
-            aro(M,A,G,n,S); // afficher une répartition optimale du stock S sur le 
-            // sous-ensemble des n premiers entrepôts. Autrement dit : afficher une
-            // répartition optimale du stock S sur tous les entrepôts (sans contrainte.)
-        }
-        static void aro(int[][] M, int[][] A, int[][] G, int k, int s){ /* affichage d'une 
-            répartition optimale du stock s sur le sous-ensemble des k premiers entrepôts.
-            Notation : ro(k,s) = répartition optimale du stock s sur le sous-ensemble [0:k] 
-            // base = condition d'arrêt
-                
-            // cas général : récursion
-        }
-    */
+        // Base
+        for(int s=0; s<S+1; s++) M[0][s] = 0;
 
-/** Version TD Pauline 
- * 
- * /* Exercice 3 : répartition optimale d'un stock S sur n entrepôts
-	m(k,s) : gain d'une répartition optimale d'un stock s sur le sous-ensemble
-	des k premiers entrepôts. */
-	static int[][][] calculerMA(int[][] G){ // G[0:n][0:S+1] de terme général 
-        // G[i][s] = gain d'une livraison d'un stock s à l'entrepôt i.
-        // Calcule : M[0:n+1][0:S+1] de tg M[k][s] = m(k,s) et A = arg M.
-        // Retourne : int[][][] MA = {M,A}.
-            int n = G.length; int S = G[0].length - 1;
-            int[][] M = new int[n+1][S+1], A =  new int[n+1][S+1];
-            // Base : 
-            for(int s=0; s<S+1; s++) M[0][s] = 0;
-            // cas général
-            for(int k=1;  k<n+1; k++)
-                for(int s=0; s<S+1; s++) {
-                    int mks = -1;
-                    int arg = -1;
-                    for(int sp=0; sp<s+1; sp++) {
-                        if(mks < M[k-1][s-sp]+G[k-1][sp]) {
-                            mks = M[k-1][s-sp]+G[k-1][sp];
-                            arg = sp;
-                        }
-                        M[k][s] = mks;
-                        A[k][s] = arg;
+        // Cas général
+        for(int k=1;  k<n+1; k++)
+            for(int s=0; s<S+1; s++) {
+                int mks = -1;
+                int arg = -1;
+                for(int sp=0; sp<s+1; sp++) {
+                    if(mks < M[k-1][s-sp]+G[k-1][sp]) {
+                        mks = M[k-1][s-sp]+G[k-1][sp];
+                        arg = sp;
                     }
-                }	
-            return new int[][][] {M,A};
-        }
-        static void aro(int[][] M, int[][] A, int[][] G){ /* affichage d'une répartition
-        optimale du stock S sur les n entrepôts. G
-        G : tableau des gains (g(i,s) = gain d'une livraison d'un stock s à l'entrepôt i)
-        G est à n lignes et S+1 colonnes où n est le nombre d'entrepôts et S le stock total. 
-        M est le tableau de terme général m(k,s) = gain d'une répartition optimale d'un
-        stock s sur le sous-ensemble des k premiers entrepôts. M est à n+1 lignes et S+1 col.
-        A = arg M : a(k,s) = quantité de stock livré au k-ème entrepôt (de numéro k-1)
-        dans une répartition optimale du stock s sur les k premiers entrepôts. */
-            int n = G.length, S = G.length - 1;
-            aro(M,A,G,n,S); // afficher une répartition optimale du stock S sur le 
-            // sous-ensemble des n premiers entrepôts. Autrement dit : afficher une
-            // répartition optimale du stock S sur tous les entrepôts (sans contrainte.)
-        }
-        static void aro(int[][] M, int[][] A, int[][] G, int k, int s){ /* affichage d'une 
-            répartition optimale du stock s sur le sous-ensemble des k premiers entrepôts.
-            Notation : ro(k,s) = répartition optimale du stock s sur le sous-ensemble [0:k] */
-            // base = condition d'arrêt
-            if(k==0 && s==0) return;
-            // cas général : récursion
-            int sp = A[k][s];
-            System.out.printf("Entrepôt : %d, stock : %d, valeur : %d", k-1, sp, G[k-1][sp]);
-            aro(M, A, G, k-1, s-sp);
-        }
- */
+                    M[k][s] = mks;
+                    A[k][s] = arg;
+                }
+            }	
+
+        return new int[][][] {M,A};
+    }//calculerMA()
+
+    static void aro(int[][] M, int[][] A, int[][] G){
+    /* affichage d'une répartition optimale du stock S sur les n entrepôts
+    G : tableau des gains (g(i,s) = gain d'une livraison d'un stock s à l'entrepôt i)
+    G est à n lignes et S+1 colonnes où n est le nombre d'entrepôts et S le stock total
+    M est le tableau de terme général m(k,s) = gain d'une répartition optimale d'un stock s sur le sous-ensemble des k premiers entrepôts
+    M est à n+1 lignes et S+1 col
+    A = arg M : a(k,s) = quantité de stock livré au k-ème entrepôt (de numéro k-1)
+    dans une répartition optimale du stock s sur les k premiers entrepôts */
+        int n = G.length, S = G.length - 1;
+        aro(M,A,G,n,S);
+        // afficher une répartition optimale du stock S sur le sous-ensemble des n premiers entrepôts
+        // autrement dit : afficher une répartition optimale du stock S sur tous les entrepôts (sans contrainte)
+    }//aro()
+
+    static void aro(int[][] M, int[][] A, int[][] G, int k, int s){
+        /* affichage d'une répartition optimale du stock s sur le sous-ensemble des k premiers entrepôts
+        notation : ro(k,s) = répartition optimale du stock s sur le sous-ensemble [0:k] */
+        
+        // Base : condition d'arrêt
+        if(k==0 && s==0) return;
+
+        // Cas général : récursion
+        int sp = A[k][s];
+        aro(M, A, G, k-1, s-sp);
+        System.out.printf("entrepôt %d : stock livré = %d, gain = %d\n", k-1, sp, G[k-1][sp]);
+    }//aro()
+
+
+    //
+	/* Methode Greedy */
+	//
+
+    static void repartitionGreedy(int[][] G){
+        int n = G.length; int S = G[0].length - 1;
+        
+    }
+
+
+    /* Fonctions annexes */
+	static int max(int x, int y){ if (x >= y) return x; return y;}//max()
+	static int max(int x, int y, int z){ if (x >= max(y,z)) return x; 
+		if (y >= z) return y; 
+		return z;
+	}//max()
+	static int min(int x, int y){ if (x <= y) return x; return y;}//min()
+	static int min(int x, int y, int z){ if (x <= min(y,z)) return x; 
+		if (y <= z) return y; 
+		return z;
+	}//min()
+	static int somme(int[] T){ int n = T.length;
+		int s = 0; 
+		for (int i = 0; i < n; i++) s = s + T[i];
+		return s;
+	}//somme()
+	static void afficher(int[][] T){int n = T.length;
+		for (int i = n-1; i >= 0; i--)
+			System.out.println(Arrays.toString(T[i]));
+	}//afficher()
+
+
+}//Stock
 
 
 /*
@@ -167,4 +164,3 @@ entrepôt  4 : stock livré = 2, gain = 14
 entrepôt  5 : stock livré = 2, gain = 12
 entrepôt  6 : stock livré = 1, gain = 12
 */
-

@@ -9,7 +9,7 @@ public class Robot{
 	static Boolean debug = true;
 
 	public static void mainRobot(){
-		System.out.println("\nExercice : le petit robot");
+		System.out.println("\n\nExercice : le petit robot");
 		int L = 5, C = 7; // grille 5 x 7
 		System.out.printf("Grille à %d lignes et %d colonnes",L,C);
 		
