@@ -3,7 +3,7 @@ import java.util.Arrays;
 // https://projecteuler.net/problem=67
 public class Somme {
 
-    private static final boolean debug = true;
+    private static final boolean debug = false;
 
     /**
      * MakeTrig() retourne un tableau, qui contient les valeurs du triangle
@@ -11,7 +11,7 @@ public class Somme {
      */
     public static int[] MakeTrig() {
         int[] TabTrig = new int[]{3,7,4,2,4,6,8,5,9,3};
-        if(debug) System.out.println("TAbTrig: "+  Arrays.toString(TabTrig));
+        //if(debug) System.out.println("TAbTrig: "+  Arrays.toString(TabTrig));
         return TabTrig; 
     }
 
@@ -20,45 +20,45 @@ public class Somme {
      * 
      * Repr ́esentation du triangle dans un tableau T[0:n]
      * 
-     *  */
+     * */
 
 
     /**
-     * g(pTAbRef) retourne le descendant gauche du triangle passé en param
-     * @param pTAbRef est le tableau de reference d'entrée
+     * g(pTabRef) retourne le descendant gauche du triangle passé en param
+     * @param pTabRef est le tableau de reference d'entrée
      * @param indice est le numero dont l'on cherche l'incide descendant gauche
      * @return l'indice descendant gauche
      */
-    public static int g(int[] pTAbRef, int pIndice){
+    public static int g(int[] pTabRef, int pIndice){
         int l=0;      // ligne/etage dans le triangle
         int p=0;      // position dans la ligne
         int nbElementDL=0; // nb element derniere ligne
         int nbElementAvantDL=0;         // le nombre d'element sans la derniere linge
 
-        if(pIndice > pTAbRef.length-1 || pIndice < 0) {
+        if(pIndice > pTabRef.length-1 || pIndice < 0) {
             System.out.println("ERROR \n --> l'indice est superieur a la taille du tableau ou negatif.");
 
-            if(debug) System.out.println("indice : "+pIndice+" et taille Tab : "+ pTAbRef.length);
+            //if(debug) System.out.println("indice : "+pIndice+" et taille Tab : "+ pTabRef.length);
 
             return -1;
         }
         else if(pIndice == 0) return 1;
         else{
             //On cherche le niveau max du tableau
-            for (int niveau = 1; niveau < pTAbRef.length; niveau++) {
-                if(pTAbRef.length == niveau*(niveau+1)/2){
-                    nbElementDL = pTAbRef.length-(((niveau-1)*niveau)/2);
+            for (int niveau = 1; niveau < pTabRef.length; niveau++) {
+                if(pTabRef.length == niveau*(niveau+1)/2){
+                    nbElementDL = pTabRef.length-(((niveau-1)*niveau)/2);
                     break;              //sort du for??? 
                 }
             }
-            nbElementAvantDL=pTAbRef.length-nbElementDL;
+            nbElementAvantDL=pTabRef.length-nbElementDL;
 
             if(pIndice > nbElementAvantDL-1){
                 System.out.println("ERROR \n --> l'indice saisi est sur la derniére ligne => pas de descendant gauche");
                 return -1;
             }
 
-            for (int niveau = 1; niveau < pTAbRef.length; niveau++) {
+            for (int niveau = 1; niveau < pTabRef.length; niveau++) {
                 if(niveau*(niveau+1)/2 > pIndice){
                     l=niveau-1;
                     p=pIndice-(niveau*(niveau-1)/2);
@@ -77,17 +77,18 @@ public class Somme {
             }
 
             return ((l+2)*(l+1)/2)+p;
+            
             }
         }//g()
 
         /**
          * d() renvoie l'indice bas droite de pIndice. Utilise g()
-         * @param pTAbRef tab d'entré
+         * @param pTabRef tab d'entré
          * @param pIndice indice du quel on cherche son descendant droit
          * @return l'indice bas droite de pIndice
          */
-        public static int d(int[] pTAbRef, int pIndice) {
-            int out = g(pTAbRef, pIndice);
+        public static int d(int[] pTabRef, int pIndice) {
+            int out = g(pTabRef, pIndice);
             if(out == -1){
                 System.out.println("ERROR");
                 return -1;
@@ -108,27 +109,52 @@ public class Somme {
     //
 
     /**
-     * prend en entr ́ee le triangle T [0 : n] et retourne un tableau M [0 : n] 
+     * prend en entree le triangle T [0 : n] et retourne un tableau M [0 : n] 
      * de terme general M [i] = m(i) = la valeur d’un chemin de somme maximum
      * 
-     * @param pTAbRef
+     * @param pTabRef
      * @return un tableau avec la somme cumulée du chemin au cout max
      */
-    public static int[] calculerM(int[] pTabRef) {
+    // public static int[] calculerM(int[] pTabRef) {
+    //     int nbNiveaux = niveau(pTabRef, pTabRef.length-1)+1;
+    //     int[] TabSM = new int[nbNiveaux];
+
+    //     if(debug) System.out.println("Le tableau "+pTabRef+" de longeur "+pTabRef.length+" a "+nbNiveaux+" niveaux");
+
+    //     TabSM[0] = pTabRef[0];
+
+    //     for (int niveau = 1; niveau < TabSM.length; niveau++) {
+    //         TabSM[niveau]=TabSM[niveau-1]+Math.max(
+    //             pTabRef[g(pTabRef, niveau)],
+    //             pTabRef[d(pTabRef, niveau)]
+    //         );
+    //     }
+    //     return [0];
+    // }
+
+
+
+    public static int[] calculeTabSMGlouton(int[] pTabRef) {
         int nbNiveaux = niveau(pTabRef, pTabRef.length-1)+1;
         int[] TabSM = new int[nbNiveaux];
 
-        if(debug) System.out.println("Le tableau "+pTabRef+" de longeur "+pTabRef.length+" a "+nbNiveaux+" niveaux");
-
         TabSM[0] = pTabRef[0];
 
-        for (int niveau = 1; niveau < TabSM.length; niveau++) {
-            TabSM[niveau]=TabSM[niveau-1]+min(
-                pTabRef[g(pTabRef, pIndice)],
-                pTabRef[d(pIndice)]
-            );
+        System.out.println("niveau = 0 g(i) = "+pTabRef[g(pTabRef, 0)]+" d(i) = "+
+        pTabRef[d(pTabRef, 0)]+" TabSM[i] = "+TabSM[0] );
+
+        for (int i = 1; i < nbNiveaux; i++) {
+            TabSM[i] = TabSM[i-1] + Math.max(pTabRef[g(pTabRef, i)], pTabRef[d(pTabRef, i)]);
+
+            if(true) System.out.println("niveau = "+i+" g(i) = "+pTabRef[g(pTabRef, i)]+" d(i) = "
+                +pTabRef[d(pTabRef, i)]+" TabSM[i] = "+TabSM[i] );
         }
-    }
+        System.out.println("TabSM en mode glouton : "+Arrays.toString(TabSM));
+        return TabSM;
+        
+    }//calculeTabSMGlouton
+
+
 
     /**
      * niveau renvoie le niveau ou se trouve le param    !!! commence à 0 
@@ -147,7 +173,8 @@ public class Somme {
     
     public static void mainSomme(){
         System.out.println("Hello, World! from Somme Class \n");
-        d(MakeTrig(), 5);
+        d(MakeTrig(), 3);
+        calculeTabSMGlouton(MakeTrig());
     }
     
 }
