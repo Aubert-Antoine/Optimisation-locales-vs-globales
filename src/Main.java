@@ -22,6 +22,7 @@ public class Main {
       System.out.println("    example 5: Somme   \n ");
       Somme.mainSomme();
       System.out.println("");
-      
+
+      RepartitionDeStockEnEntrepot.mainSC();
   }
 }

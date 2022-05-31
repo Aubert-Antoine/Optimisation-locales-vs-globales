@@ -5,6 +5,36 @@ public class Stock {
      */
 
 
+    
+	static int[][][] calculerMA(int[][] G){ // G[0:n][0:S+1] de terme général 
+        // G[i][s] = gain d'une livraison d'un stock s à l'entrepôt i.
+        // Calcule : M[0:n+1][0:S+1] de tg M[k][s] = m(k,s) et A = arg M.
+        // Retourne : int[][][] MA = {M,A}.
+            int n = G.length; int S = G[0].length - 1;
+            int[][] M = new int[n+1][S+1], A =  new int[n+1][S+1];
+            // Base : 
+            
+            // cas général
+            
+            return new int[][][] {M,A};
+        }
+        static void aro(int[][] M, int[][] A, int[][] G){
+
+            int n = G.length, S = G.length - 1;
+            aro(M,A,G,n,S); 
+            // afficher une répartition optimale du stock S sur le 
+            // sous-ensemble des n premiers entrepôts. Autrement dit : afficher une
+            // répartition optimale du stock S sur tous les entrepôts (sans contrainte.)
+        }
+        static void aro(int[][] M, int[][] A, int[][] G, int k, int s){ /* affichage d'une 
+            répartition optimale du stock s sur le sous-ensemble des k premiers entrepôts.
+            Notation : ro(k,s) = répartition optimale du stock s sur le sous-ensemble [0:k] */
+            
+            // base = condition d'arrêt
+                
+            // cas général : récursion
+        }
+
 
     public static void mainStock(){
         System.out.println("Hello, World! from Stock Class");
