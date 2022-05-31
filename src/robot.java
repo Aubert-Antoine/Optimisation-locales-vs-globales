@@ -54,6 +54,43 @@ public class Robot{
 		}
 	}//accm()
 
+	/**
+	static void accm(int[][] M, int L, int C, int l, int c){
+	// affiche un chemin de coût minimimum (ccm) de 0,0 à l,c
+	// Base
+		if (l==0 & c==0) {
+			System.out.print("(0,0)");
+			return;
+		}
+		else if (l==0) { // dernier mouvement : Est depuis 0,c-1
+			accm(M,L,C,l,c-1);
+			System.out.printf(" -%d-> (%d,%d)", e(l,c-1,L,C),l,c);
+		}
+		else if (c==0) { // dernier mouvement : Nord depuis l-1,0
+			accm(M,L,C,l-1,c);
+			System.out.printf(" -%d-> (%d,%d)", n(l-1,c,L,C),l,c);
+		}
+		else { // l,c > 0,0
+			// Coûts du pas de déplacement conduisant jusqu'en (l,c)
+			int n=n(l-1,c,L,C), ne=ne(l-1,c-1,L,C), e=e(l,c-1,L,C);
+			// Coûts du chemin jusqu'en (l,c) selon le dernier pas de déplacement
+			int Mn = M[l-1][c] + n, Mne = M[l-1][c-1] + ne, Me = M[l][c-1] + e;
+			if (Mn == min(Mn,Me,Mne)) { // dernier mouvement : Nord
+				accm(M,L,C,l-1,c);
+				System.out.printf(" -%d-> (%d,%d)", n(l-1,c,L,C),l,c);
+			}
+			else if (Mne == min(Mn,Me,Mne)) { // dernier mouvement : Nord Est
+				accm(M,L,C,l-1,c-1);
+				System.out.printf(" -%d-> (%d,%d)", ne(l-1,c-1,L,C),l,c);
+			}
+			else if (Me == min(Mn,Me,Mne)) { // dernier mouvement : Est
+				accm(M,L,C,l,c-1);
+				System.out.printf(" -%d-> (%d,%d)", e(l,c-1,L,C),l,c);
+			}
+		}
+	}
+	*/
+
 
 	//
 	/* Methode Greedy */
@@ -94,6 +131,36 @@ public class Robot{
 		return vectDir;
 	}
 	
+
+	/** Méthode Pauline (ne marche pas)
+	static void cheminGreedy(int L, int C){ // une grille L x C
+		int cout = 0;
+        int l = 0;
+        int c = 0;
+        System.out.print("(0,0)");
+        while(l < L && c < C) {
+            int dir = 0;
+            if(l < L-1 && c < C-1 && ne(l, c, L, C) < n(l, c, L, C) && ne(l, c, L, C) < e(l, c, L, C)) {
+                dir = ne(l, c, L, C);
+                l++; c++;
+            }
+            else if(l < L-1 && n(l, c, L, C) < e(l, c, L, C)) {
+                dir = n(l, c, L, C);
+                l++;
+            }
+            else if(c < C-1) {
+                dir = e(l, c, L, C);
+                c++;
+            }
+            cout += dir;
+            System.out.printf(" --%d--> (%d,%d)",dir,l,c);
+        }
+        System.out.printf("\nCoût minimum d'un chemin de (0,0) à (%d,%d) = %d\n", L, C, cout);
+	}//cheminGreedy()
+	*/
+	
+
+
 	/* Fonctions de coût des déplacements.
 	1) depuis la case 00, les déplacements N et E coûtent 1, le déplacement NE coûte 0.
 	2) sur la colonne 0, les autres déplacements coûtent 0
