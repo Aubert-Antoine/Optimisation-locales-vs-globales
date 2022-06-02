@@ -110,11 +110,11 @@ public class Somme {
     //
 
     /**
-     * CAlculerM(pTabRef) est la fonction qui calcule dynamiquement TabSomme, le tableau de somme cumulée max vis a vis de pTabRef 
+     * calculerM(pTabRef) est la fonction qui calcule dynamiquement TabSomme, le tableau de somme cumulée max vis a vis de pTabRef 
      * @param pTabRef Tableau dont on cherche le chemin de somme max
      * @return  TabSomme le Tableau de somme max
      */
-    public static int[] CalculerM(int[] pTabRef) {
+    public static int[] calculerM(int[] pTabRef) {
         int nbNiveaux = niveau(pTabRef, pTabRef.length);
         int indiceDeb = pTabRef.length-1-nbNiveaux;             //indice de debut de somme
         int[] TabSomme = pTabRef;
@@ -130,7 +130,7 @@ public class Somme {
         if(info) System.out.println("TabSomme : "+Arrays.toString(TabSomme));
 
         return TabSomme;
-    }//CalculerM
+    }//calculerM
 
 
     // METHODE Gloutonne : 
@@ -171,6 +171,55 @@ public class Somme {
         return TabSM;        
     }//calculeTabSMGlouton
 
+    /**
+     * 
+     * affichage
+     * 
+     *  */
+
+    /**
+     * acsm affiche un chemin de somme maximum commen ̧cant en i
+     * @param M est le tableau de somme max cumulee 
+     * @param T est le tableau triangle cree par makeTrig()
+     * @param i indice de debut d'affichage
+     * @param n Taille du triangle originel, fin d'affichaga
+     */
+    public static void acsm(int[] M, int[] T, int i, int n) {
+        
+        if(n<0 || i<0 || n<i) System.out.println("n et i doivent etre positifs n = "+n+" i = "+i
+                                                    +"\net n>i");
+        else{
+            if(i<M.length-niveau(M, M.length)) {
+                int ip = i;
+                int ig = g(M, i);
+                int id = d(M, i);
+                int maxgd = Math.max(M[ig], M[id]);
+
+                if(maxgd == M[ig]) i = ig;
+                else i = id;
+                System.out.println("valeur = "+(M[ip]-M[i]));
+                acsm(M, T, i, n);   
+            }
+            else {
+                System.out.println("valeur = "+(M[ip]-M[i]));
+            }
+        }
+
+    }//acsm()
+
+
+
+
+
+
+
+
+
+     /**
+     * 
+     * Autre methodes
+     * 
+     *  */
 
 
     /**
@@ -203,9 +252,12 @@ public class Somme {
     
     public static void mainSomme(){
         System.out.println("Hello, World! from Somme Class \n");
-        d(MakeTrig(), 3);
-        calculeTabSMGlouton(MakeTrig());
-        CalculerM(MakeTrig());
+        int[] curTab = MakeTrig();
+        d(curTab, 3);
+        calculeTabSMGlouton(curTab);
+        int[] M = calculerM(curTab);
+        System.out.println("Le chemin de somme cumulee max : ");
+        acsm(M, curTab, 0, curTab.length);
     }
     
 }
