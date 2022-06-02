@@ -19,7 +19,7 @@ public class Somme {
 
     /**
      * 
-     * Repr ́esentation du triangle dans un tableau T[0:n]
+     * Repr esentation du triangle dans un tableau T[0:n]
      * 
      * */
 
@@ -110,45 +110,27 @@ public class Somme {
     //
 
     /**
-     * prend en entree le triangle T [0 : n] et retourne un tableau M [0 : n] 
-     * de terme general M [i] = m(i) = la valeur d’un chemin de somme maximum
-     * 
-     * @param pTabRef
-     * @return un tableau avec la somme cumulée du chemin au cout max
+     * CAlculerM(pTabRef) est la fonction qui calcule dynamiquement TabSomme, le tableau de somme cumulée max vis a vis de pTabRef 
+     * @param pTabRef Tableau dont on cherche le chemin de somme max
+     * @return  TabSomme le Tableau de somme max
      */
-    public static int[] calculerM(int[] pTabRef) {
-        int nbNiveaux = niveau(pTabRef, pTabRef.length-1);
-        int[] TabSM = new int[nbNiveaux];
-        int[] TemTab = new int[pTabRef.length];
+    public static int[] CalculerM(int[] pTabRef) {
+        int nbNiveaux = niveau(pTabRef, pTabRef.length);
+        int indiceDeb = pTabRef.length-1-nbNiveaux;             //indice de debut de somme
+        int[] TabSomme = pTabRef;
 
-        if(debug) System.out.println("Le tableau "+pTabRef+" de longeur "+pTabRef.length+" a "+nbNiveaux+" niveaux");
+        for (int i = indiceDeb; i >= 0; i--) {
+            TabSomme[i] = Math.max(pTabRef[g(pTabRef, i)], pTabRef[d(pTabRef, i)])+pTabRef[i]; 
+            // On fait la somme de la valeur à l'indice courant + du max de la ligne inf
+            
+            if(debug) System.out.println("i = "+i+" et TabSomme[i] = "+TabSomme[i]);
 
-        TabSM[0] = pTabRef[0];
-
-        for (int niveau = 1; niveau < TabSM.length; niveau++) {
-            TabSM[niveau]=TabSM[niveau-1]+Math.max(
-                pTabRef[g(pTabRef, niveau)],
-                pTabRef[d(pTabRef, niveau)]
-            );
         }
-        return [0];
-    }
 
-    public static int[] calRecurMem(int[] pTabRef, int pIndice) {
-        int nbNiveaux = niveau(pTabRef, pTabRef.length-1);
-        int[] TabSM = new int[nbNiveaux];
-        int[] TabSC = new int[pTabRef.length];
+        if(info) System.out.println("TabSomme : "+Arrays.toString(TabSomme));
 
-        
-        TabSM[0] = pTabRef[0];
-
-        int i=1;
-        TabSM[i] = Math.max(somme(calRecurMem(pTabRef, pTabRef[g(pTabRef, i)])),
-                            somme(calRecurMem(pTabRef, pTabRef[d(pTabRef, i)])) );
-
-        System.out.println(Arrays.toString(TabSM));
-        return TabSM;
-    }
+        return TabSomme;
+    }//CalculerM
 
 
     // METHODE Gloutonne : 
@@ -185,6 +167,7 @@ public class Somme {
         }
 
         if(info) System.out.println("\nTabSM en mode glouton : "+Arrays.toString(TabSM));
+        
         return TabSM;        
     }//calculeTabSMGlouton
 
@@ -210,16 +193,19 @@ public class Somme {
      * @param T
      * @return
      */
-    static int somme(int[] T){ int n = T.length;
+    static int somme(int[] T){ 
+        int n = T.length;
 		int s = 0; 
 		for (int i = 0; i < n; i++) s = s + T[i];
 		return s;
 	}
+
     
     public static void mainSomme(){
         System.out.println("Hello, World! from Somme Class \n");
         d(MakeTrig(), 3);
         calculeTabSMGlouton(MakeTrig());
+        CalculerM(MakeTrig());
     }
     
 }
