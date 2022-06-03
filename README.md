@@ -1,18 +1,17 @@
 ## Getting Started
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+This repository is an university prodject, the aime is to compare dynamic and gready algorithme
 
 ## Folder Structure
 
 The workspace contains two folders by default, where:
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+- `src`:    the folder to maintain sources
+- `csv`:    the folder to maintain data
+- `TD` :    the folder to maintain courses
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+> The `src>main` class contain the main fonction of the prodject.
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+## info
 
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+Their is 2 boolean, "debug" and "info" wich give some txt output if their are true.
