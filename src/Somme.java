@@ -12,7 +12,7 @@ public class Somme {
      */
     public static int[] MakeTrig() {
         int[] TabTrig = new int[]{3,7,4,2,4,6,8,5,9,3};
-        //if(debug) System.out.println("TAbTrig: "+  Arrays.toString(TabTrig));
+        if(debug) System.out.println("TAbTrig: "+  Arrays.toString(TabTrig));
         return TabTrig; 
     }
 
@@ -119,6 +119,7 @@ public class Somme {
         int indiceDeb = pTabRef.length-1-nbNiveaux;             //indice de debut de somme
         int[] TabSomme = pTabRef;
 
+
         for (int i = indiceDeb; i >= 0; i--) {
             TabSomme[i] = Math.max(pTabRef[g(pTabRef, i)], pTabRef[d(pTabRef, i)])+pTabRef[i]; 
             // On fait la somme de la valeur à l'indice courant + du max de la ligne inf
@@ -159,17 +160,19 @@ public class Somme {
             int maxgd = Math.max(pTabRef[ig], pTabRef[id]);
             if(maxgd == pTabRef[ig]) i = ig;
             else i = id;
-            TabSM[j] = TabSM[j-1] + maxgd;
+            TabSM[j] = maxgd;       // si on veut la somme cumulee on +TabSM[j-1]
 
             // if(debug) System.out.println("niveau = "+j+" valg(i) = "+pTabRef[g(pTabRef, i)]+" vald(i) = "
             //     +pTabRef[d(pTabRef, i)]+" TabSM[niveau] = "+TabSM[i-1]+" valeur actuel "+pTabRef[j] );
             // bug d'indice entre i et j --> prb si g() return -1 
         }
 
-        if(info) System.out.println("\nTabSM en mode glouton : "+Arrays.toString(TabSM));
+        System.out.println("\nTabSM en mode glouton : "+Arrays.toString(TabSM));
         
         return TabSM;        
     }//calculeTabSMGlouton
+
+
 
     /**
      * 
@@ -178,7 +181,8 @@ public class Somme {
      *  */
 
     /**
-     * acsm affiche un chemin de somme maximum commen ̧cant en i
+     * acsm affiche un chemin de somme maximum commencant en i.
+     * Methode recurcive
      * @param M est le tableau de somme max cumulee 
      * @param T est le tableau triangle cree par makeTrig()
      * @param i indice de debut d'affichage
@@ -189,29 +193,23 @@ public class Somme {
         if(n<0 || i<0 || n<i) System.out.println("n et i doivent etre positifs n = "+n+" i = "+i
                                                     +"\net n>i");
         else{
-            if(i<M.length-niveau(M, M.length)) {
-                int ip = i;
+            if(i<M.length-niveau(M, M.length)) {        //si nous ne sommes pas sur la derniere ligne
+                int ip = i;                             // On memorise la valeur actuelle
                 int ig = g(M, i);
                 int id = d(M, i);
                 int maxgd = Math.max(M[ig], M[id]);
 
-                if(maxgd == M[ig]) i = ig;
+                if(maxgd == M[ig]) i = ig;              //Determine l'indice du descendant max
                 else i = id;
-                System.out.println("valeur = "+(M[ip]-M[i]));
-                acsm(M, T, i, n);   
+                System.out.println("valeur = "+(M[ip]-M[i]));  //La valeur de la case courante deT[] est 
+                acsm(M, T, i, n);                              //la val precedente de M[] moins la courante de M[]
             }
-            else {
-                System.out.println("valeur = "+(M[ip]-M[i]));
+            else {                                      //si nous sommes sur la derniere ligne
+                System.out.println("valeur = "+(M[i]));
             }
         }
 
     }//acsm()
-
-
-
-
-
-
 
 
 
@@ -253,11 +251,16 @@ public class Somme {
     public static void mainSomme(){
         System.out.println("Hello, World! from Somme Class \n");
         int[] curTab = MakeTrig();
-        d(curTab, 3);
-        calculeTabSMGlouton(curTab);
-        int[] M = calculerM(curTab);
-        System.out.println("Le chemin de somme cumulee max : ");
+        int[] M = calculerM(curTab);         //modif la valeur de cur tab ??? 
+
+
+        System.out.println("\nLe chemin de somme cumulee max en dynamique : ");
         acsm(M, curTab, 0, curTab.length);
+
+
+        System.out.println("\nLe chemin de somme cumulee max en glouton : ");
+        
+        calculeTabSMGlouton(MakeTrig());
     }
     
 }
