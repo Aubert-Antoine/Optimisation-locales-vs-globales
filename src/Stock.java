@@ -77,7 +77,7 @@ public class Stock {
     G : tableau des gains (g(i,s) = gain d'une livraison d'un stock s à l'entrepôt i)
     G est à n lignes et S+1 colonnes où n est le nombre d'entrepôts et S le stock total
     M est le tableau de terme général m(k,s) = gain d'une répartition optimale d'un stock s sur le sous-ensemble des k premiers entrepôts
-    M est à n+1 lignes et S+1 col
+    M est à n+1 lignes et S+1 colonnes
     A = arg M : a(k,s) = quantité de stock livré au k-ème entrepôt (de numéro k-1)
     dans une répartition optimale du stock s sur les k premiers entrepôts */
         int n = G.length, S = G.length - 1;
@@ -106,9 +106,28 @@ public class Stock {
 
     static void repartitionGreedy(int[][] G){
         int n = G.length; int S = G[0].length - 1;
-        
+        int[][] Tab = new int[n][S];
+        for(int s=0; s<S ; s++) {
+            int entrepot = maxGain(G,s)[0];
+            int gainmax = maxGain(G,s)[1];
+            Tab[entrepot][s] += gainmax;
+            i++;
+        }
     }
 
+    static int[] maxGain(int[][] T, int s){
+        int[] Tab = new int[2];
+        int entrepot = 0;
+        int gainmax = T[0][s];
+        for(int i=1; i<T.length; i++)
+            if(gainmax < T[i][s]) {
+                entrepot = i;
+                gainmax = T[i][s];
+            }
+        Tab[0] = entrepot;
+        Tab[1] = gainmax;
+        return Tab;
+    }
 
     /* Fonctions annexes */
 	static int max(int x, int y){ if (x >= y) return x; return y;}//max()
