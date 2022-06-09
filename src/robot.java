@@ -16,7 +16,7 @@ public class Robot{
 		int L = 5, C = 7; // grille 5 x 7
 		System.out.printf("Grille à %d lignes et %d colonnes",L,C);
 		
-		// Méthode dynamique
+		// Méthode Dynamique
 		System.out.println("\n\nMETHODE DYNAMIQUE");
 		int[][] M = calculerM(L,C);
 		System.out.println("Tableau M des coûts minimum :");
@@ -201,6 +201,5 @@ Tableau M des coûts minimum :
 [0, 1, 2, 3, 4, 5, 6]
 Coût minimum d'un chemin de (0,0) à (4,6) = 1
 (0,0) -1-> (1,0) -0-> (2,0) -0-> (3,0) -0-> (4,0) -0-> (4,1) -0-> (4,2) -0-> (4,3) -0-> (4,4) -0-> (4,5) -0-> (4,6)
-% 
 
 */

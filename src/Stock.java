@@ -3,7 +3,7 @@ import java.util.Arrays;
 
 public class Stock {
 
-    
+
     /**
      * mainStock appelant les méthodes dynamique et greedy et affichant leurs résultats
      */
@@ -22,7 +22,7 @@ public class Stock {
         System.out.println("\nTableau des gains : g(k,s) = gain obtenu en livrant s à k");
         afficher(G);
 
-		// Méthode dynamique
+		// Méthode Dynamique
 		System.out.println("\n\nMETHODE DYNAMIQUE");
         int[][][] MA = calculerMA(G);
         int[][] M = MA[0], A = MA[1];
@@ -178,7 +178,9 @@ public class Stock {
 
 
 /*
+
 Exercice 3 : répartition optimale d'un stock
+
 tableau des gain : g(k,s) = gain obtenu en livrant s à k
 [0, 12, 12, 14, 14, 15, 15, 15, 17, 17, 17]
 [0, 10, 12, 12, 16, 16, 16, 16, 16, 16, 16]
@@ -187,7 +189,9 @@ tableau des gain : g(k,s) = gain obtenu en livrant s à k
 [0, 10, 10, 12, 12, 13, 13, 14, 15, 16, 16]
 [0, 8, 10, 10, 10, 12, 12, 14, 14, 14, 14]
 [0, 5, 5, 7, 7, 10, 10, 12, 12, 13, 13]
+
 gain total maximum : 77
+
 tableau M des gains maximum :
 [0, 14, 26, 36, 46, 56, 64, 69, 73, 75, 77]
 [0, 14, 24, 34, 44, 52, 57, 61, 63, 65, 67]
@@ -197,6 +201,7 @@ tableau M des gains maximum :
 [0, 8, 13, 15, 15, 17, 18, 20, 20, 22, 22]
 [0, 5, 5, 7, 7, 10, 10, 12, 12, 13, 13]
 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
 une affectation optimale :
 entrepôt  0 : stock livré = 1, gain = 5
 entrepôt  1 : stock livré = 2, gain = 10
@@ -205,4 +210,5 @@ entrepôt  3 : stock livré = 1, gain = 14
 entrepôt  4 : stock livré = 2, gain = 14
 entrepôt  5 : stock livré = 2, gain = 12
 entrepôt  6 : stock livré = 1, gain = 12
+
 */
