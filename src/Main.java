@@ -1,12 +1,12 @@
 public class Main {
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] Args) throws Exception { 
 
     // System.out.println("Main Class : ");
     // System.out.println("    main() ");
 
-    System.out.println("    \nEXEMPLE 1 : Robot    ");
-    Robot.mainRobot();
-    System.out.println("");
+    // System.out.println("    \nEXEMPLE 1 : Robot    ");
+    // Robot.mainRobot();
+    // System.out.println("");
 
     // System.out.println("    \nEXEMPLE 2 : SVM      ");
     // SVM.mainSVM();
@@ -16,9 +16,10 @@ public class Main {
     // Stock.mainStock();
     // System.out.println("");
 
-    // System.out.println("    \nEXEMPLE 4 : Travail  ");
-    // Travail.mainTravail();
-    // System.out.println("");
+    System.out.println("    \nEXEMPLE 4 : Travail  ");
+    String[] Tab = {"3", "9"};
+    Travail.mainTravail(Tab);
+    System.out.println("");
 
     // System.out.println("    \nEXEMPLE 5 : Somme   \n ");
     // Somme.mainSomme();
