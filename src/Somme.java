@@ -117,18 +117,19 @@ public class Somme {
     public static int[] calculerM(int[] pTabRef) {
         int nbNiveaux = niveau(pTabRef, pTabRef.length);
         int indiceDeb = pTabRef.length-1-nbNiveaux;             //indice de debut de somme
-        int[] TabSomme = pTabRef;
+        int[] TabSomme = Arrays.copyOf(pTabRef, pTabRef.length);
 
 
         for (int i = indiceDeb; i >= 0; i--) {
-            TabSomme[i] = Math.max(pTabRef[g(pTabRef, i)], pTabRef[d(pTabRef, i)])+pTabRef[i]; 
+            TabSomme[i] = Math.max(TabSomme[g(pTabRef, i)], TabSomme[d(pTabRef, i)])+pTabRef[i];      //prb pTabRef n'eset pas la somme donc pas de memoisation
             // On fait la somme de la valeur à l'indice courant + du max de la ligne inf
+            // pas d'influence entre g(pTabRef) et g(TabSomme) ? de meme pout + pTabRef[i] ? 
             
-            if(debug) System.out.println("i = "+i+" et TabSomme[i] = "+TabSomme[i]);
+            if(true) System.out.println("i = "+i+" et TabSomme[i] = "+TabSomme[i]);
 
         }
 
-        if(info) System.out.println("TabSomme : "+Arrays.toString(TabSomme));
+        if(true) System.out.println("TabSomme : "+Arrays.toString(TabSomme));
 
         return TabSomme;
     }//calculerM
@@ -235,7 +236,7 @@ public class Somme {
     }//niveau
 
     /**
-     * fait la somme
+     * fait la somme d'un tableau
      * @author R.Natovitch
      * @param T
      * @return
@@ -247,6 +248,13 @@ public class Somme {
 		return s;
 	}
 
+    /**
+     * EvalStatSomme genere les runs et stock la distance relative entre les solution goulonne et dynamique
+     * @param pLmax le nombre de niveaux maximum.
+     * @param pNruns le nombre de runs de l’ evaluation statistique
+     * @param pVmax la plus grande valeur pouvant ˆetre pr ́esente dans le triangle
+     * @return D[0 : N runs] qui contiendra pour chaque runla distance relative entre la valeur du chemin de somme maximum et la valeur du chemin glouton.
+     */
     public static int[] EvalStatSomme(int pLmax, int pNruns, int pVmax) {
         // int Lmax = pLmax;
         // int Nruns = pNruns;  //non utile ? prb de var ? 
@@ -262,24 +270,23 @@ public class Somme {
             //On regarde la valeur m(0) qui est le max, on fait le ration puis on attribut le ratio
             // a D[r], on fait cela Nruns fois
         }
-        if(info) System.out.println("Somme > EvalStatSomme : D = "+Arrays.toString(D));
+        if(true) System.out.println("Somme > EvalStatSomme : D = "+Arrays.toString(D));
         return D;
     }
 
     
     public static void mainSomme(){
         System.out.println("Hello, World! from Somme Class \n");
+
+
         int[] curTab = MakeTrig();
         int[] M = calculerM(curTab);         //modif la valeur de cur tab ??? 
-
-
         System.out.println("\nLe chemin de somme cumulee max en dynamique : ");
         acsm(M, curTab, 0, curTab.length);
 
 
         System.out.println("\nLe chemin de somme cumulee max en glouton : ");
-        
-        calculeTabSMGlouton(MakeTrig());
+        calculeTabSMGlouton(curTab);
     }
     
 }
