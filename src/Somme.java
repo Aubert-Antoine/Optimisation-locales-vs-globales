@@ -247,6 +247,25 @@ public class Somme {
 		return s;
 	}
 
+    public static int[] EvalStatSomme(int pLmax, int pNruns, int pVmax) {
+        // int Lmax = pLmax;
+        // int Nruns = pNruns;  //non utile ? prb de var ? 
+        // int Vmax = pVmax;
+
+        int[] D = new int[pNruns];
+
+        for (int r = 0; r < D.length; r++) {
+            int nbNiveaux = RandomGen.randomInt(1, pLmax);
+            int nbElement = (nbNiveaux*(nbNiveaux-1))/2;
+            int[] T = RandomGen.randomTabInt(nbElement, pVmax);
+            D[r] = EvalStat.evalMax(calculerM(T)[0], calculeTabSMGlouton(T)[0]);
+            //On regarde la valeur m(0) qui est le max, on fait le ration puis on attribut le ratio
+            // a D[r], on fait cela Nruns fois
+        }
+        if(info) System.out.println("Somme > EvalStatSomme : D = "+Arrays.toString(D));
+        return D;
+    }
+
     
     public static void mainSomme(){
         System.out.println("Hello, World! from Somme Class \n");
