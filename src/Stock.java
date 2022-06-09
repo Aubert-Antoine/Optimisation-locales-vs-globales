@@ -8,7 +8,7 @@ public class Stock {
      * mainStock appelant les méthodes dynamique et greedy et affichant leurs résultats
      */
     public static void mainStock(){
-		System.out.println("\n\nExercice : répartition optimale d'un stock");
+		System.out.println("\n\nExercice : répartition optimale d'un stock sur un ensemble d’entrepôts");
         int[][] G = new int[][] // g(k,s) = gain obtenu d'une livraison d'une quantité de stock s à l'entrepôt k
             {	{0, 5, 5, 7, 7,10,10,12,12,13,13},
                 {0, 8,10,10,10,12,12,14,14,14,14},
@@ -110,46 +110,31 @@ public class Stock {
 
     /**
      * repartitionGreedy permettant de calculer la répartition de stocks sur des entrepôts avec la méthode gloutonne
-     * @param G tableau des gains liés à la livraison d'un stock dans un entrepôt
-     */
+     * @param G tableau des gains liés à la livraison d'un ensemble de stocks dans un entrepôt
+    */
     static void repartitionGreedy(int[][] G){
-        int n = G.length; int S = G[0].length-1; // n le nombre d'entrepôts et S le nombre de stocks
+        int n = G.length; int S = G[0].length-1; // n le nombre d'entrepôts et S le stock total
         int[] stockTab = new int[n]; // tableau associant à chaque entrepôt le nombre de stocks attribués 
-        int[] gainTab = new int[n]; // tableau associant à chaque entrepôt son gain total
-        int gainTotal = 0; // gain total de l'ensemble des entrepôts une fois les stocks répartis
-        for(int s=0; s<=S; s++) { // attribution de chaque stock un à un à un entrepôt
-            int entrepot = maxGain(G,s)[0]; // entrepôt contenant le stock
-            int gain = maxGain(G,s)[1]; // gain associé au stock dans l'entrepôt sélectionné
-            stockTab[entrepot] += 1; // augmentation du nombre de stocks dans l'entrepôt
-            gainTab[entrepot] += gain; // augmentation du gain global de l'entrepôt
-            gainTotal += gain; // augmentation du gain total avec la répartition d'un stock supplémentaire
+        int[] gainTab = new int[n]; // tableau associant à chaque entrepôt son gain global
+        int gainTotal = 0; // gain total de l'ensemble des entrepôts
+        for(int s=1; s<=S; s++) { // attribution de chaque stock un à un à un entrepôt
+            int entrepot = 0;
+            int gainMax = 0;
+            for(int e=0; e<n; e++) { // visualisation de l'ensemble des entrepôts un à un
+                if(gainMax < (G[e][stockTab[e]+1]-gainTab[e])) { // gain maximum actuel d'un entrepôt < gain potentiel d'un autre entrepôt grâce à l'ajout du stock s
+                    entrepot = e; // nouvel entrepôt où le stock s est attribué
+                    gainMax = G[e][stockTab[e]+1]-gainTab[e]; // nouveau gain maximum lié au placement du stock s
+                }
+            }
+            stockTab[entrepot] += 1; // attribution du stock s à l'entrepôt avec le meilleur gain
+            gainTab[entrepot] += gainMax; // attribution du nouveau gain de l'entrepôt
+            gainTotal += gainMax; // ajout du gain amassé au gain total
         }
         System.out.printf("\nGain total maximum : %d\n\n", gainTotal);
         for(int e=0; e<n; e++) {
             System.out.printf("entrepôt %d : stock livré = %d, gain = %d\n", e, stockTab[e], gainTab[e]);
         }
     }//repartitionGreedy()
-
-    /**
-     * maxGain calculant le gain maximum potentiel pour une association entrepôt-stock
-     * @param T tableau des gains liés à la livraison d'un stock dans un entrepôt
-     * @param s entier représentant le stock à placer
-     * @return tableau d'entiers contenant l'entrepôt sélectionné pour un stock particulier et le gain associé
-     */
-    static int[] maxGain(int[][] G, int s){
-        int[] Tab = new int[2]; // tableau contenant l'entrepôt et son gain pour un stock précis
-        int entrepot = 0;
-        int gainMax = G[0][s];
-        for(int i=1; i<G.length; i++) { // meilleure attribution possible d'un stock en recherchant parmi tous les entrepôts
-            if(gainMax < G[i][s]) { // gain maximum actuel moins grand que gain maximum potentiel
-                entrepot = i; // nouvel entrepôt contenant le stock
-                gainMax = G[i][s]; // nouveau gain maximum
-            }
-        }
-        Tab[0] = entrepot;
-        Tab[1] = gainMax;
-        return Tab;
-    }//maxGain()
 
 
     /* Fonctions annexes */
