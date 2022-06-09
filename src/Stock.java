@@ -80,7 +80,7 @@ public class Stock {
     M est à n+1 lignes et S+1 colonnes
     A = arg M : a(k,s) = quantité de stock livré au k-ème entrepôt (de numéro k-1)
     dans une répartition optimale du stock s sur les k premiers entrepôts */
-        int n = G.length, S = G.length - 1;
+        int n = G.length, S = G.length-1;
         aro(M,A,G,n,S);
         // afficher une répartition optimale du stock S sur le sous-ensemble des n premiers entrepôts
         // autrement dit : afficher une répartition optimale du stock S sur tous les entrepôts (sans contrainte)
@@ -105,29 +105,38 @@ public class Stock {
 	//
 
     static void repartitionGreedy(int[][] G){
-        int n = G.length; int S = G[0].length - 1;
-        int[][] Tab = new int[n][S];
-        for(int s=0; s<S ; s++) {
-            int entrepot = maxGain(G,s)[0];
-            int gainmax = maxGain(G,s)[1];
-            Tab[entrepot][s] += gainmax;
-            i++;
+        int n = G.length; int S = G[0].length-1; // n le nombre d'entrepôts et S le nombre de stocks
+        int[] stockTab = new int[n]; // tableau associant à chaque entrepôt le nombre de stocks attribués 
+        int[] gainTab = new int[n]; // tableau associant à chaque entrepôt son gain total
+        int gainTotal = 0; // gain total de l'ensemble des entrepôts une fois les stocks répartis
+        for(int s=0; s<=S; s++) { // attribution de chaque stock un à un à un entrepôt
+            int entrepot = maxGain(G,s)[0]; // entrepôt contenant le stock
+            int gain = maxGain(G,s)[1]; // gain associé au stock dans l'entrepôt sélectionné
+            stockTab[entrepot] += 1; // augmentation du nombre de stocks dans l'entrepôt
+            gainTab[entrepot] += gain; // augmentation du gain global de l'entrepôt
+            gainTotal += gain; // augmentation du gain total avec la répartition d'un stock supplémentaire
         }
-    }
+        System.out.printf("\nGain total maximum : %d\n\n", gainTotal);
+        for(int e=0; e<n; e++) {
+            System.out.printf("entrepôt %d : stock livré = %d, gain = %d\n", e, stockTab[e], gainTab[e]);
+        }
+    }//repartitionGreedy()
 
-    static int[] maxGain(int[][] T, int s){
-        int[] Tab = new int[2];
+    static int[] maxGain(int[][] T, int s){ /* calcul du gain maximum potentiel avec l'association entrepôt-stock */
+        int[] Tab = new int[2]; // tableau contenant l'entrepôt et son gain pour un stock précis
         int entrepot = 0;
-        int gainmax = T[0][s];
-        for(int i=1; i<T.length; i++)
-            if(gainmax < T[i][s]) {
-                entrepot = i;
-                gainmax = T[i][s];
+        int gainMax = T[0][s];
+        for(int i=1; i<T.length; i++) { // meilleure attribution possible d'un stock en recherchant parmi tous les entrepôts
+            if(gainMax < T[i][s]) { // gain maximum actuel moins grand que gain maximum potentiel
+                entrepot = i; // nouvel entrepôt contenant le stock
+                gainMax = T[i][s]; // nouveau gain maximum
             }
+        }
         Tab[0] = entrepot;
-        Tab[1] = gainmax;
+        Tab[1] = gainMax;
         return Tab;
-    }
+    }//maxGain()
+
 
     /* Fonctions annexes */
 	static int max(int x, int y){ if (x >= y) return x; return y;}//max()
