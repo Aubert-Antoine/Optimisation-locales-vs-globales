@@ -125,11 +125,11 @@ public class Somme {
             // On fait la somme de la valeur à l'indice courant + du max de la ligne inf
             // pas d'influence entre g(pTabRef) et g(TabSomme) ? de meme pout + pTabRef[i] ? 
             
-            if(true) System.out.println("i = "+i+" et TabSomme[i] = "+TabSomme[i]);
+            if(debug) System.out.println("i = "+i+" et TabSomme[i] = "+TabSomme[i]);
 
         }
 
-        if(true) System.out.println("TabSomme : "+Arrays.toString(TabSomme));
+        if(info) System.out.println("TabSomme : "+Arrays.toString(TabSomme));
 
         return TabSomme;
     }//calculerM
@@ -272,21 +272,25 @@ public class Somme {
         }
         if(true) System.out.println("Somme > EvalStatSomme : D = "+Arrays.toString(D));
         return D;
-    }
+    }//EvalStatSomme()
 
     
     public static void mainSomme(){
         System.out.println("Hello, World! from Somme Class \n");
 
 
-        int[] curTab = MakeTrig();
-        int[] M = calculerM(curTab);         //modif la valeur de cur tab ??? 
-        System.out.println("\nLe chemin de somme cumulee max en dynamique : ");
-        acsm(M, curTab, 0, curTab.length);
+        // int[] curTab = MakeTrig();
+        // int[] M = calculerM(curTab);         
+        // System.out.println("\nLe chemin de somme cumulee max en dynamique : ");
+        // acsm(M, curTab, 0, curTab.length);
 
 
-        System.out.println("\nLe chemin de somme cumulee max en glouton : ");
-        calculeTabSMGlouton(curTab);
+        // System.out.println("\nLe chemin de somme cumulee max en glouton : ");
+        // calculeTabSMGlouton(curTab);
+
+        System.out.println("Evaluations statistique de Somme : ");
+        int[] out = EvalStatSomme(5, 5, 50);
+        System.out.println("out : " + Arrays.toString(out));
     }
     
 }
