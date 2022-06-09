@@ -7,22 +7,22 @@ public class EvalStat {
 
     /**
      * evalMax retourne la distance relative entre deux solution, une optimal -> dynamique et une autre -> gloutonne
-     * @param pValDyn pram int, valeur dynamique    
-     * @param pValGlou pram int, valeur gloutonne 
+     * @param pValDyn pram double pour plus de precision, valeur dynamique    
+     * @param pValGlou pram double pour plus de precision, valeur gloutonne 
      * @return  la distance pour une rechecher de maximisation
      */
-    public static int evalMax(int pValDyn, int pValGlou) {
+    public static double evalMax(double pValDyn, double pValGlou) {
         return (pValDyn-pValGlou)/pValDyn;
     }
 
     /**
      * evalMax retourne la distance relative entre deux solution, une optimal -> dynamique et une autre -> gloutonne
-     * @param pValDyn pram int, valeur dynamique    
-     * @param pValGlou pram int, valeur gloutonne 
+     * @param pValDyn pram double pour plus de precision, valeur dynamique    
+     * @param pValGlou pram double pour plus de precision, valeur gloutonne 
      * @return  la distance pour une rechecher de maximisation
      */
-    public static int evalMin(int pValDyn, int pValGlou) {
-        return (pValGlou-pValDyn)/pValDyn;
+    public static double evalMin(double pValDyn, double pValGlou) {
+        return ((pValGlou-pValDyn)/pValDyn);
     }
 
 

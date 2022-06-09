@@ -112,20 +112,20 @@ public class Somme {
     /**
      * calculerM(pTabRef) est la fonction qui calcule dynamiquement TabSomme, le tableau de somme cumulée max vis a vis de pTabRef 
      * @param pTabRef Tableau dont on cherche le chemin de somme max
-     * @return  TabSomme le Tableau de somme max
+     * @return  TabSomme le Tableau de somme max cummulée
      */
     public static int[] calculerM(int[] pTabRef) {
         int nbNiveaux = niveau(pTabRef, pTabRef.length);
         int indiceDeb = pTabRef.length-1-nbNiveaux;             //indice de debut de somme
         int[] TabSomme = Arrays.copyOf(pTabRef, pTabRef.length);
 
-
-        for (int i = indiceDeb; i >= 0; i--) {
+        System.out.println("avec i depart = "+indiceDeb+" et i se decremente en parcourant pTAbRef. C'est un indice");
+        for (int i = indiceDeb; i >= 0; i--) {  //Pourquoi >= ? prb pour les Runs
             TabSomme[i] = Math.max(TabSomme[g(pTabRef, i)], TabSomme[d(pTabRef, i)])+pTabRef[i];      //prb pTabRef n'eset pas la somme donc pas de memoisation
             // On fait la somme de la valeur à l'indice courant + du max de la ligne inf
             // pas d'influence entre g(pTabRef) et g(TabSomme) ? de meme pout + pTabRef[i] ? 
             
-            if(debug) System.out.println("i = "+i+" et TabSomme[i] = "+TabSomme[i]);
+            if(true) System.out.println("i = "+i+" et TabSomme[i] = "+TabSomme[i]);
 
         }
 
@@ -141,7 +141,7 @@ public class Somme {
     /**
      * calculeTabSMGlouton est la fonction de calcule du chemin de somme max selon le pTabRef
      * @param pTabRef tableau du quel on cherche le chemin de somme max
-     * @return  TabSM est le tableau de somme cumulée
+     * @return  TabSM est le chemin 
      */
     public static int[] calculeTabSMGlouton(int[] pTabRef) {
         int nbNiveaux = niveau(pTabRef,pTabRef.length);
@@ -168,7 +168,7 @@ public class Somme {
             // bug d'indice entre i et j --> prb si g() return -1 
         }
 
-        System.out.println("\nTabSM en mode glouton : "+Arrays.toString(TabSM));
+        System.out.println("\nTabSM en mode glouton : "+Arrays.toString(TabSM)+"\n \n");
         
         return TabSM;        
     }//calculeTabSMGlouton
@@ -223,16 +223,24 @@ public class Somme {
 
     /**
      * niveau renvoie le niveau ou se trouve le param    !!! commence à 0 
-     * @param pTabRef 
-     * @param pIndice 
+     * @param pTabRef  tableau dont on cherche le nombre de niveau a partir de l'indice pIndice
+     * @param pIndice  : on cherche le niveau de cette indice, pour connaitre le nb de niveau du tableau faire pTabRef.length()
      * @return renvoie le niveau ou se trouve le param
      */
     public static int niveau(int[] pTabRef, int pIndice) {
+        if(pTabRef.length == 0){System.out.println("Le tableau est vide");}
+        else if(pTabRef.length == 1){return 1;}
         for (int niveau = 1; niveau < pTabRef.length; niveau++) {
             if(niveau*(niveau+1)/2 > pIndice){
                 return niveau-1;
+
+            }else if(niveau == pTabRef.length-1){
+                System.out.println("Somme > niveau : le if n'est pas catch");
+                // le pIndice est plus grand que la taille du tab ? 
             }
-        }return -1;
+        }
+        System.out.println("Somme > niveau : ERROR");
+        return -1;
     }//niveau
 
     /**
@@ -255,18 +263,28 @@ public class Somme {
      * @param pVmax la plus grande valeur pouvant ˆetre pr ́esente dans le triangle
      * @return D[0 : N runs] qui contiendra pour chaque runla distance relative entre la valeur du chemin de somme maximum et la valeur du chemin glouton.
      */
-    public static int[] EvalStatSomme(int pLmax, int pNruns, int pVmax) {
+    public static double[] EvalStatSomme(int pLmax, int pNruns, int pVmax) {
         // int Lmax = pLmax;
         // int Nruns = pNruns;  //non utile ? prb de var ? 
         // int Vmax = pVmax;
 
-        int[] D = new int[pNruns];
+        double[] D = new double[pNruns];
 
         for (int r = 0; r < D.length; r++) {
             int nbNiveaux = RandomGen.randomInt(1, pLmax);
-            int nbElement = (nbNiveaux*(nbNiveaux-1))/2;
+            int nbElement = (nbNiveaux*(nbNiveaux+1))/2;
             int[] T = RandomGen.randomTabInt(nbElement, pVmax);
-            D[r] = EvalStat.evalMax(calculerM(T)[0], calculeTabSMGlouton(T)[0]);
+
+            System.out.println("T : "+Arrays.toString(T)+"\n");
+
+            // if(true) {
+            //     System.out.println(calculerM(T)[0]);
+            //     System.out.println(calculeTabSMGlouton(T)[0]);
+            // }
+
+            System.out.println("calculerM(T)[0]"+calculerM(T)[0]);
+            System.out.println("somme(calculeTabSMGlouton(T))"+somme(calculeTabSMGlouton(T)));
+            D[r] = EvalStat.evalMax(calculerM(T)[0], somme(calculeTabSMGlouton(T)));
             //On regarde la valeur m(0) qui est le max, on fait le ration puis on attribut le ratio
             // a D[r], on fait cela Nruns fois
         }
@@ -279,18 +297,19 @@ public class Somme {
         System.out.println("Hello, World! from Somme Class \n");
 
 
-        // int[] curTab = MakeTrig();
-        // int[] M = calculerM(curTab);         
-        // System.out.println("\nLe chemin de somme cumulee max en dynamique : ");
-        // acsm(M, curTab, 0, curTab.length);
+        int[] curTab = MakeTrig();
+        System.out.println("MakeTrig()"+Arrays.toString(curTab));
+        int[] M = calculerM(curTab);         
+        System.out.println("\nLe chemin de somme cumulee max en dynamique : ");
+        acsm(M, curTab, 0, curTab.length);
 
 
-        // System.out.println("\nLe chemin de somme cumulee max en glouton : ");
-        // calculeTabSMGlouton(curTab);
+        System.out.println("\nLe chemin de somme cumulee max en glouton : ");
+        calculeTabSMGlouton(curTab);
 
-        System.out.println("Evaluations statistique de Somme : ");
-        int[] out = EvalStatSomme(5, 5, 50);
-        System.out.println("out : " + Arrays.toString(out));
+        // System.out.println("Evaluations statistique de Somme : ");
+        // double[] out = EvalStatSomme(4, 1, 10);
+        // System.out.println("out : " + Arrays.toString(out));
     }
     
 }
