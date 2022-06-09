@@ -4,9 +4,9 @@ public class Main {
     // System.out.println("Main Class : ");
     // System.out.println("    main() ");
 
-    System.out.println("    \nEXEMPLE 1 : Robot    ");
-    Robot.mainRobot();
-    System.out.println("");
+    // System.out.println("    \nEXEMPLE 1 : Robot    ");
+    // Robot.mainRobot();
+    // System.out.println("");
 
     // System.out.println("    \nEXEMPLE 2 : SVM      ");
     // SVM.mainSVM();
@@ -20,9 +20,9 @@ public class Main {
     // Travail.mainTravail();
     // System.out.println("");
 
-    // System.out.println("    \nEXEMPLE 5 : Somme   \n ");
-    // Somme.mainSomme();
-    // System.out.println("");
+    System.out.println("    \nEXEMPLE 5 : Somme   \n ");
+    Somme.mainSomme();
+    System.out.println("");
 
   }
 }
