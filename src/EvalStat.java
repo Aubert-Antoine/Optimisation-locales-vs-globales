@@ -22,7 +22,7 @@ public class EvalStat {
      * @return  la distance pour une rechecher de maximisation
      */
     public static int evalMin(int pValDyn, int pValGlou) {
-        return (pValDyn-pValGlou)/pValDyn;
+        return (pValGlou-pValDyn)/pValDyn;
     }
 
 
