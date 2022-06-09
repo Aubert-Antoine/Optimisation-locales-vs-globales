@@ -8,6 +8,9 @@ public class Robot{
 
 	static Boolean debug = true;
 
+	/**
+	 * mainRobot appelant les méthodes dynamique et greedy et affichant leurs résultats
+	 */
 	public static void mainRobot(){
 		System.out.println("\n\nExercice : le petit robot");
 		int L = 5, C = 7; // grille 5 x 7
@@ -21,7 +24,7 @@ public class Robot{
 		System.out.printf("Coût minimum d'un chemin de (0,0) à (%d,%d) = %d\n",L-1,C-1,M[L-1][C-1]);
 		accm(M,L,C,L-1,C-1); // affichage d'un chemin de coût min de 0,0 à L-1,C-1
 		
-		//Méthode Greedy
+		// Méthode Greedy
 		System.out.println("\n\nMETHODE GREEDY");
 		cheminGreedy(L, C); // affichage d'un chemin de coût min de 0,0 à L-1,C-1
 		
@@ -38,8 +41,8 @@ public class Robot{
 		
 		// Base 
 		M[0][0] = 0;
-		for(int c=1; c<C; c++) M[0][c] = M[0][c-1]+e(0,c-1,L,C);
-		for(int l=1; l<L; l++) M[l][0] = M[l-1][0]+n(l-1,0,L,C);
+		for(int c=1; c<C; c++) M[0][c] = M[0][c-1]+e(0,c-1,L,C); // calcul du coût de la 1ère ligne
+		for(int l=1; l<L; l++) M[l][0] = M[l-1][0]+n(l-1,0,L,C); // calcul du coût de la 1ère colonne
 		
 		// Cas général
 		for (int l = 1; l < L; l++) {
@@ -90,29 +93,34 @@ public class Robot{
 				System.out.printf(" -%d-> (%d,%d)", e(l,c-1,L,C),l,c);
 			}
 		}
-	}
+	}//accm()
 
 
 	//
 	/* Methode Greedy */
 	//
 	
+	/**
+	 * cheminGreedy permettant de calculer le chemin du robot à plus faible coût avec la méthode gloutonne
+	 * @param L nombre de lignes de la grille
+	 * @param C nombre de colonnes de la grille
+	 */
 	static void cheminGreedy(int L, int C){ // une grille L x C
 		int cout = 0; // coût de départ
-        int l = 0;
-        int c = 0;
+        int l = 0; // départ de la ligne 0
+        int c = 0; // départ de la colonne 0
         System.out.print("(0,0)");
         while(l < L && c < C) { // tant que le robot est dans la grille
             int dir = 0; // coût de la direction choisie
-            if(l < L-1 && c < C-1 && ne(l, c, L, C) <= n(l, c, L, C) && ne(l, c, L, C) <= e(l, c, L, C)) { // direction favorable : Nord-Est
+            if(l < L-1 && c < C-1 && ne(l, c, L, C) <= n(l, c, L, C) && ne(l, c, L, C) <= e(l, c, L, C)) { // direction faisable et favorable : Nord-Est
                 dir = ne(l, c, L, C);
                 l++; c++;
             }
-            else if(l < L-1 && n(l, c, L, C) <= e(l, c, L, C)) { // direction favorable : Nord
+            else if(l < L-1 && n(l, c, L, C) <= e(l, c, L, C)) { // direction faisable et favorable : Nord
                 dir = n(l, c, L, C);
                 l++;
             }
-            else if(c < C-1) { // direction favorable : Nord
+            else if(c < C-1) { // direction faisable et favorable : Nord
                 dir = e(l, c, L, C);
                 c++;
             }
@@ -120,7 +128,7 @@ public class Robot{
 				System.out.printf("\nCoût minimum d'un chemin de (0,0) à (%d,%d) = %d\n", L-1, C-1, cout);
 				return;
 			}
-            cout += dir; // coût du chemin emprunté
+            cout += dir; // augmentation du coût du chemin emprunté
             System.out.printf(" --%d--> (%d,%d)",dir,l,c);
         }
 	}//cheminGreedy()
@@ -135,18 +143,18 @@ public class Robot{
 		00 -1-> 10 -0-> ... -0-> (L-1)0 -0-> (L-1)1 -0-> ... -0-> L(L-1)(C-1).
 	Il est de coût 1.
 	*/ 
-	static int n(int l, int c, int L, int C){
+	static int n(int l, int c, int L, int C){ // coût d'un déplacement Nord
 		if (l==L-1) return plusInfini;
 		if (l==0 && c==0) return 1;
 		if (c==0) return 0;
 		return 1;
 	}//n()
-	static int ne(int l, int c, int L, int C){
+	static int ne(int l, int c, int L, int C){ // coût d'un déplacement Nord-Est
 		if (l == L-1 || c == C-1) return plusInfini;
 		if (l==0 && c==0) return 0;
 		return 1;
 	}//ne()
-	static int e(int l, int c, int L, int C){
+	static int e(int l, int c, int L, int C){ // coût d'un déplacement Est
 		if (c == C-1) return plusInfini;
 		if (l == L-1) return 0;
 		return 1;
