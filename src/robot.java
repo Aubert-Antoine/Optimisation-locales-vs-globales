@@ -40,7 +40,7 @@ public class Robot{
 		/* Runs */
         System.out.println("Evaluation statistique de Robot : ");
         double[] out = EvalStatRobot(5000, 100);
-        System.out.println("out : " + Arrays.toString(out)+"\n");
+        //System.out.println("out : " + Arrays.toString(out)+"\n");
 
         System.out.println("medianne = "+EvalStat.mediane(out));
         System.out.println("moyenne = "+EvalStat.moyenne(out));
@@ -48,7 +48,7 @@ public class Robot{
 
         EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "Robot.csv");
 
-        System.out.println("\n\n\nFIN de Robot \n\n\n");
+        System.out.println("\n\n\nFIN de ROBOT\n\n\n");
 
 	}//mainRobot()
 	
@@ -67,12 +67,12 @@ public class Robot{
         if(pNruns <= 0 || pVmax <= 0){
             System.out.println("\nLes param doivent etre positifs\n!!!!!!!!!!!!!!!!!!!!!\n");
             D[0] = -1;
-            return D;       // return une Exception ? 
+            return D;
         }
 
         for (int r = 0; r < D.length; r++) {
-			int L = RandomGen.randomInt(1, pVmax); // nombre de lignes
-			int C = RandomGen.randomInt(1, pVmax); // nombre de colonnes
+			int L = RandomGen.randomInt(1, pVmax); // nombre de lignes à 3 min car sinon problème pour la taille du tableau
+			int C = RandomGen.randomInt(1, pVmax); // nombre de colonnes à 3 min car sinon problème pour la taille du tableau
 			
 			int[][] N = new int[L][C]; // grille direction Nord LxC
 			int[][] NE = new int[L][C]; // grille direction Nord-Est LxC
@@ -126,7 +126,7 @@ public class Robot{
 			for (int c = 1; c < C; c++) {
 				M[l][c] = min(
 					M[l][c-1] + E[l][c-1],
-					M[l-1][c-1] + N[l-1][c-1],
+					M[l-1][c-1] + NE[l-1][c-1],
 					M[l-1][c] + N[l-1][c]);
 			}
 		}

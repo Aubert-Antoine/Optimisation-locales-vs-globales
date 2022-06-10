@@ -42,7 +42,7 @@ public class Somme {
             for (int niveau = 1; niveau < pTabRef.length; niveau++) {
                 if(pTabRef.length == niveau*(niveau+1)/2){
                     nbElementDL = pTabRef.length-(((niveau-1)*niveau)/2);
-                    break;              //sort du for??? 
+                    break;
                 }
             }
             nbElementAvantDL=pTabRef.length-nbElementDL;
@@ -109,7 +109,7 @@ public class Somme {
         for (int i = indiceDeb; i >= 0; i--) {  //Pourquoi >= ? prb pour les Runs
             TabSomme[i] = Math.max(TabSomme[g(pTabRef, i)], TabSomme[d(pTabRef, i)])+pTabRef[i];      //prb pTabRef n'eset pas la somme donc pas de memoisation
             // On fait la somme de la valeur à l'indice courant + du max de la ligne inf
-            // pas d'influence entre g(pTabRef) et g(TabSomme) ? de meme pout + pTabRef[i] ? 
+            // pas d'influence entre g(pTabRef) et g(TabSomme) ? de meme pour + pTabRef[i] ?
             
             if(debug) System.out.println("i = "+i+" et TabSomme[i] = "+TabSomme[i]);
 
@@ -194,7 +194,7 @@ public class Somme {
      */
     public static int niveau(int[] pTabRef) {
         if(pTabRef.length == 0){
-            System.out.println("La taille du tableau est null \n"+pTabRef+" = "+Arrays.toString(pTabRef));
+            System.out.println("La taille du tableau est nulle \n"+pTabRef+" = "+Arrays.toString(pTabRef));
             return -1;
         }
         else if(pTabRef.length == 1) return 1;
@@ -235,7 +235,7 @@ public class Somme {
 
         if(pLmax <= 0 || pNruns <= 0 || pVmax <= 0){
             System.out.println("\nLes param doivent etre positifs\n!!!!!!!!!!!!!!!!!!!!!\n");
-            return D;       // return une Exception ? 
+            return D;
         }
 
         for (int r = 0; r < D.length; r++) {

@@ -95,7 +95,7 @@ public class SVM{
         if(pTailleTabMax <= 0 || pNruns <= 0 || pVmax <= 0){
             System.out.println("\nLes param doivent etre positifs\n!!!!!!!!!!!!!!!!!!!!!\n");
             D[0] = -1;
-            return D;       // return une Exception ? 
+            return D;
         }
 
         for (int r = 0; r < D.length; r++) {
@@ -173,7 +173,7 @@ public class SVM{
 			System.out.printf("objet, valeur, taille = %d, %d, %d\n", k-1, V[k-1], T[k-1]); // Le k-ème objet a été affiché
 			// svm(k-1,c-t(k-1)) union {k-1} a été affiché, donc svm(k,c) a été affiché
 		}
-	}//asm(=)
+	}//asm()
 
 
     //

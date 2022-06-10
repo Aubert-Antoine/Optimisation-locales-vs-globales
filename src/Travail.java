@@ -61,7 +61,7 @@ class Travail{
 
         EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "Travail.csv");
 
-        System.out.println("\n\n\nFIN de Travail \n\n\n");
+        System.out.println("\n\n\nFIN de TRAVAIL\n\n\n");
 
 	}//mainTravail()
 
@@ -80,7 +80,7 @@ class Travail{
 		if(pNruns <= 0 || pVmax <= 0){
             System.out.println("\nLes param doivent etre positifs\n!!!!!!!!!!!!!!!!!!!!!\n");
             D[0] = -1;
-            return D;       // return une Exception ? 
+            return D;
         }
 
         for (int r = 0; r < D.length; r++) {

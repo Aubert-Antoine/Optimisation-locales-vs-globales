@@ -58,7 +58,7 @@ public class Stock {
 
         EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "Stock.csv");
 
-        System.out.println("\n\nFIN de Stock \n\n\n");
+        System.out.println("\n\nFIN de STOCK\n\n\n");
 
 	}//mainStock()
 
@@ -77,7 +77,7 @@ public class Stock {
         if(pNruns <= 0 || pVmax <= 0){
             System.out.println("\nLes param doivent etre positifs\n!!!!!!!!!!!!!!!!!!!!!\n");
             D[0] = -1;
-            return D;       // return une Exception ? 
+            return D;
         }
 
         for (int r = 0; r < D.length; r++) {
