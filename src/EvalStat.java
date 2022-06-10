@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Random;
 
 
@@ -35,8 +36,9 @@ public class EvalStat {
      * @return
      */
     public static double mediane(double[] pTabRef) {
-        qs(pTabRef, 0, pTabRef.length); // tri du tableau pour ensuite effectuer la médiane
-        return pTabRef[(pTabRef.length)/2];
+        double[] qsTab = Arrays.copyOf(pTabRef, pTabRef.length);
+        qs(qsTab, 0, qsTab.length); // tri du tableau pour ensuite effectuer la médiane
+        return qsTab[(qsTab.length)/2];
     }
 
     /**

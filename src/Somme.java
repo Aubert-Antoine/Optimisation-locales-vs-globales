@@ -17,14 +17,6 @@ public class Somme {
         return TabTrig; 
     }
 
-
-    /**
-     * 
-     * Repr esentation du triangle dans un tableau T[0:n]
-     * 
-     * */
-
-
     /**
      * g(pTabRef) retourne le descendant gauche du triangle passé en param
      * @param pTabRef est le tableau de reference d'entrée
@@ -99,13 +91,6 @@ public class Somme {
         }//d()
 
         
-
-    /**
-     * 
-     * Calcul de la valeur des chemins de somme maximum
-     * 
-     *  */
-
     
     // METHODE DYNAMIQUE : 
     //
@@ -163,24 +148,13 @@ public class Somme {
             if(maxgd == pTabRef[ig]) i = ig;
             else i = id;
             TabSM[j] = maxgd;       // si on veut la somme cumulee on +TabSM[j-1]
-
-            // if(debug) System.out.println("niveau = "+j+" valg(i) = "+pTabRef[g(pTabRef, i)]+" vald(i) = "
-            //     +pTabRef[d(pTabRef, i)]+" TabSM[niveau] = "+TabSM[i-1]+" valeur actuel "+pTabRef[j] );
-            // bug d'indice entre i et j --> prb si g() return -1 
         }
 
-        //System.out.println("\nTabSM en mode glouton : "+Arrays.toString(TabSM));
+        if(info)System.out.println("\nTabSM en mode glouton : "+Arrays.toString(TabSM));
         
         return TabSM;        
     }//calculeTabSMGlouton
 
-
-
-    /**
-     * 
-     * affichage
-     * 
-     *  */
 
     /**
      * acsm affiche un chemin de somme maximum commencant en i.
@@ -210,16 +184,8 @@ public class Somme {
                 System.out.println("valeur = "+(M[i]));
             }
         }
-
     }//acsm()
 
-
-
-     /**
-     * 
-     * Autre methodes
-     * 
-     *  */
 
     /**
      * niveau renvoit le nombre de niveaux du tableau passé en param
@@ -269,7 +235,6 @@ public class Somme {
 
         if(pLmax <= 0 || pNruns <= 0 || pVmax <= 0){
             System.out.println("\nLes param doivent etre positifs\n!!!!!!!!!!!!!!!!!!!!!\n");
-            D[0] = -1;
             return D;       // return une Exception ? 
         }
 
@@ -319,9 +284,10 @@ public class Somme {
 
         System.out.println("Evaluation statistique de Somme : ");
         double[] out = EvalStatSomme(100, 5000, 100);
-        System.out.println("out : " + Arrays.toString(out)+"\n");
+        // System.out.println("out : " + Arrays.toString(out)+"\n");
 
         System.out.println("medianne = "+EvalStat.mediane(out));
+
         System.out.println("moyenne = "+EvalStat.moyenne(out));
         System.out.println("ecart type = "+EvalStat.ecartType(out));
 
@@ -330,4 +296,4 @@ public class Somme {
         System.out.println("\n\n\nFIN de SOMME \n\n\n");
     }
     
-}
+}//Somme Class

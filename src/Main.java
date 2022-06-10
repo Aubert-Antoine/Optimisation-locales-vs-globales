@@ -16,13 +16,13 @@ public class Main {
     // Stock.mainStock();
     // System.out.println("");
 
-    System.out.println("    \nEXEMPLE 4 : Travail  ");
-    Travail.mainTravail();
-    System.out.println("");
-
-    // System.out.println("    \nEXEMPLE 5 : Somme   \n ");
-    // Somme.mainSomme();
+    // System.out.println("    \nEXEMPLE 4 : Travail  ");
+    // Travail.mainTravail();
     // System.out.println("");
+
+    System.out.println("    \nEXEMPLE 5 : Somme   \n ");
+    Somme.mainSomme();
+    System.out.println("");
 
   }
 }
