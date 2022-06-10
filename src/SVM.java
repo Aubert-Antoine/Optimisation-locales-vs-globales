@@ -99,11 +99,11 @@ public class SVM{
         }
 
         for (int r = 0; r < D.length; r++) {
-			int tailleTab = RandomGen.randomInt(1, pTailleTabMax);
+			int tailleTab = RandomGen.randomInt(5, pTailleTabMax);
 			int[] V = RandomGen.randomTabInt(tailleTab, pVmax);
             int[] T = RandomGen.randomTabInt(tailleTab, pVmax);
 
-			int C = RandomGen.randomInt(1, pVmax*10); 		// la taille du sac depend de pVmax, le *10 est de sorte qu'il y ait au moins 10 obj dans le sac
+			int C = RandomGen.randomInt(5, pVmax*10); 		// la taille du sac depend de pVmax, le *10 est de sorte qu'il y ait au moins 10 obj dans le sac
 
 			if(pMethodeGreedy.equals("valeur")) {
 				if(info) {
