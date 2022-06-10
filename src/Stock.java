@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Random;
 
 
 public class Stock {
@@ -48,7 +49,7 @@ public class Stock {
 
         /* Runs */
         System.out.println("Evaluation statistique de Stock : ");
-        double[] out = EvalStatStock(45, 5000, 100);
+        double[] out = EvalStatStock(50, 100);
         System.out.println("out : " + Arrays.toString(out)+"\n");
 
         System.out.println("medianne = "+EvalStat.mediane(out));
@@ -64,33 +65,34 @@ public class Stock {
 
     /**
      * EvalStatStock genere les runs et stocke la distance relative entre les solutions goulonne et dynamique
-     * @param pTailleTabMax la taille max pour les lignes et colonnes du tableau G
      * @param pNruns le nombre de runs de l’evaluation statistique
-     * @param pVmax la plus grande valeur pour le gain d'un entrepot via son stock
+     * @param pVmax la plus grande valeur pour 'nombre entrepots' et 'nombre stocks'
      * @return D[0 : N runs] qui contiendra pour chaque runla distance relative entre la valeur du chemin de somme maximum et la valeur du chemin glouton.
      */
-	public static double[] EvalStatStock(int pTailleTabMax, int pNruns, int pVmax) {
+	public static double[] EvalStatStock(int pNruns, int pVmax) {
         double[] D = new double[pNruns];
 
-        System.out.println("Les param sont : pLmax = "+pTailleTabMax+"  pNruns = "+pNruns+"  pVmax = "+pVmax+"\n");
+        System.out.println("Les param sont : pNruns = "+pNruns+"  pVmax = "+pVmax+"\n");
 
-        if(pTailleTabMax <= 0 || pNruns <= 0 || pVmax <= 0){
+        if(pNruns <= 0 || pVmax <= 0){
             System.out.println("\nLes param doivent etre positifs\n!!!!!!!!!!!!!!!!!!!!!\n");
             D[0] = -1;
             return D;       // return une Exception ? 
         }
 
         for (int r = 0; r < D.length; r++) {
-			int tailleLTab = RandomGen.randomInt(1, pTailleTabMax);
-            int tailleCTab = RandomGen.randomInt(1, pTailleTabMax);
-			int[][] G = RandomGen.randomTab2D(tailleLTab, tailleCTab, 1, pVmax);
+			int nbreEntrepots = RandomGen.randomInt(1, pVmax);
+            int nbreStocks = RandomGen.randomInt(1, pVmax);
+			int[][] G = estimations(nbreEntrepots, nbreStocks); // gains aléatoires, croissants selon les stocks
             
 
             if(info) {
                 System.out.println("Runs numero : "+r);
+                System.out.println("Le nombre d'unités random : nbreEntrepots = "+nbreEntrepots);
+				System.out.println("Le nombre d'heures max random : nbreStocks = "+nbreStocks);
                 System.out.println("Le tableau random : G = "+Arrays.toString(G));
                 System.out.println("La valeur dynamique : calculerMA(G)[0][G.length][G[0].length-1] = "+calculerMA(G)[0][G.length][G[0].length-1]);
-                System.out.println("La valeur gloutonne : = "+repartitionGreedy(G)+"\n");
+                System.out.println("La valeur gloutonne : repartitionGreedy(G) = "+repartitionGreedy(G)+"\n");
             }
 
            
@@ -206,21 +208,38 @@ public class Stock {
 
 
     /* Fonctions annexes */
+
+    static int[][] estimations(int n, int S){ // retourne G[0:n][0:S+1] de terme général G[k][s] = g(k,s)
+    // Les estimations sont aléatoires, croissantes selon s
+        int[][] G = new int[n][S+1];
+        Random rand = new Random(); // pour génération aléatoire des gains estimés
+        for (int k = 0; k < n; k++) G[k][0] = 5 + rand.nextInt(10);
+        for (int k = 0; k < n; k++)
+            for (int s = 1; s < S+1; s++)
+                G[k][s] = G[k][s-1] + (rand.nextInt(3));
+        return G;
+    }//estimations()
+
 	static int max(int x, int y){ if (x >= y) return x; return y;}//max()
+
 	static int max(int x, int y, int z){ if (x >= max(y,z)) return x; 
 		if (y >= z) return y; 
 		return z;
 	}//max()
+
 	static int min(int x, int y){ if (x <= y) return x; return y;}//min()
+
 	static int min(int x, int y, int z){ if (x <= min(y,z)) return x; 
 		if (y <= z) return y; 
 		return z;
 	}//min()
+
 	static int somme(int[] T){ int n = T.length;
 		int s = 0; 
 		for (int i = 0; i < n; i++) s = s + T[i];
 		return s;
 	}//somme()
+
 	static void afficher(int[][] T){int n = T.length;
 		for (int i = n-1; i >= 0; i--)
 			System.out.println(Arrays.toString(T[i]));

@@ -8,9 +8,9 @@ public class Main {
     // Robot.mainRobot();
     // System.out.println("");
 
-    // System.out.println("    \nEXEMPLE 2 : SVM      ");
-    // SVM.mainSVM();
-    // System.out.println("");
+    System.out.println("    \nEXEMPLE 2 : SVM      ");
+    SVM.mainSVM();
+    System.out.println("");
 
     // System.out.println("    \nEXEMPLE 3 : Stock    ");
     // Stock.mainStock();

@@ -223,9 +223,9 @@ public class Somme {
 
     /**
      * EvalStatSomme genere les runs et stock la distance relative entre les solution goulonne et dynamique
-     * @param pLmax le nombre de niveaux maximum.
-     * @param pNruns le nombre de runs de l’ evaluation statistique
-     * @param pVmax la plus grande valeur pouvant ˆetre pr ́esente dans le triangle
+     * @param pLmax le nombre de niveaux maximum
+     * @param pNruns le nombre de runs de l’evaluation statistique
+     * @param pVmax la plus grande valeur pouvant être presente dans le triangle
      * @return D[0 : N runs] qui contiendra pour chaque runla distance relative entre la valeur du chemin de somme maximum et la valeur du chemin glouton.
      */
     public static double[] EvalStatSomme(int pLmax, int pNruns, int pVmax) {
@@ -248,8 +248,8 @@ public class Somme {
             if(info) {
                 System.out.println("Runs numero : "+r);
                 System.out.println("Le tableau random : T = "+Arrays.toString(T));
-                System.out.println("calculerM(T)[0] = "+calculerM(T)[0]);
-                System.out.println("somme(calculeTabSMGlouton(T)) = "+somme(calculeTabSMGlouton(T))+"\n");
+                System.out.println("La valeur dynamique : calculerM(T)[0] = "+calculerM(T)[0]);
+                System.out.println("La valeur gloutonne : somme(calculeTabSMGlouton(T)) = "+somme(calculeTabSMGlouton(T))+"\n");
             }
 
            
