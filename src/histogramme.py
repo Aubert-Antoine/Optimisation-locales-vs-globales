@@ -42,6 +42,9 @@ l'histogramme est dans le fichier DR_PROBLEME_TRUC_MACHIN.PNG
 import sys
 import csv
 import matplotlib.pyplot as plt
+import os
+
+# absPass = "D:\D_Perso\travail\Optimisation-locales-vs-globales\histogramme"
 
 def histogramme(fileName) : 
 	DR = [] # distances relatives 
@@ -52,7 +55,7 @@ def histogramme(fileName) :
 			DR.append(float(dr))
 	plt.ylim(0, 10)
 	h = plt.hist(DR,bins=len(DR))
-	plt.savefig(fileName+".PNG")
+	plt.savefig(fileName+".PNG")  # os.path.join(absPass,fileName)+
 	plt.close()
 	csvfile.close
 

@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Random;
 
 
@@ -54,13 +53,17 @@ public class EvalStat {
     }
 
     /**
-     * cf https://fr.wikipedia.org/wiki/%C3%89cart_type#En_algorithmique
      * ecartType retourne l'ecart type du tableau passé en param
      * @param pTabRef
      * @return
      */
     public static double ecartType(double[] pTabRef){
-        return -1;
+        double varInter = 0;
+
+        for (int i = 0; i < pTabRef.length; i++) {
+            varInter += Math.pow((pTabRef[i] - moyenne(pTabRef) ), 2);
+        }
+        return Math.sqrt(varInter/pTabRef.length);
     }
 
 
