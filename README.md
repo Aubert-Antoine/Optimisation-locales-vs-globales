@@ -9,9 +9,10 @@ This repository is an academic project, the objective is to compare dynamic and 
 
 The workspace contains two folders by default, where:
 
-- `src`:    the folder to maintain sources
-- `csv`:    the folder wich contain data
-- `TD` :    the folder wich contain courses
+- `src`:            the folder to maintain sources
+- `csv`:            the folder wich contain csv data
+- `histogramme`:    the folder wich contain histogramme
+
 
 > The `src>main` class contain the 'main()' fonction of the project.
 
