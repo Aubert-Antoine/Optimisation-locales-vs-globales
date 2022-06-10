@@ -115,7 +115,7 @@ public class Somme {
      * @return  TabSomme le Tableau de somme max cummulée
      */
     public static int[] calculerM(int[] pTabRef) {
-        int nbNiveaux = niveau(pTabRef, pTabRef.length);
+        int nbNiveaux = niveau(pTabRef);
         int indiceDeb = pTabRef.length-1-nbNiveaux;             //indice de debut de somme
         int[] TabSomme = Arrays.copyOf(pTabRef, pTabRef.length);
 
@@ -144,7 +144,7 @@ public class Somme {
      * @return  TabSM est le chemin 
      */
     public static int[] calculeTabSMGlouton(int[] pTabRef) {
-        int nbNiveaux = niveau(pTabRef,pTabRef.length);
+        int nbNiveaux = niveau(pTabRef);
         int[] TabSM = new int[nbNiveaux];
 
         TabSM[0] = pTabRef[0];
@@ -194,7 +194,7 @@ public class Somme {
         if(n<0 || i<0 || n<i) System.out.println("n et i doivent etre positifs n = "+n+" i = "+i
                                                     +"\net n>i");
         else{
-            if(i<M.length-niveau(M, M.length)) {        //si nous ne sommes pas sur la derniere ligne
+            if(i<M.length-niveau(M)) {        //si nous ne sommes pas sur la derniere ligne
                 int ip = i;                             // On memorise la valeur actuelle
                 int ig = g(M, i);
                 int id = d(M, i);
@@ -222,26 +222,44 @@ public class Somme {
 
 
     /**
-     * niveau renvoie le niveau ou se trouve le param    !!! commence à 0 
+     * niveau renvoie le niveau ou se trouve le param    !!! commence à 1 !!! 
      * @param pTabRef  tableau dont on cherche le nombre de niveau a partir de l'indice pIndice
      * @param pIndice  : on cherche le niveau de cette indice, pour connaitre le nb de niveau du tableau faire pTabRef.length()
      * @return renvoie le niveau ou se trouve le param
      */
-    public static int niveau(int[] pTabRef, int pIndice) {
-        if(pTabRef.length == 0){System.out.println("Le tableau est vide");}
-        else if(pTabRef.length == 1){return 1;}
-        for (int niveau = 1; niveau < pTabRef.length; niveau++) {
-            if(niveau*(niveau+1)/2 > pIndice){
-                return niveau-1;
+    // public static int niveau0(int[] pTabRef, int pIndice) {
+    //     if(pTabRef.length == 0){            //si le tableau est vide
+    //         System.out.println("Le tableau est vide");
+    //         return -1;
+    //     }else if(pTabRef.length == 1){      // si le tableau n'a q'une case
+    //         return 1;
+    //     }else{                              //sinon | on cherche le niveau en connaissant l'indice ou on est
+    //         for (int niveau = 2; niveau < pTabRef.length; niveau++) {
+    //             if(niveau*(niveau+1)/2 > pIndice){
+    //                 return niveau;
+    
+    //             }else if(niveau == pTabRef.length-1){
+    //                 System.out.println("Somme > niveau : le if n'est pas catch");
+    //                 // le pIndice est plus grand que la taille du tab ? 
+    //             }
 
-            }else if(niveau == pTabRef.length-1){
-                System.out.println("Somme > niveau : le if n'est pas catch");
-                // le pIndice est plus grand que la taille du tab ? 
-            }
+    //  }
+
+    public static int niveau(int[] pTabRef) {
+        if(pTabRef.length == 0){
+            System.out.println("La taille du tableau est null \n"+pTabRef+" = "+Arrays.toString(pTabRef));
+            return -1;
         }
-        System.out.println("Somme > niveau : ERROR");
+        else if(pTabRef.length == 1) return 1;
+        else{
+            for (int niveau = 2; niveau < pTabRef.length; niveau++) {   //La condition de fin est suffisante
+                if(niveau*(niveau+1)/2 == pTabRef.length) return niveau;
+                else if(niveau == pTabRef.length) System.out.println("Somme > niveau : le if n'est pas catch");
+            }
+        }//else
+        System.out.println("Somme > niveau : le else n'est pas catch");
         return -1;
-    }//niveau
+    }//niveau()
 
     /**
      * fait la somme d'un tableau
