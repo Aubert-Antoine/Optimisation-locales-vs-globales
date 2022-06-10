@@ -75,7 +75,7 @@ public class SVM{
 
         EcrireValeursGaussiennesDansFichier.EcrireGdansF(outDensite, "SVMdensite.csv");
 
-        System.out.println("\n\n\nFIN de SVM \n\n\n");
+        System.out.println("\n\nFIN de SVM \n\n\n");
 
     }//mainSVM()
 	

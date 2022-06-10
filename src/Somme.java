@@ -293,7 +293,7 @@ public class Somme {
 
         EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "Somme.csv");
 
-        System.out.println("\n\n\nFIN de SOMME \n\n\n");
+        System.out.println("\n\nFIN de SOMME \n\n\n");
     }
     
 }//Somme Class
