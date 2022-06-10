@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -5,43 +6,107 @@ import java.util.Random;
 class Travail{
 
 
+	private static final boolean info = false;
+
     /**
      * mainTravail appelant les méthodes dynamique et greedy et affichant leurs résultats
+     * @throws IOException
      */
-	public static void mainTravail(){
+	public static void mainTravail() throws IOException{
         System.out.println("\n\nExercice : répartition optimale d'un temps de travail sur un ensemble d'unités");
-        int n = Integer.parseInt("3"), Hmax = Integer.parseInt("9"); // Juliette peut travailler jusqu'à Hmax heures sur n unités
-		int[][] E = estimations(n,Hmax); // notes aléatoires, croissantes selon h
-		System.out.printf("Nombre d'unités : %d \n", n);	
-		System.out.println("Notes estimées : ");
-		afficher(E);
+
+		/* cas particulier */
         
-        // Méthode Dynamique
-        System.out.println("\n\nMETHODE DYNAMIQUE");
-		// Juliette travaille H heures, 0 <= H < Hmax + 1. Affichage des sommes maximum
-		for (int H = 0; H < Hmax+1; H = H + 1){ // H = nombre d'heures de révision
-			System.out.printf("\nNOMBRE D'HEURES TRAVAILLEES : %d\n", H);		
-			int[][] E_H = estimationsRestreintes(E,H); // notes estimées pour 0 <= h < H+1 
-			int[][][] MA = calculerMA(E_H);
-			int[][] M = MA[0], A = MA[1];
-			System.out.printf("Somme maximum des notes : %d\n", M[n][H]);
-			float moyenneMaximum = (float) M[n][H]/n;
-			String strDouble = String.format("%.2f", moyenneMaximum);
-			System.out.printf("Moyenne maximum : %s/20\n", strDouble);		
-			System.out.println("Une répartition optimale :");
-			aro(A,E_H,n,H);
-			if (M[n][H] == 20 * n){
-				System.out.println("\n *** inutile de travailler plus... ***");
-				return;
-			}
-		}
+		// int n = Integer.parseInt("3"), Hmax = Integer.parseInt("9"); // Juliette peut travailler jusqu'à Hmax heures sur n unités
+		// int[][] E = estimations(n,Hmax); // notes aléatoires, croissantes selon h
+		// System.out.printf("Nombre d'unités : %d \n", n);	
+		// System.out.println("Notes estimées : ");
+		// afficher(E);
+        
+        // // Méthode Dynamique
+        // System.out.println("\n\nMETHODE DYNAMIQUE");
+		// // Juliette travaille H heures, 0 <= H < Hmax + 1. Affichage des sommes maximum
+		// for (int H = 0; H < Hmax+1; H = H + 1){ // H = nombre d'heures de révision
+		// 	System.out.printf("\nNOMBRE D'HEURES TRAVAILLEES : %d\n", H);		
+		// 	int[][] E_H = estimationsRestreintes(E,H); // notes estimées pour 0 <= h < H+1 
+		// 	int[][][] MA = calculerMA(E_H);
+		// 	int[][] M = MA[0], A = MA[1];
+		// 	System.out.printf("Somme maximum des notes : %d\n", M[n][H]);
+		// 	float moyenneMaximum = (float) M[n][H]/n;
+		// 	String strDouble = String.format("%.2f", moyenneMaximum);
+		// 	System.out.printf("Moyenne maximum : %s/20\n", strDouble);		
+		// 	System.out.println("Une répartition optimale :");
+		// 	aro(A,E_H,n,H);
+		// 	if (M[n][H] == 20 * n){
+		// 		System.out.println("\n *** inutile de travailler plus... ***");
+		// 		return;
+		// 	}
+		// }
 
-        // Méthode Greedy
-        System.out.println("\n\nMETHODE GREEDY");
-        repartitionGreedy(E);
+        // // Méthode Greedy
+        // System.out.println("\n\nMETHODE GREEDY");
+        // repartitionGreedy(E);
 
-        System.out.println();
+        // System.out.println();
+
+		
+		/* Runs */
+        System.out.println("Evaluation statistique de Travail : ");
+        double[] out = EvalStatTravail(45, 50, 100);
+        System.out.println("out : " + Arrays.toString(out)+"\n");
+
+        System.out.println("medianne = "+EvalStat.mediane(out));
+        System.out.println("moyenne = "+EvalStat.moyenne(out));
+        System.out.println("ecart type = "+EvalStat.ecartType(out));
+
+        EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "Travail.csv");
+
+        System.out.println("\n\n\nFIN de Travail \n\n\n");
+
 	}//mainTravail()
+
+
+	/**
+     * EvalStatTravail genere les runs et stocke la distance relative entre les solutions goulonne et dynamique
+     * @param pTailleTabMax la taille max pour les lignes et colonnes du tableau G
+     * @param pNruns le nombre de runs de l’evaluation statistique
+     * @param pVmax la plus grande valeur pour le gain d'un entrepot via son stock
+     * @return D[0 : N runs] qui contiendra pour chaque runla distance relative entre la valeur du chemin de somme maximum et la valeur du chemin glouton.
+     */
+	public static double[] EvalStatTravail(int pTailleTabMax, int pNruns, int pVmax) {
+        double[] D = new double[pNruns];
+
+        System.out.println("Les param sont : pLmax = "+pTailleTabMax+"  pNruns = "+pNruns+"  pVmax = "+pVmax+"\n");
+
+        if(pTailleTabMax <= 0 || pNruns <= 0 || pVmax <= 0){
+            System.out.println("\nLes param doivent etre positifs\n!!!!!!!!!!!!!!!!!!!!!\n");
+            D[0] = -1;
+            return D;       // return une Exception ? 
+        }
+
+        for (int r = 0; r < D.length; r++) {
+			int nbreUnités = RandomGen.randomInt(1, pVmax);
+            int nbreHeuresMax = RandomGen.randomInt(0, pVmax);
+			int[][] E = estimations(nbreUnités, nbreHeuresMax); // notes aléatoires, croissantes selon les heures
+
+            if(info) {
+                System.out.println("Runs numero : "+r);
+				System.out.println("Le nombre d'unités random : nbreUnités = "+nbreUnités);
+				System.out.println("Le nombre d'heures max random : nbreHeuresMax = "+nbreHeuresMax);
+                System.out.println("Le tableau random : E = "+Arrays.toString(E));
+                System.out.println("La valeur dynamique : calculerMA(E)[0][E.length][E[0].length-1] = "+calculerMA(E)[0][E.length][E[0].length-1]);
+                System.out.println("La valeur gloutonne : = "+repartitionGreedy(E)+"\n");
+            }
+
+           
+            
+            D[r] = EvalStat.evalMax(calculerMA(E)[0][E.length][E[0].length-1], repartitionGreedy(E));
+            //On regarde la valeur m(0) qui est le max, on fait le ration puis on attribut le ratio
+            // a D[r], on fait cela Nruns fois
+        }
+        if(info) System.out.println("Travail > EvalStatTravail : D = "+Arrays.toString(D));
+        return D;
+    }//EvalStatTravail()
 
 
     //
@@ -94,7 +159,7 @@ class Travail{
 		// ro(k,h) = ro(k-1,h-a(k,h)) union {"k-1 <-- a(k,h)"}
 		int akh = A[k][h]; // nombre d'heures allouées Ã  la k-Ã¨me unité dans ro(k,h)
 		aro(A,E,k-1,h-akh); // ro(k-1,h-akh) a été affichée
-		System.out.printf("unité %d, <-- %d heures, note estimée %d\n", k-1, akh, E[k-1][akh]); 
+		if(info) System.out.printf("unité %d, <-- %d heures, note estimée %d\n", k-1, akh, E[k-1][akh]); 
 		// Le nombre d'heures allouées à la kième unité a été affiché
 		// Ainsi : 
 		// 1) La répartition optimale ro(k-1,h-akh) a été affichée,
@@ -110,8 +175,9 @@ class Travail{
     /**
      * repartitionGreedy permettant de calculer la répartition des heures de travail sur les unités par rapport aux notes potentielles avec la méthode gloutonne
      * @param E tableau des notes estimées en fonction du temps passé sur l'unité
+	 * @return moyenne max sur n unités avec Hmax heures de travail
     */
-    static void repartitionGreedy(int[][] E) {
+    static double repartitionGreedy(int[][] E) {
         int n = E.length; int Hmax = E[0].length-1; // n le nombre d'unités et Hmax le nombre total d'heures de travail
         int[] heureTab = new int[n]; // tableau associant à chaque unité le nombre d'heures de travail attribuées
         int[] noteTab = new int[n]; // tableau associant à chaque unité sa note
@@ -120,7 +186,8 @@ class Travail{
 			noteTab[u] = E[u][0];
 			sommeNotes += noteTab[u];
 		}
-		affichageGreedy(0, n, sommeNotes, heureTab, noteTab);
+		double moyenneNotes = (double) sommeNotes/n; // moyenne de l'ensemble des notes
+		if(info) affichageGreedy(0, n, sommeNotes, moyenneNotes, heureTab, noteTab);
         for(int h=1; h<=Hmax; h++) { // attribution de chaque heure de travail une à une à une unité
             int unité = 0;
             int noteMax = 0;
@@ -133,8 +200,10 @@ class Travail{
 			heureTab[unité] += 1; // attribution de l'heure de travail h à l'unité avec la meilleure note
 			noteTab[unité] += noteMax; // attribution de la nouvelle note de l'unité
 			sommeNotes += noteMax; // ajout de la note obtenue à la somme totale des notes
-            affichageGreedy(h, n, sommeNotes, heureTab, noteTab);
+			moyenneNotes = (double) sommeNotes/n; // moyenne de l'ensemble des notes
+            if(info) affichageGreedy(h, n, sommeNotes, moyenneNotes, heureTab, noteTab);
         }
+		return moyenneNotes;
     }//repartitionGreedy()
 
 	/**
@@ -145,8 +214,7 @@ class Travail{
 	 * @param heureTab tableau associant à chaque unité sa note
 	 * @param noteTab tableau associant à chaque unité le nombre d'heures de travail attribuées
 	 */
-	static void affichageGreedy(int h, int n, int sommeNotes, int[] heureTab, int[] noteTab) {
-		float moyenneNotes = (float) sommeNotes/n; // moyenne de l'ensemble des notes
+	static void affichageGreedy(int h, int n, int sommeNotes, double moyenneNotes, int[] heureTab, int[] noteTab) {
 		String strMoyenne = String.format("%.2f", moyenneNotes);
 		System.out.printf("\nNOMBRE D'HEURES TRAVAILLEES : %d\n", h);
 		System.out.printf("Somme maximum des notes : %d\n", sommeNotes);

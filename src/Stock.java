@@ -175,6 +175,7 @@ public class Stock {
     /**
      * repartitionGreedy permettant de calculer la répartition de stocks sur des entrepôts avec la méthode gloutonne
      * @param G tableau des gains liés à la livraison d'un ensemble de stocks dans un entrepôt
+     * @return le gain max de l'ensemble des entrepôts
     */
     static int repartitionGreedy(int[][] G){
         int n = G.length; int S = G[0].length-1; // n le nombre d'entrepôts et S le stock total
