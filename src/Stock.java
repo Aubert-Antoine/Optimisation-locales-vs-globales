@@ -1,43 +1,107 @@
+import java.io.IOException;
 import java.util.Arrays;
 
 
 public class Stock {
 
 
+    private static final boolean info = false;
+
     /**
      * mainStock appelant les méthodes dynamique et greedy et affichant leurs résultats
+     * @throws IOException
      */
-    public static void mainStock(){
+    public static void mainStock() throws IOException{
 		System.out.println("\n\nExercice : répartition optimale d'un stock sur un ensemble d’entrepôts");
-        int[][] G = new int[][] // g(k,s) = gain obtenu d'une livraison d'une quantité de stock s à l'entrepôt k
-            {	{0, 5, 5, 7, 7,10,10,12,12,13,13},
-                {0, 8,10,10,10,12,12,14,14,14,14},
-                {0,10,10,12,12,13,13,14,15,16,16},
-                {0,14,14,14,16,16,16,16,16,16,16},
-                {0,10,14,14,14,14,14,14,14,16,16},
-                {0,10,12,12,16,16,16,16,16,16,16},
-                {0,12,12,14,14,15,15,15,17,17,17}
-            } ;		
-        int K = G.length, S = G[0].length - 1;
-        System.out.println("\nTableau des gains : g(k,s) = gain obtenu en livrant s à k");
-        afficher(G);
 
-		// Méthode Dynamique
-		System.out.println("\n\nMETHODE DYNAMIQUE");
-        int[][][] MA = calculerMA(G);
-        int[][] M = MA[0], A = MA[1];
-        System.out.printf("\nGain total maximum : %d\n", M[K][S]);
-        System.out.println("\nTableau M des gains maximums :");
-        afficher(M);
-        System.out.println("\nUne affectation optimale :");
-		aro(M,A,G,K,S);
+        /* cas particulier */
+
+        // int[][] G = new int[][] // g(k,s) = gain obtenu d'une livraison d'une quantité de stock s à l'entrepôt k
+        //     {	{0, 5, 5, 7, 7,10,10,12,12,13,13},
+        //         {0, 8,10,10,10,12,12,14,14,14,14},
+        //         {0,10,10,12,12,13,13,14,15,16,16},
+        //         {0,14,14,14,16,16,16,16,16,16,16},
+        //         {0,10,14,14,14,14,14,14,14,16,16},
+        //         {0,10,12,12,16,16,16,16,16,16,16},
+        //         {0,12,12,14,14,15,15,15,17,17,17}
+        //     } ;		
+        // int K = G.length, S = G[0].length - 1;
+        // System.out.println("\nTableau des gains : g(k,s) = gain obtenu en livrant s à k");
+        // afficher(G);
+
+		// // Méthode Dynamique
+		// System.out.println("\n\nMETHODE DYNAMIQUE");
+        // int[][][] MA = calculerMA(G);
+        // int[][] M = MA[0], A = MA[1];
+        // System.out.printf("\nGain total maximum : %d\n", M[K][S]);
+        // System.out.println("\nTableau M des gains maximums :");
+        // afficher(M);
+        // System.out.println("\nUne affectation optimale :");
+		// aro(M,A,G,K,S);
 		
-		//Méthode Greedy
-		System.out.println("\n\nMETHODE GREEDY");
-		repartitionGreedy(G);
+		// //Méthode Greedy
+		// System.out.println("\n\nMETHODE GREEDY");
+		// repartitionGreedy(G);
 		
-		System.out.println();
-	}//mainRobot()
+		// System.out.println();
+
+
+        /* Runs */
+        System.out.println("Evaluation statistique de Stock : ");
+        double[] out = EvalStatStock(45, 5000, 100);
+        System.out.println("out : " + Arrays.toString(out)+"\n");
+
+        System.out.println("medianne = "+EvalStat.mediane(out));
+        System.out.println("moyenne = "+EvalStat.moyenne(out));
+        System.out.println("ecart type = "+EvalStat.ecartType(out));
+
+        EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "Stock.csv");
+
+        System.out.println("\n\n\nFIN de Stock \n\n\n");
+
+	}//mainStock()
+
+
+    /**
+     * EvalStatStock genere les runs et stocke la distance relative entre les solutions goulonne et dynamique
+     * @param pTailleTabMax la taille max pour les lignes et colonnes du tableau G
+     * @param pNruns le nombre de runs de l’evaluation statistique
+     * @param pVmax la plus grande valeur pour le gain d'un entrepot via son stock
+     * @return D[0 : N runs] qui contiendra pour chaque runla distance relative entre la valeur du chemin de somme maximum et la valeur du chemin glouton.
+     */
+	public static double[] EvalStatStock(int pTailleTabMax, int pNruns, int pVmax) {
+        double[] D = new double[pNruns];
+
+        System.out.println("Les param sont : pLmax = "+pTailleTabMax+"  pNruns = "+pNruns+"  pVmax = "+pVmax+"\n");
+
+        if(pTailleTabMax <= 0 || pNruns <= 0 || pVmax <= 0){
+            System.out.println("\nLes param doivent etre positifs\n!!!!!!!!!!!!!!!!!!!!!\n");
+            D[0] = -1;
+            return D;       // return une Exception ? 
+        }
+
+        for (int r = 0; r < D.length; r++) {
+			int tailleLTab = RandomGen.randomInt(1, pTailleTabMax);
+            int tailleCTab = RandomGen.randomInt(1, pTailleTabMax);
+			int[][] G = RandomGen.randomTab2D(tailleLTab, tailleCTab, 1, pVmax);
+            
+
+            if(info) {
+                System.out.println("Runs numero : "+r);
+                System.out.println("Le tableau random : G = "+Arrays.toString(G));
+                System.out.println("La valeur dynamique : calculerMA(G)[0][G.length][G[0].length-1] = "+calculerMA(G)[0][G.length][G[0].length-1]);
+                System.out.println("La valeur gloutonne : = "+repartitionGreedy(G)+"\n");
+            }
+
+           
+            
+            D[r] = EvalStat.evalMax(calculerMA(G)[0][G.length][G[0].length-1], repartitionGreedy(G));
+            //On regarde la valeur m(0) qui est le max, on fait le ration puis on attribut le ratio
+            // a D[r], on fait cela Nruns fois
+        }
+        if(info) System.out.println("Stock > EvalStatStock : D = "+Arrays.toString(D));
+        return D;
+    }//EvalStatStock()
 
 
     //
@@ -112,7 +176,7 @@ public class Stock {
      * repartitionGreedy permettant de calculer la répartition de stocks sur des entrepôts avec la méthode gloutonne
      * @param G tableau des gains liés à la livraison d'un ensemble de stocks dans un entrepôt
     */
-    static void repartitionGreedy(int[][] G){
+    static int repartitionGreedy(int[][] G){
         int n = G.length; int S = G[0].length-1; // n le nombre d'entrepôts et S le stock total
         int[] stockTab = new int[n]; // tableau associant à chaque entrepôt le nombre de stocks attribués 
         int[] gainTab = new int[n]; // tableau associant à chaque entrepôt son gain global
@@ -130,10 +194,13 @@ public class Stock {
             gainTab[entrepot] += gainMax; // attribution du nouveau gain de l'entrepôt
             gainTotal += gainMax; // ajout du gain amassé au gain total
         }
-        System.out.printf("\nGain total maximum : %d\n\n", gainTotal);
-        for(int e=0; e<n; e++) {
-            System.out.printf("entrepôt %d : stock livré = %d, gain = %d\n", e, stockTab[e], gainTab[e]);
+        if(info) {
+            System.out.printf("\nGain total maximum : %d\n\n", gainTotal);
+            for(int e=0; e<n; e++) {
+                System.out.printf("entrepôt %d : stock livré = %d, gain = %d\n", e, stockTab[e], gainTab[e]);
+            }
         }
+        return gainTotal;
     }//repartitionGreedy()
 
 

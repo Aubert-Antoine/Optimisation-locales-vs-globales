@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -5,47 +6,114 @@ import java.util.Random;
 public class SVM{
 
 
+	private static final boolean info = false;
+
     /**
      * mainSVM appelant les méthodes dynamique et greedy et affichant leurs résultats
+     * @throws IOException
      */
-    public static void mainSVM(){
+    public static void mainSVM() throws IOException{
         System.out.println("\n\nExercice : sac de valeur maximum");
-        int[] V = {2,1,3,8,4}; 
-		int[] T = {1,1,2,4,3}; 
-		int n = V.length;
-		System.out.println("V = " + Arrays.toString(V));
-		System.out.println("T = " + Arrays.toString(T));
-		int C = 3;
-		System.out.printf("C = %d\n",C);
 
-        // Méthode Dynamique
-		System.out.println("\n\nMETHODE DYNAMIQUE\n");
-		int[][] M = calculerM(V,T,C); 
-		System.out.println("M = "); afficher(M); 
-		System.out.printf("Valeur des sacs de valeur maximum = M[%d][%d] = %d\n",
-			n, C, M[n][C]);
-		System.out.print("Contenu d'un tel sac :\n");
-		// afficher un sac de contenance C, de valeur max, contenant un sous-ensemble
-		// des n objets
-		asm(M,V,T,n,C); 
-		System.out.println();
+		/* cas particulier */
 
-        // Méthodes Greedy
-		System.out.println("\nMETHODE GREEDY : Valeur\n");
-		System.out.printf("Taille du sac : %d\n", C);
-		System.out.printf("Contenu du sac :\n", C);
-		contenuGreedyValeur(V, T, C);
-		System.out.println("\nMETHODE GREEDY : Densité\n");
-		System.out.printf("Taille du sac : %d\n", C);
-		System.out.printf("Contenu du sac :\n", C);
-		contenuGreedyDensite(V, T, C);
+        // int[] V = {2,1,3,8,4}; 
+		// int[] T = {1,1,2,4,3}; 
+		// int n = V.length;
+		// System.out.println("V = " + Arrays.toString(V));
+		// System.out.println("T = " + Arrays.toString(T));
+		// int C = 3;
+		// System.out.printf("C = %d\n",C);
 
-        System.out.println();
-    }
+        // // Méthode Dynamique
+		// System.out.println("\n\nMETHODE DYNAMIQUE\n");
+		// int[][] M = calculerM(V,T,C); 
+		// System.out.println("M = "); afficher(M); 
+		// System.out.printf("Valeur des sacs de valeur maximum = M[%d][%d] = %d\n",
+		// 	n, C, M[n][C]);
+		// System.out.print("Contenu d'un tel sac :\n");
+		// // afficher un sac de contenance C, de valeur max, contenant un sous-ensemble
+		// // des n objets
+		// asm(M,V,T,n,C); 
+		// System.out.println();
+
+        // // Méthodes Greedy
+		// System.out.println("\nMETHODE GREEDY : Valeur\n");
+		// System.out.printf("Taille du sac : %d\n", C);
+		// System.out.printf("Contenu du sac :\n", C);
+		// contenuGreedyValeur(V, T, C);
+		// System.out.println("\nMETHODE GREEDY : Densité\n");
+		// System.out.printf("Taille du sac : %d\n", C);
+		// System.out.printf("Contenu du sac :\n", C);
+		// contenuGreedyDensite(V, T, C);
+
+        // System.out.println();
+
+
+		/* Runs */
+        System.out.println("Evaluation statistique de SVM : ");
+        double[] out = EvalStatSVM(45, 50, 100);
+        System.out.println("out : " + Arrays.toString(out)+"\n");
+
+        System.out.println("medianne = "+EvalStat.mediane(out));
+        System.out.println("moyenne = "+EvalStat.moyenne(out));
+        System.out.println("ecart type = "+EvalStat.ecartType(out));
+
+        EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "SVM.csv");
+
+        System.out.println("\n\n\nFIN de SVM \n\n\n");
+
+    }//mainSVM()
 	
 
+    /**
+     * EvalStatSVM genere les runs et stocke la distance relative entre les solutions goulonne et dynamique
+     * @param pTailleTabMax la taille max pour les tableaux V et T
+     * @param pNruns le nombre de runs de l’evaluation statistique
+     * @param pVmax la plus grande valeur pour 'valeur' et 'taille'
+     * @return D[0 : N runs] qui contiendra pour chaque runla distance relative entre la valeur du chemin de somme maximum et la valeur du chemin glouton.
+     */
+	public static double[] EvalStatSVM(int pTailleTabMax, int pNruns, int pVmax) {
+        double[] D = new double[pNruns];
+
+        System.out.println("Les param sont : pTailleTabmax = "+pTailleTabMax+"  pNruns = "+pNruns+"  pVmax = "+pVmax+"\n");
+
+        if(pTailleTabMax <= 0 || pNruns <= 0 || pVmax <= 0){
+            System.out.println("\nLes param doivent etre positifs\n!!!!!!!!!!!!!!!!!!!!!\n");
+            D[0] = -1;
+            return D;       // return une Exception ? 
+        }
+
+        for (int r = 0; r < D.length; r++) {
+			int tailleTab = RandomGen.randomInt(1, pTailleTabMax);
+			int[] V = RandomGen.randomTabInt(tailleTab, pVmax);
+            int[] T = RandomGen.randomTabInt(tailleTab, pVmax);
+
+			int C = RandomGen.randomInt(1, pVmax*10); 		// la taille du sac depend de pVmax, le *10 est de sorte qu'il y ait au moins 10 obj dans le sac
+
+            
+
+            if(info) {
+                System.out.println("Runs numero : "+r);
+                System.out.println("Le tableau random : T = "+Arrays.toString(T));
+				System.out.println("Le tableau random : V = "+Arrays.toString(V));
+                System.out.println("La valeur dynamique : calculerM(V, T, C)[tailleTab][C] = "+calculerM(V, T, C)[tailleTab][C]);
+                System.out.println("La valeur gloutonne (methode par valeur) : = "+contenuGreedyValeur(V, T, C)+"\n");
+            }
+
+           
+            
+            D[r] = EvalStat.evalMax(calculerM(V, T, C)[tailleTab][C], contenuGreedyValeur(V, T, C));
+            //On regarde la valeur m(0) qui est le max, on fait le ration puis on attribut le ratio
+            // a D[r], on fait cela Nruns fois
+        }
+        if(info) System.out.println("SVM > EvalStatSVM : D = "+Arrays.toString(D));
+        return D;
+    }//EvalStatSVM()
+
+
     //
-	/* Methodes Dynamiques */
+	/* Methode Dynamique */
 	//
 	
 	static int[][] calculerM(int[] V, int[] T, int C){int n = V.length;
@@ -92,8 +160,9 @@ public class SVM{
 	 * @param V tableau des valeurs des objets
 	 * @param T tableau des tailles des objets
 	 * @param C capacité du sac
+	 * @return la valeur max du sac
 	 */
-	static void contenuGreedyValeur(int[] V, int[] T, int C) {
+	static int contenuGreedyValeur(int[] V, int[] T, int C) {
 		int[] valeurTab = Arrays.copyOf(V, V.length); // tableau copiant le tableau déjà existant des valeurs des objets
 		qsInt(valeurTab, 0, valeurTab.length); // tri du nouveau tableau des valeurs des objets par ordre décroissant
 		int tailleSac = 0; // taille actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
@@ -110,10 +179,11 @@ public class SVM{
 			if(T[objet] <= (C-tailleSac)) { // taille de l'objet <= place restante dans le sac
 				tailleSac += T[objet]; // augmentation de la taille su sac avec le nouvel objet ajouté
 				valeurSac += valeurTab[i]; // augmentation de la valeur su sac avec le nouvel objet ajouté
-				System.out.printf(". objet %d : valeur = %d, taille = %d\n", objet, valeurTab[i], T[objet]);
+				if(info) System.out.printf(". objet %d : valeur = %d, taille = %d\n", objet, valeurTab[i], T[objet]);
 			}
 		}
-		System.out.printf("--> Valeur totale du sac : %d\n", valeurSac);
+		if(info) System.out.printf("--> Valeur totale du sac : %d\n", valeurSac);
+		return valeurSac;
 	}//contenuGreedyValeur()
 
 	/**
@@ -121,8 +191,9 @@ public class SVM{
 	 * @param V tableau des valeurs des objets
 	 * @param T tableau des tailles des objets
 	 * @param C capacité du sac
+	 * @return la valeur max du sac
 	 */
-	static void contenuGreedyDensite(int[] V, int[] T, int C) {
+	static int contenuGreedyDensite(int[] V, int[] T, int C) {
 		float[] ratioTab = new float[V.length]; // tableau permettant de contenir les ratio valeur/taille des objets
 		for(int i=0; i<ratioTab.length; i++) { // attribution des valeurs du tableau
 			if(T[i] == 0) ratioTab[i] = (float) V[i]; // cas taille nulle
@@ -150,11 +221,12 @@ public class SVM{
 			if(T[objet] <= (C-tailleSac)) { // taille de l'objet <= place restante dans le sac
 				tailleSac += T[objet]; // augmentation de la taille su sac avec le nouvel objet ajouté
 				valeurSac += V[objet]; // augmentation de la valeur su sac avec le nouvel objet ajouté
-				System.out.printf(". objet %d : ratio = %s, valeur = %d, taille = %d\n", objet, ratioTab[i], V[objet], T[objet]);
+				if(info) System.out.printf(". objet %d : ratio = %s, valeur = %d, taille = %d\n", objet, ratioTab[i], V[objet], T[objet]);
 			}
 			V[objet] = 0;
 		}
-		System.out.printf("--> Valeur totale du sac : %d\n", valeurSac);
+		if(info) System.out.printf("--> Valeur totale du sac : %d\n", valeurSac);
+		return valeurSac;
 	}//contenuGreedyDensite()
 
 

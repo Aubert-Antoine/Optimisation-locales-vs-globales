@@ -8,9 +8,9 @@ class Travail{
     /**
      * mainTravail appelant les méthodes dynamique et greedy et affichant leurs résultats
      */
-	public static void mainTravail(String[] Args){
+	public static void mainTravail(){
         System.out.println("\n\nExercice : répartition optimale d'un temps de travail sur un ensemble d'unités");
-        int n = Integer.parseInt(Args[0]), Hmax = Integer.parseInt(Args[1]); // Juliette peut travailler jusqu'à Hmax heures sur n unités
+        int n = Integer.parseInt("3"), Hmax = Integer.parseInt("9"); // Juliette peut travailler jusqu'à Hmax heures sur n unités
 		int[][] E = estimations(n,Hmax); // notes aléatoires, croissantes selon h
 		System.out.printf("Nombre d'unités : %d \n", n);	
 		System.out.println("Notes estimées : ");

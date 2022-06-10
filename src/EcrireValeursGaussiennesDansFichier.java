@@ -22,7 +22,7 @@ class EcrireValeursGaussiennesDansFichier{
 	// Ecrit les valeurs de G dans le fichier de nom F. Une valeur par ligne.
 		throws IOException {
   			int n = G.length;
-     		FileWriter fileWriter = new FileWriter(F);
+     		FileWriter fileWriter = new FileWriter("src\\"+F);	// canhgement de repertoire    "csv\\"+
 			PrintWriter pw = new PrintWriter(fileWriter);
 			for (int i = 0; i < n; i++)
 				pw.println(G[i]) ; 

@@ -1,4 +1,5 @@
-
+import java.util.Arrays;
+import java.util.Random;
 
 
 /**
@@ -35,7 +36,8 @@ public class EvalStat {
      * @return
      */
     public static double mediane(double[] pTabRef) {
-         return pTabRef[(pTabRef.length)/2];
+        qs(pTabRef, 0, pTabRef.length); // tri du tableau pour ensuite effectuer la médiane
+        return pTabRef[(pTabRef.length)/2];
     }
 
     /**
@@ -60,6 +62,45 @@ public class EvalStat {
     public static double ecartType(double[] pTabRef){
         return -1;
     }
+
+
+    static void qs(double[] T, int i, int j){ 
+		if (j-i <= 1) return ; // le sous-tableau T[i:j] est croissant
+		// ici : j-i >= 2
+		int k = segmenter(T,i,j); // T[i:k] <= T[k] < T[k+1:j]    <<< (1)
+		qs(T,i,k);   // (1) et T[i:k] croissant 
+		qs(T,k+1,j); // (1) et T[i:k] croissant et T[k+1:j] croissant, donc T[i:j] croissant
+	}//qs()
+
+	static Random rand = new Random();
+
+	static int segmenter(double[] T, int i, int j){
+	/* Calcule une permutation des valeurs de T[i:j] vérifiant T[i:k] <= T[k] < T[k+1:j], et retourne k
+	Fonction construite sur la propriété I(k,j') : T[i:k] <= T[k] < T[k+1:j']
+	Arrêt j'=j
+	Initialisation : k = i, j'=k+1
+	Progression : I(k,j') et j'<j et t_{j'}>t_{k} ==> I(k,j'+1)
+				  I(k,j') et j'<j et t_{j'}<=t_{k} et T[k]=t_{j'} et T[k+1]=t_{k} et T[j']=t_{k+1} ==> I(k+1,j'+1)
+	*/
+		int r = i + rand.nextInt(j-i);
+		permuter(T,i,r);
+		int k = i, jp = k+1; // I(k,j')
+		while (jp < j) // I(k,j') et jp < j 
+			if (T[k] < T[jp]) // I(k,j'+1)
+				jp++; // I(k,j')
+			else {
+				permuter(T,jp,k+1);
+				permuter(T,k,k+1); // I(k+1,j'+1)
+				k++; jp++; // I(k,jp)
+			}
+		return k;				
+	}//segmenter()
+
+	static void permuter(double[] T, int i, int j){
+		double ti = T[i];
+		T[i] = T[j];
+		T[j] = ti;
+	}//permuter()
 
     public static void mainEvalStat(){
         System.out.println("Hello, World! from EvalStat Class");

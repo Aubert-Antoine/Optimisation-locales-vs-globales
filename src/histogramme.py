@@ -45,13 +45,13 @@ import matplotlib.pyplot as plt
 
 def histogramme(fileName) : 
 	DR = [] # distances relatives 
-	with open(fileName+".CSV") as csvfile:
+	with open(fileName+".CSV") as csvfile:	#modif chemin d'acces
 		reader = csv.reader(csvfile)
 		for row in reader:
 			dr = row[0]
 			DR.append(float(dr))
 	h = plt.hist(DR,bins=len(DR))
-	plt.savefig(fileName+".PNG")
+	plt.savefig(fileName+".PNG")	#modif chemin de sauvegarde
 	plt.close()
 	csvfile.close
 
@@ -63,6 +63,6 @@ def main() :
 	
 	fileName = sys.argv[1]
 	histogramme(fileName)
-	print("l'histogramme est dans le fichier " + fileName+".PNG")
+	print("l'histogramme est dans le dossier/fichier : histogramme/"+ fileName+".PNG")
 
 main()

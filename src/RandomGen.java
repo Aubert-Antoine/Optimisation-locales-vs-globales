@@ -46,4 +46,27 @@ public class RandomGen {
     }
 
 
+    /**
+     * randomTab2D retourne un tableau à 2D d'entiers dans la plage indiquée (borne sup comprise)
+     * @param pTabLenL nombre de lignes du tableau
+     * @param pTabLenC nombre de colonnes du tableau
+     * @param pMaxVal max de la borne (inclue)
+     * @param pDebutCTab début initialisation des colonnes du tableau
+     * @return un tableau 2D d'int au hasard avec des valeurs dans l'intervalle [0, pMaxVal]
+     */
+    public static int[][] randomTab2D(int pTabLenL, int pTabLenC, int pDebutCTab, int pMaxVal) {
+        int[][] randomTab2D = new int[pTabLenL][pTabLenC];
+
+        for(int i = 0; i < randomTab2D.length; i++) {
+            for(int j = pDebutCTab; j < randomTab2D[i].length; j++) {
+                randomTab2D[i][j] = randomInt(0, pMaxVal);
+            if(debug) System.out.println(Arrays.toString(randomTab2D));
+            }
+        }
+        if(info) System.out.println("RANDOM > randomTab2D :\n"+Arrays.toString(randomTab2D));
+
+        return randomTab2D;
+    }
+
+
 }//class RandomGen

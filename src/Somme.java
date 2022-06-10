@@ -317,7 +317,7 @@ public class Somme {
 
         //** Evaluation des runs multiples et avec des tableaux random*/
 
-        System.out.println("Evaluations statistique de Somme : ");
+        System.out.println("Evaluation statistique de Somme : ");
         double[] out = EvalStatSomme(100, 5000, 100);
         System.out.println("out : " + Arrays.toString(out)+"\n");
 
@@ -325,7 +325,7 @@ public class Somme {
         System.out.println("moyenne = "+EvalStat.moyenne(out));
         System.out.println("ecart type = "+EvalStat.ecartType(out));
 
-        EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "test");
+        EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "Somme.csv");
 
         System.out.println("\n\n\nFIN de SOMME \n\n\n");
     }
