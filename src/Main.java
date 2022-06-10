@@ -1,5 +1,5 @@
 public class Main {
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] Args) throws Exception { 
 
     // System.out.println("Main Class : ");
     // System.out.println("    main() ");
@@ -12,12 +12,17 @@ public class Main {
     // SVM.mainSVM();
     // System.out.println("");
 
+    System.out.println("    \nEXEMPLE 2 : SVM      ");
+    SVM.mainSVM();
+    System.out.println("");
+
     // System.out.println("    \nEXEMPLE 3 : Stock    ");
     // Stock.mainStock();
     // System.out.println("");
 
     // System.out.println("    \nEXEMPLE 4 : Travail  ");
-    // Travail.mainTravail();
+    // String[] Tab = {"3", "9"};
+    // Travail.mainTravail(Tab);
     // System.out.println("");
 
     System.out.println("    \nEXEMPLE 5 : Somme   \n ");

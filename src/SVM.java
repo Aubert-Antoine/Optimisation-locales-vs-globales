@@ -1,77 +1,6 @@
-    /* Sac de valeur maximum -- rene.natowicz@esiee.fr -- 15/03/2022
--- Un ensemble de n objets, [0:n].
-L'objet i est de valeur v_i et de taille t_i (v indice i et t indice i).
-La numÃ©rotation des objets est quelconque.
-Les valeurs et tailles sont dans les tableaux V[0:n] et T[0:n].
--- Un sac de contenance C.
-
-ProblÃ¨me : calculer un sous-ensemble d'objets 
-	1) de taille infÃ©rieure ou Ã©gale Ã  la contenance C du sac et 
-	2) de valeur maximum.
-La taille et la valeur d'un sous-ensemble d'objets est la somme des tailles 
-et des valeurs de ses Ã©lÃ©ments.
-
-Notation : m(n,C) est la valeur maximum d'un sac de contenance C, contenant un 
-sous-ensemble des n objets (c'est-Ã -dire un sous-ensemble de [0:n])
-
-Supposons le problÃ¨me rÃ©solu. 
-Quelle est la derniÃ¨re Ã©tape de sa rÃ©solution ?
-Il n'y a que 2 cas possibles : 
-	a) le n-Ã¨me objet n'est pas dans le sac.
-		Alors : m(n,C) = m(n-1,C). 
-		En effet : le sac de contenance C et de valeur maximum contient un sous-ensemble  
-		des n-1 premiers objets.
-	b) il est dans le sac. 
-		Alors : m(n,C) = v_{n-1} + m(n-1,C-t_{n-1}). 
-		En effet : le n-Ã¨me objet est de taille t_{n-1}. Le reste du sac est de contenance 
-		C-t_{n-1}. Il contient un sous-ensemble des n-1 premiers objets.
-		Sa valeur est maximum, sinon le sac de contenance C contenant un sous-ensemble
-		de [0:n] ne serait pas de valeur maximum.
-		Formellement : supposons que le reste du sac est de valeur m' < m(n-1,C-t_{n-1}). 
-		Alors la valeur du sac de contenance C est v_{n-1} + m' < v_{n-1} + m(n,C). 
-		Donc le sac de contenance C contenant un sous-ensemble de [0:n] n'est pas de valeur 
-		maximum. Or, par hypothÃ¨se, il est de valeur maximum.
-
-Donc : m(n,C) = max(m(n-1,C), v_{n-1} + m(n-1,C-t_{n-1})).
-La valeur m(n,C) s'exprime en fonction des deux sous-problÃ¨mes m(n-1,C) et m(n-1,C-t_{n-1}). 
-
-GÃ©nÃ©ralisation : m(k,c) est la valeur maximum d'un sac de contenance c, son contenu est
-un sous-ensemble d'objets [0:k].
--- Cas de base : un sac contenant un sous-ensemble des 0 premiers objets 
-(un sous-ensemble de [0:0] = Ã˜). Il n'y a qu'un sous-ensemble de l'ensemble vide : 
-l'ensemble vide lui-mÃªme. Donc : pour toute contenance c, 0 â‰¤ c < C+1, m(0,c) = 0.
--- Cas gÃ©nÃ©ral : pour tous k et c, 1 â‰¤ k < n+1  et  0 â‰¤ c < C+1
-	m(k,c) = max( m(k-1,c), v_{k-1} + m(k-1, c-t_{k-1} ).
-
-La valeur m(k,c) est calculable si les valeurs m(k-1,c) et m(k-1,c-t_{k-1}) ont dÃ©jÃ 
-Ã©tÃ© calculÃ©es. Pour s'assurer que ces deux valeurs sont effectivement dÃ©jÃ  calculÃ©es 
-lorsque la valeur m(k,c) doit Ãªtre calculÃ©e, nous calculerons toutes les valeurs m(0,c),
-puis toutes les valeurs m(1,c), etc. et nous mÃ©moriserons ces valeurs dans un tableau
-M[0:n+1][0:C+1] de terme gÃ©nÃ©ral M[k][c] = m(k,c). 
-Ã€ la fin de tous ces calculs, nous la valeur m(n,C) sera M[n][C].
-
-De plus, dans un second temps, les valeurs du tableau M nous permettrons d'afficher le 
-contenu d'un sac de valeur maximum m(n,C).
-
-Affichage du contenu d'un sac de valeur m(n,C).
-Soit svm(n,C) le contenu du sac de valeur maximum. Il s'agit d'un sous-ensemble d'objets.
-Sa valeur est m(n,C). 
-Le n-Ã¨me objet est-il dans le sac ? 
-	a) Si m(n,C) = m(n-1,C), il n'y est pas. 
-	Afficher le sac svm(n-1,C) c'est afficher le sac svm(n,C).
-	b) Si m(n,C) â‰  m(n-1,C), il y est. (Dans ce cas, m(n,c) = v_{n-1} + m(n-1,c-t_{n-1})).
-	Alors, svm(n,C) = svm(n-1,C-t_{n-1}) union {n-1}.
-	Afficher svm(n-1,C-t_{n-1}) puis afficher {n-1} c'est afficher svm(n,C).
-
-GÃ©nÃ©ralisons : soit svm(k,c) le sac Ã  afficher. 
-	Base de la rÃ©currence : k = 0. Le sac est vide. Sans rien faire il a Ã©tÃ© affichÃ©.
-	Cas gÃ©nÃ©ral : 1 â‰¤ k < n+1. 
-		a) m(k,c) = m(k-1,c) : si svm(k-1,c) a Ã©tÃ© affichÃ©, alors svm(k,c) a Ã©tÃ© affichÃ©.
-		b) m(k,c) â‰  m(k-1,c) : si svm(k-1,c-t_{k-1}) a Ã©tÃ© affichÃ© puis {k-1} a Ã©tÃ© affichÃ©,
-			alors svm(k,c) a Ã©tÃ© affichÃ©.
-*/
-
 import java.util.Arrays;
+import java.util.Random;
+
 
 public class SVM{
 
@@ -79,54 +8,44 @@ public class SVM{
     /**
      * mainSVM appelant les méthodes dynamique et greedy et affichant leurs résultats
      */
-    public static void mainSVM(String[] Args){
+    public static void mainSVM(){
         System.out.println("\n\nExercice : sac de valeur maximum");
         int[] V = {2,1,3,8,4}; 
 		int[] T = {1,1,2,4,3}; 
 		int n = V.length;
 		System.out.println("V = " + Arrays.toString(V));
 		System.out.println("T = " + Arrays.toString(T));
-		{
-			int C = 3; System.out.printf("C = %d\n",C);
-			int[][] M = calculerM(V,T,C); 
-			System.out.println("M = "); afficher(M); 
-			System.out.printf("Valeur des sacs de valeur maximum = M[%d][%d] = %d\n",
-				n, C, M[n][C]);
-			System.out.print("Contenu d'un tel sac :\n");
-			// afficher un sac de contenance C, de valeur max, contenant un sous-ensemble
-			// des n objets
-			asm(M,V,T,n,C); 
-			System.out.println();
-		}
-		{			
-			System.out.println("V = " + Arrays.toString(V));
-			System.out.println("T = " + Arrays.toString(T));
-			System.out.println("somme(V) = " + somme(V));
-			System.out.println("somme(T) = " + somme(T));
-			System.out.printf("\nSacs de valeur maximum de contenance C, 0 â‰¤ C < %d + 1\n",
-				somme(T));
-			for (int C = 0; C < somme(T)+1; C++){
-				System.out.printf("Sac de contenance %d\n",C);
-				int[][] M = calculerM(V,T,C); 
-				System.out.printf("Valeur des sacs de valeur maximum : %d\n",M[n][C]);
-				System.out.print("Contenu d'un tel sac :\n");
-				// afficher un sac de contenance C, de valeur max, contenant un 
-				// sous-ensemble des n objets
-				asm(M,V,T,n,C); 
-				System.out.println();
-			}
-		}
+		int C = 3;
+		System.out.printf("C = %d\n",C);
 
         // Méthode Dynamique
-		System.out.println("\n\nMETHODE DYNAMIQUE");
+		System.out.println("\n\nMETHODE DYNAMIQUE\n");
+		int[][] M = calculerM(V,T,C); 
+		System.out.println("M = "); afficher(M); 
+		System.out.printf("Valeur des sacs de valeur maximum = M[%d][%d] = %d\n",
+			n, C, M[n][C]);
+		System.out.print("Contenu d'un tel sac :\n");
+		// afficher un sac de contenance C, de valeur max, contenant un sous-ensemble
+		// des n objets
+		asm(M,V,T,n,C); 
+		System.out.println();
 
-        // Méthode Greedy
-		System.out.println("\n\nMETHODE GREEDY");
+        // Méthodes Greedy
+		System.out.println("\nMETHODE GREEDY : Valeur\n");
+		System.out.printf("Taille du sac : %d\n", C);
+		System.out.printf("Contenu du sac :\n", C);
+		contenuGreedyValeur(V, T, C);
+		System.out.println("\nMETHODE GREEDY : Densité\n");
+		System.out.printf("Taille du sac : %d\n", C);
+		System.out.printf("Contenu du sac :\n", C);
+		contenuGreedyDensite(V, T, C);
+
+        System.out.println();
     }
 	
 
     //
-	/* Methode Dynamique */
+	/* Methodes Dynamiques */
 	//
 	
 	static int[][] calculerM(int[] V, int[] T, int C){int n = V.length;
@@ -149,49 +68,197 @@ public class SVM{
 	}//calculerM()	
 	
 	static void asm(int[][] M, int[] V, int[] T, int k, int c){
-	// affichage d'un sac svm(k,c), sac de valeur maximum, de contenance c, contenant un 
-	// un sous-ensemble de [0:k]. Appel principal : asm(M,V,T,n,C).
-		if (k == 0) // svm(0,c) est vide. Sans rien faire, il a Ã©tÃ© affichÃ©.
-			return; // svm(0,c) a Ã©tÃ© affichÃ©.
-		// ici : k > 0
-		if (M[k][c] == M[k-1][c]) // le k-Ã¨me objet n'est pas dans svm(k,c), 
-		// donc svm(k,c) = svm(k-1,c). 
-			asm(M, V, T, k-1, c) ; // svm(k-1,c) a Ã©tÃ© affichÃ©, donc svm(k,c) a Ã©tÃ© affichÃ©
-		else {// le k-Ã¨me objet est dans le sac. Donc svm(k,c) = svm(k-1,c-t(k-1)) union {k-1}
-			asm(M,V,T,k-1,c-T[k-1]); // svm(k-1,c-t(k-1)) a Ã©tÃ© affichÃ©
-			System.out.printf("objet, valeur, taille = %d, %d, %d\n",
-				k-1, V[k-1], T[k-1]); // Le k-Ã¨me objet Ã©tÃ© affichÃ©
-			// svm(k-1,c-t(k-1)) union {k-1} a Ã©tÃ© affichÃ©, donc svm(k,c) a Ã©tÃ© affichÃ©.
+	// Affichage d'un sac svm(k,c), sac de valeur maximum, de contenance c, contenant un  un sous-ensemble de [0:k]
+    // Appel principal : asm(M,V,T,n,C)
+		if (k == 0) // svm(0,c) est vide : sans rien faire, il a été affiché
+			return; // svm(0,c) a été affiché
+		// Ici : k > 0
+		if (M[k][c] == M[k-1][c]) // le k-ème objet n'est pas dans svm(k,c) donc svm(k,c) = svm(k-1,c) 
+			asm(M, V, T, k-1, c) ; // svm(k-1,c) a été affiché, donc svm(k,c) a été affiché
+		else { // le k-ème objet est dans le sac donc svm(k,c) = svm(k-1,c-t(k-1)) union {k-1}
+			asm(M,V,T,k-1,c-T[k-1]); // svm(k-1,c-t(k-1)) a été affiché
+			System.out.printf("objet, valeur, taille = %d, %d, %d\n", k-1, V[k-1], T[k-1]); // Le k-ème objet a été affiché
+			// svm(k-1,c-t(k-1)) union {k-1} a été affiché, donc svm(k,c) a été affiché
 		}
-	}
+	}//asm(=)
 
 
     //
-	/* Methode Greedy */
+	/* Methodes Greedy */
 	//
+
+	/**
+	 * contenuGreedyValeur permettant de placer les objets dans l’ordre des valeurs décroissantes dans un sac de contenance maximum
+	 * @param V tableau des valeurs des objets
+	 * @param T tableau des tailles des objets
+	 * @param C capacité du sac
+	 */
+	static void contenuGreedyValeur(int[] V, int[] T, int C) {
+		int[] valeurTab = Arrays.copyOf(V, V.length); // tableau copiant le tableau déjà existant des valeurs des objets
+		qsInt(valeurTab, 0, valeurTab.length); // tri du nouveau tableau des valeurs des objets par ordre décroissant
+		int tailleSac = 0; // taille actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
+		int valeurSac = 0; // valeur actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
+		for(int i=0; i<valeurTab.length; i++) { // mise en place de l'ajout des objets dans le sac en fonction de leur valeur
+			int objet = 0; // indice faisant correspondre la taille de l'objet dans le tableau T avec sa valeur dans le tableau valeurTab
+			int taille = somme(T); // taille comparative d'objets
+			for(int j=0; j<V.length; j++){ // parcours du tableau V afin de retrouver l'indice initial de l'objet ayant comme valeur valeurTab[i]
+				if(valeurTab[i] == V[j] && T[j] < taille) { // indice initial de l'objet trouvé
+					objet = j;
+					taille = T[j];
+				}
+			}
+			if(T[objet] <= (C-tailleSac)) { // taille de l'objet <= place restante dans le sac
+				tailleSac += T[objet]; // augmentation de la taille su sac avec le nouvel objet ajouté
+				valeurSac += valeurTab[i]; // augmentation de la valeur su sac avec le nouvel objet ajouté
+				System.out.printf(". objet %d : valeur = %d, taille = %d\n", objet, valeurTab[i], T[objet]);
+			}
+		}
+		System.out.printf("--> Valeur totale du sac : %d\n", valeurSac);
+	}//contenuGreedyValeur()
+
+	/**
+	 * contenuGreedyDensite permettant de mettre les objets par ratios “valeur/taille” décroissants dans un sac de contenance maximum
+	 * @param V tableau des valeurs des objets
+	 * @param T tableau des tailles des objets
+	 * @param C capacité du sac
+	 */
+	static void contenuGreedyDensite(int[] V, int[] T, int C) {
+		float[] ratioTab = new float[V.length]; // tableau permettant de contenir les ratio valeur/taille des objets
+		for(int i=0; i<ratioTab.length; i++) { // attribution des valeurs du tableau
+			if(T[i] == 0) ratioTab[i] = (float) V[i]; // cas taille nulle
+			else ratioTab[i] = (float) V[i]/T[i]; // calcul du ratio valeur/taille
+		}
+		qsFloat(ratioTab, 0, ratioTab.length); // tri du nouveau tableau des ratio valeur/taille des objets par ordre décroissant
+		int tailleSac = 0; // taille actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
+		int valeurSac = 0; // valeur actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
+		for(int i=0; i<ratioTab.length; i++) { // mise en place de l'ajout des objets dans le sac en fonction de leur ratio valeur/taille
+			int objet = 0; // indice faisant correspondre la taille et la valeur de l'objet dans les tableaux T et V avec son ratio valeur/taille dans le tableau ratioTab
+			int valeur = 0; // valeur comparative d'objets
+			for(int j=0; j<V.length; j++){ // parcours du tableau V afin de retrouver l'indice initial de l'objet ayant comme valeur valeurTab[i]
+				if(T[j] != 0) { // cas génaral
+					if(ratioTab[i] == ((float) V[j]/T[j]) && valeur < V[j]) { // indice initial de l'objet trouvé
+						objet = j;
+						valeur = V[j];
+					}
+				}
+				else { // cas taille nulle
+					if(ratioTab[i] == (float) V[j]) { // indice initial de l'objet trouvé
+						objet = j;
+					}
+				}
+			}
+			if(T[objet] <= (C-tailleSac)) { // taille de l'objet <= place restante dans le sac
+				tailleSac += T[objet]; // augmentation de la taille su sac avec le nouvel objet ajouté
+				valeurSac += V[objet]; // augmentation de la valeur su sac avec le nouvel objet ajouté
+				System.out.printf(". objet %d : ratio = %s, valeur = %d, taille = %d\n", objet, ratioTab[i], V[objet], T[objet]);
+			}
+			V[objet] = 0;
+		}
+		System.out.printf("--> Valeur totale du sac : %d\n", valeurSac);
+	}//contenuGreedyDensite()
 
 
     /* Fonctions annexes */
+
     static void afficher(int[][] M){ int n = M.length; // affichage du tableau M
         System.out.println("\t[");
         for (int i = n-1; i>=0; i--) 
             System.out.println("\t\t" + Arrays.toString(M[i]));
         System.out.println("\t]");
     }//afficher()
+
    static int somme(int[] T){
         int s = 0; 
         for (int i = 0; i<T.length; i++) 
             s = s+T[i]; 
         return s;
     }//somme()
+
    static int max(int x, int y){ 
         if (x >= y) 
             return x; 
         return y; 
     }//max()
 
+	static void qsInt(int[] T, int i, int j){ 
+		if (j-i <= 1) return ; // le sous-tableau T[i:j] est décroissant
+		// ici : j-i >= 2
+		int k = segmenterInt(T,i,j); // T[i:k] >= T[k] > T[k+1:j]    <<< (1)
+		qsInt(T,i,k);   // (1) et T[i:k] décroissant 
+		qsInt(T,k+1,j); // (1) et T[i:k] décroissant et T[k+1:j] décroissant, donc T[i:j] décroissant
+	}//qsInt()
 
-}//SVM()
+	static Random randInt= new Random();
+
+	static int segmenterInt(int[] T, int i, int j){
+	/* Calcule une permutation des valeurs de T[i:j] vérifiant T[i:k] >= T[k] > T[k+1:j], et retourne k
+	Fonction construite sur la propriété I(k,j') : T[i:k] >= T[k] > T[k+1:j']
+	Arrêt j'=j
+	Initialisation : k = i, j'=k+1
+	Progression : I(k,j') et j'<j et t_{j'}>t_{k} ==> I(k,j'+1)
+				  I(k,j') et j'<j et t_{j'}<=t_{k} et T[k]=t_{j'} et T[k+1]=t_{k} et T[j']=t_{k+1} ==> I(k+1,j'+1)
+	*/
+		int r = i + randInt.nextInt(j-i);
+		permuterInt(T,i,r);
+		int k = i, jp = k+1; // I(k,j')
+		while (jp < j) // I(k,j') et jp < j 
+			if (T[k] > T[jp]) // I(k,j'+1)
+				jp++; // I(k,j')
+			else {
+				permuterInt(T,jp,k+1);
+				permuterInt(T,k,k+1); // I(k+1,j'+1)
+				k++; jp++; // I(k,jp)
+			}
+		return k;				
+	}//segmenterInt()
+
+	static void permuterInt(int[] T, int i, int j){
+		int ti = T[i];
+		T[i] = T[j];
+		T[j] = ti;
+	}//permuterInt()
+
+	static void qsFloat(float[] T, int i, int j){ 
+		if (j-i <= 1) return ; // le sous-tableau T[i:j] est décroissant
+		// ici : j-i >= 2
+		int k = segmenterFloat(T,i,j); // T[i:k] >= T[k] > T[k+1:j]    <<< (1)
+		qsFloat(T,i,k);   // (1) et T[i:k] décroissant 
+		qsFloat(T,k+1,j); // (1) et T[i:k] décroissant et T[k+1:j] décroissant, donc T[i:j] décroissant
+	}//qsFloat()
+
+	static Random randFloat = new Random();
+
+	static int segmenterFloat(float[] T, int i, int j){
+	/* Calcule une permutation des valeurs de T[i:j] vérifiant T[i:k] >= T[k] > T[k+1:j], et retourne k
+	Fonction construite sur la propriété I(k,j') : T[i:k] >= T[k] > T[k+1:j']
+	Arrêt j'=j
+	Initialisation : k = i, j'=k+1
+	Progression : I(k,j') et j'<j et t_{j'}>t_{k} ==> I(k,j'+1)
+				  I(k,j') et j'<j et t_{j'}<=t_{k} et T[k]=t_{j'} et T[k+1]=t_{k} et T[j']=t_{k+1} ==> I(k+1,j'+1)
+	*/
+		int r = i + randFloat.nextInt(j-i);
+		permuterFloat(T,i,r);
+		int k = i, jp = k+1; // I(k,j')
+		while (jp < j) // I(k,j') et jp < j 
+			if (T[k] > T[jp]) // I(k,j'+1)
+				jp++; // I(k,j')
+			else {
+				permuterFloat(T,jp,k+1);
+				permuterFloat(T,k,k+1); // I(k+1,j'+1)
+				k++; jp++; // I(k,jp)
+			}
+		return k;				
+	}//segmenterFloat()
+
+	static void permuterFloat(float[] T, int i, int j){
+		float ti = T[i];
+		T[i] = T[j];
+		T[j] = ti;
+	}//permuterFloat()
+
+
+
+}//SVM
 
 
 /*
@@ -220,7 +287,7 @@ T = [1, 1, 2, 4, 3]
 somme(V) = 18
 somme(T) = 11
 
-Sacs de valeur maximum de contenance C, 0 â‰¤ C < 11 + 1
+Sacs de valeur maximum de contenance C, 0 <= C < 11 + 1
 Sac de contenance 0
 Valeur des sacs de valeur maximum : 0
 Contenu d'un tel sac :

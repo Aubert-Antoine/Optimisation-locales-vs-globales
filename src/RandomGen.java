@@ -32,7 +32,7 @@ public class RandomGen {
         int[] randomTab = new int[pTabLen];
 
         for (int i = 0; i < randomTab.length; i++) {
-            randomTab[i] = randomInt(1, pMaxVal);
+            randomTab[i] = randomInt(0, pMaxVal);
             if(debug) System.out.println(Arrays.toString(randomTab));
         }
         if(info) System.out.println("RANDOM > randomTabInt :\n"+Arrays.toString(randomTab));
