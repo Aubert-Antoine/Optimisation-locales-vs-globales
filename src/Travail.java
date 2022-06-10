@@ -111,12 +111,17 @@ class Travail{
      * repartitionGreedy permettant de calculer la répartition des heures de travail sur les unités par rapport aux notes potentielles avec la méthode gloutonne
      * @param E tableau des notes estimées en fonction du temps passé sur l'unité
     */
-    static void repartitionGreedy(int[][] E){
+    static void repartitionGreedy(int[][] E) {
         int n = E.length; int Hmax = E[0].length-1; // n le nombre d'unités et Hmax le nombre total d'heures de travail
-        int[] heureTab = new int[n]; // tableau associant à chaque unité le nombre d'heures de travail attribuées 
+        int[] heureTab = new int[n]; // tableau associant à chaque unité le nombre d'heures de travail attribuées
         int[] noteTab = new int[n]; // tableau associant à chaque unité sa note
-        double sommeNotes = 0.0; // somme des notes de l'ensemble des unités
-        for(int h=0; h<=Hmax; h++) { // attribution de chaque heure de travail une à une à une unité
+		int sommeNotes = 0; // somme des notes de l'ensemble des unités
+		for(int u=0; u<n; u++) {
+			noteTab[u] = E[u][0];
+			sommeNotes += noteTab[u];
+		}
+		affichageGreedy(0, n, sommeNotes, heureTab, noteTab);
+        for(int h=1; h<=Hmax; h++) { // attribution de chaque heure de travail une à une à une unité
             int unité = 0;
             int noteMax = 0;
             for(int u=0; u<n; u++) { // visualisation de l'ensemble des unités une à une
@@ -125,19 +130,32 @@ class Travail{
                     noteMax = E[u][heureTab[u]+1]-noteTab[u]; // nouvelle note maximum liée au rajout de l'heure de travail h
                 }
             }
-            heureTab[unité] += 1; // attribution de l'heure de travail h à l'unité avec la meilleure note
-            noteTab[unité] += noteMax; // attribution du nouveau gain de l'entrepôt
-            sommeNotes += (double)noteMax; // ajout de la note obtenue à la somme totale des notes
-            double moyenneNotes = sommeNotes/n; // moyenne de l'ensemble des notes
-            System.out.printf("\nNOMBRE D'HEURES TRAVAILLEES : %d\n", h);
-            System.out.printf("Somme maximum des notes : %d\n", sommeNotes);
-            System.out.printf("Moyenne maximum : %s/20\n", moyenneNotes);
-            System.out.println("Une répartition optimale :");
-            for(int u=0; u<n; u++) {
-                System.out.printf("unité %d, <-- %d heures, note estimée %d\n", u, heureTab[u], noteTab[u]);
-            }
+			heureTab[unité] += 1; // attribution de l'heure de travail h à l'unité avec la meilleure note
+			noteTab[unité] += noteMax; // attribution de la nouvelle note de l'unité
+			sommeNotes += noteMax; // ajout de la note obtenue à la somme totale des notes
+            affichageGreedy(h, n, sommeNotes, heureTab, noteTab);
         }
     }//repartitionGreedy()
+
+	/**
+	 * affichageGreedy affichant les résultats de la méthode gloutonne
+	 * @param h nombre d'heures de travail attribuées
+	 * @param n nombre d'unités
+	 * @param sommeNotes somme des notes de l'ensemble des unités pour un nombre d'heures de travail fixé
+	 * @param heureTab tableau associant à chaque unité sa note
+	 * @param noteTab tableau associant à chaque unité le nombre d'heures de travail attribuées
+	 */
+	static void affichageGreedy(int h, int n, int sommeNotes, int[] heureTab, int[] noteTab) {
+		float moyenneNotes = (float) sommeNotes/n; // moyenne de l'ensemble des notes
+		String strMoyenne = String.format("%.2f", moyenneNotes);
+		System.out.printf("\nNOMBRE D'HEURES TRAVAILLEES : %d\n", h);
+		System.out.printf("Somme maximum des notes : %d\n", sommeNotes);
+		System.out.printf("Moyenne maximum : %s/20\n", strMoyenne);
+		System.out.println("Une répartition optimale :");
+		for(int u=0; u<n; u++) {
+			System.out.printf("unité %d, <-- %d heures, note estimée %d\n", u, heureTab[u], noteTab[u]);
+		}
+	}//affichageGreedy()
 
 
     /* Fonctions annexes */

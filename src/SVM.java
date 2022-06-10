@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Random;
 
 
 public class SVM{
@@ -14,48 +15,37 @@ public class SVM{
 		int n = V.length;
 		System.out.println("V = " + Arrays.toString(V));
 		System.out.println("T = " + Arrays.toString(T));
+		int C = 3;
+		System.out.printf("C = %d\n",C);
 
         // Méthode Dynamique
 		System.out.println("\n\nMETHODE DYNAMIQUE\n");
-        {
-			int C = 3; System.out.printf("C = %d\n",C);
-			int[][] M = calculerM(V,T,C); 
-			System.out.println("M = "); afficher(M); 
-			System.out.printf("Valeur des sacs de valeur maximum = M[%d][%d] = %d\n",
-				n, C, M[n][C]);
-			System.out.print("Contenu d'un tel sac :\n");
-			// afficher un sac de contenance C, de valeur max, contenant un sous-ensemble
-			// des n objets
-			asm(M,V,T,n,C); 
-			System.out.println();
-		}
-		{			
-			System.out.println("V = " + Arrays.toString(V));
-			System.out.println("T = " + Arrays.toString(T));
-			System.out.println("somme(V) = " + somme(V));
-			System.out.println("somme(T) = " + somme(T));
-			System.out.printf("\nSacs de valeur maximum de contenance C, 0 <= C < %d + 1\n\n", somme(T));
-			for (int C = 0; C < somme(T)+1; C++){
-				System.out.printf("Sac de contenance %d\n",C);
-				int[][] M = calculerM(V,T,C); 
-				System.out.printf("Valeur des sacs de valeur maximum : %d\n",M[n][C]);
-				System.out.print("Contenu d'un tel sac :\n");
-				// afficher un sac de contenance C, de valeur max, contenant un 
-				// sous-ensemble des n objets
-				asm(M,V,T,n,C); 
-				System.out.println();
-			}
-		}
+		int[][] M = calculerM(V,T,C); 
+		System.out.println("M = "); afficher(M); 
+		System.out.printf("Valeur des sacs de valeur maximum = M[%d][%d] = %d\n",
+			n, C, M[n][C]);
+		System.out.print("Contenu d'un tel sac :\n");
+		// afficher un sac de contenance C, de valeur max, contenant un sous-ensemble
+		// des n objets
+		asm(M,V,T,n,C); 
+		System.out.println();
 
-        // Méthode Greedy
-		System.out.println("\nMETHODE GREEDY");
+        // Méthodes Greedy
+		System.out.println("\nMETHODE GREEDY : Valeur\n");
+		System.out.printf("Taille du sac : %d\n", C);
+		System.out.printf("Contenu du sac :\n", C);
+		contenuGreedyValeur(V, T, C);
+		System.out.println("\nMETHODE GREEDY : Densité\n");
+		System.out.printf("Taille du sac : %d\n", C);
+		System.out.printf("Contenu du sac :\n", C);
+		contenuGreedyDensite(V, T, C);
 
         System.out.println();
     }
 	
 
     //
-	/* Methode Dynamique */
+	/* Methodes Dynamiques */
 	//
 	
 	static int[][] calculerM(int[] V, int[] T, int C){int n = V.length;
@@ -94,28 +84,178 @@ public class SVM{
 
 
     //
-	/* Methode Greedy */
+	/* Methodes Greedy */
 	//
+
+	/**
+	 * contenuGreedyValeur permettant de placer les objets dans l’ordre des valeurs décroissantes dans un sac de contenance maximum
+	 * @param V tableau des valeurs des objets
+	 * @param T tableau des tailles des objets
+	 * @param C capacité du sac
+	 */
+	static void contenuGreedyValeur(int[] V, int[] T, int C) {
+		int[] valeurTab = Arrays.copyOf(V, V.length); // tableau copiant le tableau déjà existant des valeurs des objets
+		qsInt(valeurTab, 0, valeurTab.length); // tri du nouveau tableau des valeurs des objets par ordre décroissant
+		int tailleSac = 0; // taille actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
+		int valeurSac = 0; // valeur actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
+		for(int i=0; i<valeurTab.length; i++) { // mise en place de l'ajout des objets dans le sac en fonction de leur valeur
+			int objet = 0; // indice faisant correspondre la taille de l'objet dans le tableau T avec sa valeur dans le tableau valeurTab
+			int taille = somme(T); // taille comparative d'objets
+			for(int j=0; j<V.length; j++){ // parcours du tableau V afin de retrouver l'indice initial de l'objet ayant comme valeur valeurTab[i]
+				if(valeurTab[i] == V[j] && T[j] < taille) { // indice initial de l'objet trouvé
+					objet = j;
+					taille = T[j];
+				}
+			}
+			if(T[objet] <= (C-tailleSac)) { // taille de l'objet <= place restante dans le sac
+				tailleSac += T[objet]; // augmentation de la taille su sac avec le nouvel objet ajouté
+				valeurSac += valeurTab[i]; // augmentation de la valeur su sac avec le nouvel objet ajouté
+				System.out.printf(". objet %d : valeur = %d, taille = %d\n", objet, valeurTab[i], T[objet]);
+			}
+		}
+		System.out.printf("--> Valeur totale du sac : %d\n", valeurSac);
+	}//contenuGreedyValeur()
+
+	/**
+	 * contenuGreedyDensite permettant de mettre les objets par ratios “valeur/taille” décroissants dans un sac de contenance maximum
+	 * @param V tableau des valeurs des objets
+	 * @param T tableau des tailles des objets
+	 * @param C capacité du sac
+	 */
+	static void contenuGreedyDensite(int[] V, int[] T, int C) {
+		float[] ratioTab = new float[V.length]; // tableau permettant de contenir les ratio valeur/taille des objets
+		for(int i=0; i<ratioTab.length; i++) { // attribution des valeurs du tableau
+			if(T[i] == 0) ratioTab[i] = (float) V[i]; // cas taille nulle
+			else ratioTab[i] = (float) V[i]/T[i]; // calcul du ratio valeur/taille
+		}
+		qsFloat(ratioTab, 0, ratioTab.length); // tri du nouveau tableau des ratio valeur/taille des objets par ordre décroissant
+		int tailleSac = 0; // taille actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
+		int valeurSac = 0; // valeur actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
+		for(int i=0; i<ratioTab.length; i++) { // mise en place de l'ajout des objets dans le sac en fonction de leur ratio valeur/taille
+			int objet = 0; // indice faisant correspondre la taille et la valeur de l'objet dans les tableaux T et V avec son ratio valeur/taille dans le tableau ratioTab
+			int valeur = 0; // valeur comparative d'objets
+			for(int j=0; j<V.length; j++){ // parcours du tableau V afin de retrouver l'indice initial de l'objet ayant comme valeur valeurTab[i]
+				if(T[j] != 0) { // cas génaral
+					if(ratioTab[i] == ((float) V[j]/T[j]) && valeur < V[j]) { // indice initial de l'objet trouvé
+						objet = j;
+						valeur = V[j];
+					}
+				}
+				else { // cas taille nulle
+					if(ratioTab[i] == (float) V[j]) { // indice initial de l'objet trouvé
+						objet = j;
+					}
+				}
+			}
+			if(T[objet] <= (C-tailleSac)) { // taille de l'objet <= place restante dans le sac
+				tailleSac += T[objet]; // augmentation de la taille su sac avec le nouvel objet ajouté
+				valeurSac += V[objet]; // augmentation de la valeur su sac avec le nouvel objet ajouté
+				System.out.printf(". objet %d : ratio = %s, valeur = %d, taille = %d\n", objet, ratioTab[i], V[objet], T[objet]);
+			}
+			V[objet] = 0;
+		}
+		System.out.printf("--> Valeur totale du sac : %d\n", valeurSac);
+	}//contenuGreedyDensite()
 
 
     /* Fonctions annexes */
+
     static void afficher(int[][] M){ int n = M.length; // affichage du tableau M
         System.out.println("\t[");
         for (int i = n-1; i>=0; i--) 
             System.out.println("\t\t" + Arrays.toString(M[i]));
         System.out.println("\t]");
     }//afficher()
+
    static int somme(int[] T){
         int s = 0; 
         for (int i = 0; i<T.length; i++) 
             s = s+T[i]; 
         return s;
     }//somme()
+
    static int max(int x, int y){ 
         if (x >= y) 
             return x; 
         return y; 
     }//max()
+
+	static void qsInt(int[] T, int i, int j){ 
+		if (j-i <= 1) return ; // le sous-tableau T[i:j] est décroissant
+		// ici : j-i >= 2
+		int k = segmenterInt(T,i,j); // T[i:k] >= T[k] > T[k+1:j]    <<< (1)
+		qsInt(T,i,k);   // (1) et T[i:k] décroissant 
+		qsInt(T,k+1,j); // (1) et T[i:k] décroissant et T[k+1:j] décroissant, donc T[i:j] décroissant
+	}//qsInt()
+
+	static Random randInt= new Random();
+
+	static int segmenterInt(int[] T, int i, int j){
+	/* Calcule une permutation des valeurs de T[i:j] vérifiant T[i:k] >= T[k] > T[k+1:j], et retourne k
+	Fonction construite sur la propriété I(k,j') : T[i:k] >= T[k] > T[k+1:j']
+	Arrêt j'=j
+	Initialisation : k = i, j'=k+1
+	Progression : I(k,j') et j'<j et t_{j'}>t_{k} ==> I(k,j'+1)
+				  I(k,j') et j'<j et t_{j'}<=t_{k} et T[k]=t_{j'} et T[k+1]=t_{k} et T[j']=t_{k+1} ==> I(k+1,j'+1)
+	*/
+		int r = i + randInt.nextInt(j-i);
+		permuterInt(T,i,r);
+		int k = i, jp = k+1; // I(k,j')
+		while (jp < j) // I(k,j') et jp < j 
+			if (T[k] > T[jp]) // I(k,j'+1)
+				jp++; // I(k,j')
+			else {
+				permuterInt(T,jp,k+1);
+				permuterInt(T,k,k+1); // I(k+1,j'+1)
+				k++; jp++; // I(k,jp)
+			}
+		return k;				
+	}//segmenterInt()
+
+	static void permuterInt(int[] T, int i, int j){
+		int ti = T[i];
+		T[i] = T[j];
+		T[j] = ti;
+	}//permuterInt()
+
+	static void qsFloat(float[] T, int i, int j){ 
+		if (j-i <= 1) return ; // le sous-tableau T[i:j] est décroissant
+		// ici : j-i >= 2
+		int k = segmenterFloat(T,i,j); // T[i:k] >= T[k] > T[k+1:j]    <<< (1)
+		qsFloat(T,i,k);   // (1) et T[i:k] décroissant 
+		qsFloat(T,k+1,j); // (1) et T[i:k] décroissant et T[k+1:j] décroissant, donc T[i:j] décroissant
+	}//qsFloat()
+
+	static Random randFloat = new Random();
+
+	static int segmenterFloat(float[] T, int i, int j){
+	/* Calcule une permutation des valeurs de T[i:j] vérifiant T[i:k] >= T[k] > T[k+1:j], et retourne k
+	Fonction construite sur la propriété I(k,j') : T[i:k] >= T[k] > T[k+1:j']
+	Arrêt j'=j
+	Initialisation : k = i, j'=k+1
+	Progression : I(k,j') et j'<j et t_{j'}>t_{k} ==> I(k,j'+1)
+				  I(k,j') et j'<j et t_{j'}<=t_{k} et T[k]=t_{j'} et T[k+1]=t_{k} et T[j']=t_{k+1} ==> I(k+1,j'+1)
+	*/
+		int r = i + randFloat.nextInt(j-i);
+		permuterFloat(T,i,r);
+		int k = i, jp = k+1; // I(k,j')
+		while (jp < j) // I(k,j') et jp < j 
+			if (T[k] > T[jp]) // I(k,j'+1)
+				jp++; // I(k,j')
+			else {
+				permuterFloat(T,jp,k+1);
+				permuterFloat(T,k,k+1); // I(k+1,j'+1)
+				k++; jp++; // I(k,jp)
+			}
+		return k;				
+	}//segmenterFloat()
+
+	static void permuterFloat(float[] T, int i, int j){
+		float ti = T[i];
+		T[i] = T[j];
+		T[j] = ti;
+	}//permuterFloat()
+
 
 
 }//SVM
