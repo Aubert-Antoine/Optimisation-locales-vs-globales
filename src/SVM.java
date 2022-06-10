@@ -55,8 +55,8 @@ public class SVM{
 
 		System.out.println("\nCAS AVEC METHODE GLOUTONNE PAR VALEUR\n");
 
-        double[] outValeur = EvalStatSVM(45, 50, 100, "valeur");
-        System.out.println("outValeur : " + Arrays.toString(outValeur)+"\n");
+        double[] outValeur = EvalStatSVM(100, 5000, 100, "valeur");
+        //System.out.println("outValeur : " + Arrays.toString(outValeur)+"\n");
 
         System.out.println("medianne = "+EvalStat.mediane(outValeur));
         System.out.println("moyenne = "+EvalStat.moyenne(outValeur));
@@ -66,8 +66,8 @@ public class SVM{
 
 		System.out.println("\n\nCAS AVEC METHODE GLOUTONNE PAR DENSITE DE VALEURS\n");
 
-        double[] outDensite = EvalStatSVM(45, 50, 100, "densite");
-        System.out.println("outDensite : " + Arrays.toString(outDensite)+"\n");
+        double[] outDensite = EvalStatSVM(100, 5000, 100, "densite");
+        //System.out.println("outDensite : " + Arrays.toString(outDensite)+"\n");
 
         System.out.println("medianne = "+EvalStat.mediane(outDensite));
         System.out.println("moyenne = "+EvalStat.moyenne(outDensite));
@@ -356,112 +356,3 @@ public class SVM{
 
 
 }//SVM
-
-
-/*
-
-% javac SacValMax.java
-% java SacValMax      
-V = [2, 1, 3, 8, 4]
-T = [1, 1, 2, 4, 3]
-C = 3
-M = 
-	[
-		[0, 2, 3, 5]
-		[0, 2, 3, 5]
-		[0, 2, 3, 5]
-		[0, 2, 3, 3]
-		[0, 2, 2, 2]
-		[0, 0, 0, 0]
-	]
-Valeur des sacs de valeur maximum = M[5][3] = 5
-Contenu d'un tel sac :
-objet, valeur, taille = 0, 2, 1
-objet, valeur, taille = 2, 3, 2
-
-V = [2, 1, 3, 8, 4]
-T = [1, 1, 2, 4, 3]
-somme(V) = 18
-somme(T) = 11
-
-Sacs de valeur maximum de contenance C, 0 <= C < 11 + 1
-Sac de contenance 0
-Valeur des sacs de valeur maximum : 0
-Contenu d'un tel sac :
-
-Sac de contenance 1
-Valeur des sacs de valeur maximum : 2
-Contenu d'un tel sac :
-objet, valeur, taille = 0, 2, 1
-
-Sac de contenance 2
-Valeur des sacs de valeur maximum : 3
-Contenu d'un tel sac :
-objet, valeur, taille = 0, 2, 1
-objet, valeur, taille = 1, 1, 1
-
-Sac de contenance 3
-Valeur des sacs de valeur maximum : 5
-Contenu d'un tel sac :
-objet, valeur, taille = 0, 2, 1
-objet, valeur, taille = 2, 3, 2
-
-Sac de contenance 4
-Valeur des sacs de valeur maximum : 8
-Contenu d'un tel sac :
-objet, valeur, taille = 3, 8, 4
-
-Sac de contenance 5
-Valeur des sacs de valeur maximum : 10
-Contenu d'un tel sac :
-objet, valeur, taille = 0, 2, 1
-objet, valeur, taille = 3, 8, 4
-
-Sac de contenance 6
-Valeur des sacs de valeur maximum : 11
-Contenu d'un tel sac :
-objet, valeur, taille = 0, 2, 1
-objet, valeur, taille = 1, 1, 1
-objet, valeur, taille = 3, 8, 4
-
-Sac de contenance 7
-Valeur des sacs de valeur maximum : 13
-Contenu d'un tel sac :
-objet, valeur, taille = 0, 2, 1
-objet, valeur, taille = 2, 3, 2
-objet, valeur, taille = 3, 8, 4
-
-Sac de contenance 8
-Valeur des sacs de valeur maximum : 14
-Contenu d'un tel sac :
-objet, valeur, taille = 0, 2, 1
-objet, valeur, taille = 1, 1, 1
-objet, valeur, taille = 2, 3, 2
-objet, valeur, taille = 3, 8, 4
-
-Sac de contenance 9
-Valeur des sacs de valeur maximum : 15
-Contenu d'un tel sac :
-objet, valeur, taille = 0, 2, 1
-objet, valeur, taille = 1, 1, 1
-objet, valeur, taille = 3, 8, 4
-objet, valeur, taille = 4, 4, 3
-
-Sac de contenance 10
-Valeur des sacs de valeur maximum : 17
-Contenu d'un tel sac :
-objet, valeur, taille = 0, 2, 1
-objet, valeur, taille = 2, 3, 2
-objet, valeur, taille = 3, 8, 4
-objet, valeur, taille = 4, 4, 3
-
-Sac de contenance 11
-Valeur des sacs de valeur maximum : 18
-Contenu d'un tel sac :
-objet, valeur, taille = 0, 2, 1
-objet, valeur, taille = 1, 1, 1
-objet, valeur, taille = 2, 3, 2
-objet, valeur, taille = 3, 8, 4
-objet, valeur, taille = 4, 4, 3
-
-*/

@@ -59,7 +59,7 @@ public class RandomGen {
 
         for(int i = 0; i < randomTab2D.length; i++) {
             for(int j = pDebutCTab; j < randomTab2D[i].length; j++) {
-                randomTab2D[i][j] = randomInt(0, pMaxVal);
+                randomTab2D[i][j] = randomInt(1, pMaxVal);
             if(debug) System.out.println(Arrays.toString(randomTab2D));
             }
         }

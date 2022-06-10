@@ -39,7 +39,7 @@ public class Robot{
 
 		/* Runs */
         System.out.println("Evaluation statistique de Robot : ");
-        double[] out = EvalStatRobot(500, 100);
+        double[] out = EvalStatRobot(5000, 100);
         System.out.println("out : " + Arrays.toString(out)+"\n");
 
         System.out.println("medianne = "+EvalStat.mediane(out));

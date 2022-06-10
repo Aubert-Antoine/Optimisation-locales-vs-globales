@@ -1,3 +1,9 @@
+/**
+ * La class Main permet d'executer les programme que l'on souhaite.
+ * Mettre en commentaire les programme que l'on ne veut pas executer.
+ */
+
+
 public class Main {
   public static void main(String[] Args) throws Exception { 
 
@@ -20,9 +26,9 @@ public class Main {
     // Travail.mainTravail();
     // System.out.println("");
 
-    System.out.println("    \nEXEMPLE 5 : Somme   \n ");
-    Somme.mainSomme();
-    System.out.println("");
+    // System.out.println("    \nEXEMPLE 5 : Somme   \n ");
+    // Somme.mainSomme();
+    // System.out.println("");
 
   }
 }
