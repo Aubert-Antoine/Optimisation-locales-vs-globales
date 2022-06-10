@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Arrays;
 
 // https://projecteuler.net/problem=67
@@ -266,6 +267,12 @@ public class Somme {
 
         System.out.println("Les param sont : pLmax = "+pLmax+"  pNruns = "+pNruns+"  pVmax = "+pVmax+"\n");
 
+        if(pLmax <= 0 || pNruns <= 0 || pVmax <= 0){
+            System.out.println("\nLes param doivent etre positifs\n!!!!!!!!!!!!!!!!!!!!!\n");
+            D[0] = -1;
+            return D;       // return une Exception ? 
+        }
+
         for (int r = 0; r < D.length; r++) {
             int nbNiveaux = RandomGen.randomInt(1, pLmax);
             int nbElement = (nbNiveaux*(nbNiveaux+1))/2;
@@ -273,7 +280,7 @@ public class Somme {
 
             
 
-            if(true) {
+            if(info) {
                 System.out.println("Runs numero : "+r);
                 System.out.println("Le tableau random : T = "+Arrays.toString(T));
                 System.out.println("calculerM(T)[0] = "+calculerM(T)[0]);
@@ -286,14 +293,15 @@ public class Somme {
             //On regarde la valeur m(0) qui est le max, on fait le ration puis on attribut le ratio
             // a D[r], on fait cela Nruns fois
         }
-        if(true) System.out.println("Somme > EvalStatSomme : D = "+Arrays.toString(D));
+        if(info) System.out.println("Somme > EvalStatSomme : D = "+Arrays.toString(D));
         return D;
     }//EvalStatSomme()
 
     
-    public static void mainSomme(){
-        System.out.println("Hello, World! from Somme Class \n");
+    public static void mainSomme() throws IOException{
+        System.out.println("Hello, World! from Somme Class \n\n");
 
+        //** Evaluation avec run unique et avec un tableaux deterministe*/
 
         // int[] curTab = MakeTrig();
         // System.out.println("MakeTrig()"+Arrays.toString(curTab));
@@ -305,9 +313,21 @@ public class Somme {
         // System.out.println("\nLe chemin de somme cumulee max en glouton : ");
         // calculeTabSMGlouton(curTab);
 
+
+
+        //** Evaluation des runs multiples et avec des tableaux random*/
+
         System.out.println("Evaluations statistique de Somme : ");
-        double[] out = EvalStatSomme(6, 10, 15);
-        System.out.println("out : " + Arrays.toString(out));
+        double[] out = EvalStatSomme(100, 5000, 100);
+        System.out.println("out : " + Arrays.toString(out)+"\n");
+
+        System.out.println("medianne = "+EvalStat.mediane(out));
+        System.out.println("moyenne = "+EvalStat.moyenne(out));
+        System.out.println("ecart type = "+EvalStat.ecartType(out));
+
+        EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "test");
+
+        System.out.println("\n\n\nFIN de SOMME \n\n\n");
     }
     
 }

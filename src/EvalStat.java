@@ -51,7 +51,15 @@ public class EvalStat {
         return moyenne/pTabRef.length;
     }
 
-    
+    /**
+     * cf https://fr.wikipedia.org/wiki/%C3%89cart_type#En_algorithmique
+     * ecartType retourne l'ecart type du tableau passé en param
+     * @param pTabRef
+     * @return
+     */
+    public static double ecartType(double[] pTabRef){
+        return -1;
+    }
 
     public static void mainEvalStat(){
         System.out.println("Hello, World! from EvalStat Class");
