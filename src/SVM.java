@@ -55,7 +55,7 @@ public class SVM{
 
 		System.out.println("\nCAS AVEC METHODE GLOUTONNE PAR VALEUR\n");
 
-        double[] outValeur = EvalStatSVM(100, 5000, 100, "valeur");
+        double[] outValeur = EvalStatSVM(10, 5000, 100, "valeur");
         //System.out.println("outValeur : " + Arrays.toString(outValeur)+"\n");
 
         System.out.println("medianne = "+EvalStat.mediane(outValeur));
@@ -103,7 +103,7 @@ public class SVM{
 			int[] V = RandomGen.randomTabInt(tailleTab, pVmax);
             int[] T = RandomGen.randomTabInt(tailleTab, pVmax);
 
-			int C = RandomGen.randomInt(5, pVmax*10); 		// la taille du sac depend de pVmax, le *10 est de sorte qu'il y ait au moins 10 obj dans le sac
+			int C = RandomGen.randomInt(pVmax, pVmax*10); 		// la taille du sac depend de pVmax, le *10 est de sorte qu'il y ait au moins 10 obj dans le sac
 
 			if(pMethodeGreedy.equals("valeur")) {
 				if(info) {
@@ -113,6 +113,24 @@ public class SVM{
 					System.out.println("La valeur dynamique : calculerM(V, T, C)[tailleTab][C] = "+calculerM(V, T, C)[tailleTab][C]);
 					System.out.println("La valeur gloutonne (methode par valeur) : contenuGreedyValeur(V, T, C) = "+contenuGreedyValeur(V, T, C)+"\n");
 				}	
+
+				if(calculerM(V, T, C)[tailleTab][C]<contenuGreedyValeur(V, T, C)){		//test si distance relatice au nv r est negative 
+					System.out.println("Runs numero : "+r);
+					System.out.println("Le tableau random : T = "+Arrays.toString(T));
+					System.out.println("Le tableau random : V = "+Arrays.toString(V));
+					System.out.println("La valeur dynamique : calculerM(V, T, C)[tailleTab][C] = "+calculerM(V, T, C)[tailleTab][C]);
+					System.out.println("La valeur gloutonne (methode par valeur) : contenuGreedyValeur(V, T, C) = "+contenuGreedyValeur(V, T, C)+"\n");
+				}
+
+				if(calculerM(V, T, C)[tailleTab][C] == 0){								//test si division par 0
+					System.out.println("Runs numero : "+r);
+					System.out.println("Le tableau random : T = "+Arrays.toString(T));
+					System.out.println("Le tableau random : V = "+Arrays.toString(V));
+					System.out.println("La valeur dynamique : calculerM(V, T, C)[tailleTab][C] = "+calculerM(V, T, C)[tailleTab][C]);
+					System.out.println("La valeur gloutonne (methode par valeur) : contenuGreedyValeur(V, T, C) = "+contenuGreedyValeur(V, T, C)+"\n");
+				}
+
+
 				D[r] = EvalStat.evalMax(calculerM(V, T, C)[tailleTab][C], contenuGreedyValeur(V, T, C));
 				//On regarde la valeur m(0) qui est le max, on fait le ration puis on attribut le ratio
 				// a D[r], on fait cela Nruns fois
@@ -125,7 +143,24 @@ public class SVM{
 					System.out.println("Le tableau random : V = "+Arrays.toString(V));
 					System.out.println("La valeur dynamique : calculerM(V, T, C)[tailleTab][C] = "+calculerM(V, T, C)[tailleTab][C]);
 					System.out.println("La valeur gloutonne (methode par densité) : contenuGreedyDensite(V, T, C) = "+contenuGreedyDensite(V, T, C)+"\n");
-				}				
+				}		
+				
+				if(calculerM(V, T, C)[tailleTab][C]<contenuGreedyDensite(V, T, C)){		//test si distance relatice au nv r est negative 
+					System.out.println("Runs numero : "+r);
+					System.out.println("Le tableau random : T = "+Arrays.toString(T));
+					System.out.println("Le tableau random : V = "+Arrays.toString(V));
+					System.out.println("La valeur dynamique : calculerM(V, T, C)[tailleTab][C] = "+calculerM(V, T, C)[tailleTab][C]);
+					System.out.println("La valeur gloutonne (methode par valeur) : contenuGreedyValeur(V, T, C) = "+contenuGreedyDensite(V, T, C)+"\n");
+				}
+
+				if(calculerM(V, T, C)[tailleTab][C] == 0){								//test si division par 0
+					System.out.println("Runs numero : "+r);
+					System.out.println("Le tableau random : T = "+Arrays.toString(T));
+					System.out.println("Le tableau random : V = "+Arrays.toString(V));
+					System.out.println("La valeur dynamique : calculerM(V, T, C)[tailleTab][C] = "+calculerM(V, T, C)[tailleTab][C]);
+					System.out.println("La valeur gloutonne (methode par valeur) : contenuGreedyValeur(V, T, C) = "+contenuGreedyDensite(V, T, C)+"\n");
+				}
+
 				D[r] = EvalStat.evalMax(calculerM(V, T, C)[tailleTab][C], contenuGreedyDensite(V, T, C));
 				//On regarde la valeur m(0) qui est le max, on fait le ration puis on attribut le ratio
 				// a D[r], on fait cela Nruns fois
@@ -188,17 +223,18 @@ public class SVM{
 	 * @return la valeur max du sac
 	 */
 	static int contenuGreedyValeur(int[] V, int[] T, int C) {
-		int[] valeurTab = Arrays.copyOf(V, V.length); // tableau copiant le tableau déjà existant des valeurs des objets
+		int[] copieV = Arrays.copyOf(V, V.length); // copie du tableau des valeurs des objets pour ne pas altérer l'original
+		int[] valeurTab = Arrays.copyOf(V, V.length); // tableau copiant le tableau déjà existant des valeurs des objets pour ensuite le trier
 		qsInt(valeurTab, 0, valeurTab.length); // tri du nouveau tableau des valeurs des objets par ordre décroissant
 		int tailleSac = 0; // taille actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
 		int valeurSac = 0; // valeur actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
 		for(int i=0; i<valeurTab.length; i++) { // mise en place de l'ajout des objets dans le sac en fonction de leur valeur
-			for(int j=0; j<V.length; j++){ // parcours du tableau V afin de retrouver l'indice initial de l'objet ayant comme valeur valeurTab[i] &&  taille de l'objet <= place restante dans le sac
-				if(valeurTab[i] == V[j] && T[j] <= (C-tailleSac)) { // indice initial de l'objet trouvé
+			for(int j=0; j<copieV.length; j++){ // parcours du tableau V afin de retrouver l'indice initial de l'objet ayant comme valeur valeurTab[i] &&  taille de l'objet <= place restante dans le sac
+				if(valeurTab[i] == copieV[j] && T[j] <= (C-tailleSac)) { // indice initial de l'objet trouvé
 					tailleSac += T[j]; // augmentation de la taille du sac avec le nouvel objet ajouté
 					valeurSac += valeurTab[i]; // augmentation de la valeur du sac avec le nouvel objet ajouté
 					if(info) System.out.printf(". objet %d : valeur = %d, taille = %d\n", j, valeurTab[i], T[j]);
-					V[j] = 0; // afin d'éviter que l'objet soit choisi plusieurs fois
+					copieV[j] = 0; // afin d'éviter que l'objet soit choisi plusieurs fois
 					break;
 				}
 			}
@@ -215,6 +251,7 @@ public class SVM{
 	 * @return la valeur max du sac
 	 */
 	static int contenuGreedyDensite(int[] V, int[] T, int C) {
+		int[] copieV = Arrays.copyOf(V, V.length); // copie du tableau des valeurs des objets pour ne pas altérer l'original
 		float[] ratioTab = new float[V.length]; // tableau permettant de contenir les ratio valeur/taille des objets
 		for(int i=0; i<ratioTab.length; i++) { // attribution des valeurs du tableau
 			if(T[i] == 0) ratioTab[i] = (float) V[i]; // cas taille nulle
@@ -224,21 +261,21 @@ public class SVM{
 		int tailleSac = 0; // taille actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
 		int valeurSac = 0; // valeur actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
 		for(int i=0; i<ratioTab.length; i++) { // mise en place de l'ajout des objets dans le sac en fonction de leur ratio valeur/taille
-			for(int j=0; j<V.length; j++){ // parcours du tableau V afin de retrouver l'indice initial de l'objet ayant comme valeur valeurTab[i]
+			for(int j=0; j<copieV.length; j++){ // parcours du tableau V afin de retrouver l'indice initial de l'objet ayant comme valeur valeurTab[i]
 				if(T[j] != 0) { // cas génaral
-					if(ratioTab[i] == ((float) V[j]/T[j]) && T[j] <= (C-tailleSac)) { // indice initial de l'objet trouvé && taille de l'objet <= place restante dans le sac
+					if(ratioTab[i] == ((float) copieV[j]/T[j]) && T[j] <= (C-tailleSac)) { // indice initial de l'objet trouvé && taille de l'objet <= place restante dans le sac
 						tailleSac += T[j]; // augmentation de la taille su sac avec le nouvel objet ajouté
-						valeurSac += V[j]; // augmentation de la valeur su sac avec le nouvel objet ajouté
-						if(info) System.out.printf(". objet %d : ratio = %s, valeur = %d, taille = %d\n", j, ratioTab[i], V[j], T[j]);
-						V[j] = 0; // afin d'éviter que l'objet soit choisi plusieurs fois
+						valeurSac += copieV[j]; // augmentation de la valeur su sac avec le nouvel objet ajouté
+						if(info) System.out.printf(". objet %d : ratio = %s, valeur = %d, taille = %d\n", j, ratioTab[i], copieV[j], T[j]);
+						copieV[j] = 0; // afin d'éviter que l'objet soit choisi plusieurs fois
 						break;
 					}
 				}
 				else { // cas taille nulle
 					if(ratioTab[i] == (float) V[j]) { // indice initial de l'objet trouvé
-						valeurSac += V[j]; // augmentation de la valeur su sac avec le nouvel objet ajouté
-						if(info) System.out.printf(". objet %d : ratio = %s, valeur = %d, taille = %d\n", j, ratioTab[i], V[j], T[j]);
-						V[j] = 0; // afin d'éviter que l'objet soit choisi plusieurs fois
+						valeurSac += copieV[j]; // augmentation de la valeur su sac avec le nouvel objet ajouté
+						if(info) System.out.printf(". objet %d : ratio = %s, valeur = %d, taille = %d\n", j, ratioTab[i], copieV[j], T[j]);
+						copieV[j] = 0; // afin d'éviter que l'objet soit choisi plusieurs fois
 						break;
 					}
 				}
