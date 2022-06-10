@@ -52,7 +52,7 @@ class Travail{
 		
 		/* Runs */
         System.out.println("Evaluation statistique de Travail : ");
-        double[] out = EvalStatTravail(45, 50, 100);
+        double[] out = EvalStatTravail(50, 100);
         System.out.println("out : " + Arrays.toString(out)+"\n");
 
         System.out.println("medianne = "+EvalStat.mediane(out));
@@ -68,17 +68,16 @@ class Travail{
 
 	/**
      * EvalStatTravail genere les runs et stocke la distance relative entre les solutions goulonne et dynamique
-     * @param pTailleTabMax la taille max pour les lignes et colonnes du tableau G
      * @param pNruns le nombre de runs de l’evaluation statistique
-     * @param pVmax la plus grande valeur pour le gain d'un entrepot via son stock
+     * @param pVmax la plus grande valeur pour 'nombre unités' et 'nombre heures'
      * @return D[0 : N runs] qui contiendra pour chaque runla distance relative entre la valeur du chemin de somme maximum et la valeur du chemin glouton.
      */
-	public static double[] EvalStatTravail(int pTailleTabMax, int pNruns, int pVmax) {
+	public static double[] EvalStatTravail(int pNruns, int pVmax) {
         double[] D = new double[pNruns];
 
-        System.out.println("Les param sont : pLmax = "+pTailleTabMax+"  pNruns = "+pNruns+"  pVmax = "+pVmax+"\n");
+        System.out.println("Les param sont : pNruns = "+pNruns+"  pVmax = "+pVmax+"\n");
 
-        if(pTailleTabMax <= 0 || pNruns <= 0 || pVmax <= 0){
+		if(pNruns <= 0 || pVmax <= 0){
             System.out.println("\nLes param doivent etre positifs\n!!!!!!!!!!!!!!!!!!!!!\n");
             D[0] = -1;
             return D;       // return une Exception ? 
@@ -95,7 +94,7 @@ class Travail{
 				System.out.println("Le nombre d'heures max random : nbreHeuresMax = "+nbreHeuresMax);
                 System.out.println("Le tableau random : E = "+Arrays.toString(E));
                 System.out.println("La valeur dynamique : calculerMA(E)[0][E.length][E[0].length-1] = "+calculerMA(E)[0][E.length][E[0].length-1]);
-                System.out.println("La valeur gloutonne : = "+repartitionGreedy(E)+"\n");
+                System.out.println("La valeur gloutonne : repartitionGreedy(E) = "+repartitionGreedy(E)+"\n");
             }
 
            
@@ -231,7 +230,7 @@ class Travail{
     static int[][] estimations(int n, int H){ // retourne E[0:n][0:H+1] de terme général E[i][h] = e(i,h)
     // Les estimations sont aléatoires, croissantes selon h
         int[][] E = new int[n][H+1];
-        Random rand = new Random(); // pour gÃ©nÃ©ration alÃ©atoire des notes estimées.
+        Random rand = new Random(); // pour génération aléatoire des notes estimées
         for (int i = 0; i < n; i++) E[i][0] = 6 + rand.nextInt(5);
         for (int i = 0; i < n; i++)
             for (int h = 1; h < H+1; h++)

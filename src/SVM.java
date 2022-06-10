@@ -51,15 +51,29 @@ public class SVM{
 
 
 		/* Runs */
-        System.out.println("Evaluation statistique de SVM : ");
-        double[] out = EvalStatSVM(45, 50, 100);
-        System.out.println("out : " + Arrays.toString(out)+"\n");
+        System.out.println("\n\nEvaluation statistique de SVM : \n");
 
-        System.out.println("medianne = "+EvalStat.mediane(out));
-        System.out.println("moyenne = "+EvalStat.moyenne(out));
-        System.out.println("ecart type = "+EvalStat.ecartType(out));
+		System.out.println("\nCAS AVEC METHODE GLOUTONNE PAR VALEUR\n");
 
-        EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "SVM.csv");
+        double[] outValeur = EvalStatSVM(45, 50, 100, "valeur");
+        System.out.println("outValeur : " + Arrays.toString(outValeur)+"\n");
+
+        System.out.println("medianne = "+EvalStat.mediane(outValeur));
+        System.out.println("moyenne = "+EvalStat.moyenne(outValeur));
+        System.out.println("ecart type = "+EvalStat.ecartType(outValeur));
+
+        EcrireValeursGaussiennesDansFichier.EcrireGdansF(outValeur, "SVMvaleur.csv");
+
+		System.out.println("\n\nCAS AVEC METHODE GLOUTONNE PAR DENSITE DE VALEURS\n");
+
+        double[] outDensite = EvalStatSVM(45, 50, 100, "densite");
+        System.out.println("outDensite : " + Arrays.toString(outDensite)+"\n");
+
+        System.out.println("medianne = "+EvalStat.mediane(outDensite));
+        System.out.println("moyenne = "+EvalStat.moyenne(outDensite));
+        System.out.println("ecart type = "+EvalStat.ecartType(outDensite));
+
+        EcrireValeursGaussiennesDansFichier.EcrireGdansF(outDensite, "SVMdensite.csv");
 
         System.out.println("\n\n\nFIN de SVM \n\n\n");
 
@@ -73,7 +87,7 @@ public class SVM{
      * @param pVmax la plus grande valeur pour 'valeur' et 'taille'
      * @return D[0 : N runs] qui contiendra pour chaque runla distance relative entre la valeur du chemin de somme maximum et la valeur du chemin glouton.
      */
-	public static double[] EvalStatSVM(int pTailleTabMax, int pNruns, int pVmax) {
+	public static double[] EvalStatSVM(int pTailleTabMax, int pNruns, int pVmax, String pMethodeGreedy) {
         double[] D = new double[pNruns];
 
         System.out.println("Les param sont : pTailleTabmax = "+pTailleTabMax+"  pNruns = "+pNruns+"  pVmax = "+pVmax+"\n");
@@ -91,22 +105,33 @@ public class SVM{
 
 			int C = RandomGen.randomInt(1, pVmax*10); 		// la taille du sac depend de pVmax, le *10 est de sorte qu'il y ait au moins 10 obj dans le sac
 
-            
+			if(pMethodeGreedy.equals("valeur")) {
+				if(info) {
+					System.out.println("Runs numero : "+r);
+					System.out.println("Le tableau random : T = "+Arrays.toString(T));
+					System.out.println("Le tableau random : V = "+Arrays.toString(V));
+					System.out.println("La valeur dynamique : calculerM(V, T, C)[tailleTab][C] = "+calculerM(V, T, C)[tailleTab][C]);
+					System.out.println("La valeur gloutonne (methode par valeur) : contenuGreedyValeur(V, T, C) = "+contenuGreedyValeur(V, T, C)+"\n");
+				}	
+				D[r] = EvalStat.evalMax(calculerM(V, T, C)[tailleTab][C], contenuGreedyValeur(V, T, C));
+				//On regarde la valeur m(0) qui est le max, on fait le ration puis on attribut le ratio
+				// a D[r], on fait cela Nruns fois
+			}
 
-            if(info) {
-                System.out.println("Runs numero : "+r);
-                System.out.println("Le tableau random : T = "+Arrays.toString(T));
-				System.out.println("Le tableau random : V = "+Arrays.toString(V));
-                System.out.println("La valeur dynamique : calculerM(V, T, C)[tailleTab][C] = "+calculerM(V, T, C)[tailleTab][C]);
-                System.out.println("La valeur gloutonne (methode par valeur) : = "+contenuGreedyValeur(V, T, C)+"\n");
-            }
+			if(pMethodeGreedy.equals("densite")) {
+				if(info) {
+					System.out.println("Runs numero : "+r);
+					System.out.println("Le tableau random : T = "+Arrays.toString(T));
+					System.out.println("Le tableau random : V = "+Arrays.toString(V));
+					System.out.println("La valeur dynamique : calculerM(V, T, C)[tailleTab][C] = "+calculerM(V, T, C)[tailleTab][C]);
+					System.out.println("La valeur gloutonne (methode par densité) : contenuGreedyDensite(V, T, C) = "+contenuGreedyDensite(V, T, C)+"\n");
+				}				
+				D[r] = EvalStat.evalMax(calculerM(V, T, C)[tailleTab][C], contenuGreedyDensite(V, T, C));
+				//On regarde la valeur m(0) qui est le max, on fait le ration puis on attribut le ratio
+				// a D[r], on fait cela Nruns fois
+			}
+		}
 
-           
-            
-            D[r] = EvalStat.evalMax(calculerM(V, T, C)[tailleTab][C], contenuGreedyValeur(V, T, C));
-            //On regarde la valeur m(0) qui est le max, on fait le ration puis on attribut le ratio
-            // a D[r], on fait cela Nruns fois
-        }
         if(info) System.out.println("SVM > EvalStatSVM : D = "+Arrays.toString(D));
         return D;
     }//EvalStatSVM()

@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Arrays;
 
 
@@ -7,90 +8,166 @@ public class Robot{
 	static final int plusInfini = Integer.MAX_VALUE, moinsInfini = Integer.MIN_VALUE;
 
 	static Boolean debug = true;
+	private static final boolean info = false;
 
 	/**
 	 * mainRobot appelant les méthodes dynamique et greedy et affichant leurs résultats
+	 * @throws IOException
 	 */
-	public static void mainRobot(){
+	public static void mainRobot() throws IOException{
 		System.out.println("\n\nExercice : le petit robot");
-		int L = 5, C = 7; // grille 5 x 7
-		System.out.printf("Grille à %d lignes et %d colonnes",L,C);
+
+		/* ancienne version cas particulier : ne marche plus à cause de l'ajout aléatoire dans calculerM, accm et cheminGreedy */
 		
-		// Méthode Dynamique
-		System.out.println("\n\nMETHODE DYNAMIQUE");
-		int[][] M = calculerM(L,C);
-		System.out.println("Tableau M des coûts minimum :");
-		afficher(M);
-		System.out.printf("Coût minimum d'un chemin de (0,0) à (%d,%d) = %d\n",L-1,C-1,M[L-1][C-1]);
-		accm(M,L,C,L-1,C-1); // affichage d'un chemin de coût min de 0,0 à L-1,C-1
+		// int L = 5, C = 7; // grille 5 x 7
+		// System.out.printf("Grille à %d lignes et %d colonnes",L,C);
 		
-		// Méthode Greedy
-		System.out.println("\n\nMETHODE GREEDY");
-		cheminGreedy(L, C); // affichage d'un chemin de coût min de 0,0 à L-1,C-1
+		// // Méthode Dynamique
+		// System.out.println("\n\nMETHODE DYNAMIQUE");
+		// int[][] M = calculerM(L,C);
+		// System.out.println("Tableau M des coûts minimum :");
+		// afficher(M);
+		// System.out.printf("Coût minimum d'un chemin de (0,0) à (%d,%d) = %d\n",L-1,C-1,M[L-1][C-1]);
+		// accm(M,L,C,L-1,C-1); // affichage d'un chemin de coût min de 0,0 à L-1,C-1
 		
-		System.out.println();
+		// // Méthode Greedy
+		// System.out.println("\n\nMETHODE GREEDY");
+		// cheminGreedy(L, C); // affichage d'un chemin de coût min de 0,0 à L-1,C-1
+		
+		// System.out.println();
+
+
+		/* Runs */
+        System.out.println("Evaluation statistique de Robot : ");
+        double[] out = EvalStatRobot(500, 100);
+        System.out.println("out : " + Arrays.toString(out)+"\n");
+
+        System.out.println("medianne = "+EvalStat.mediane(out));
+        System.out.println("moyenne = "+EvalStat.moyenne(out));
+        System.out.println("ecart type = "+EvalStat.ecartType(out));
+
+        EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "Robot.csv");
+
+        System.out.println("\n\n\nFIN de Robot \n\n\n");
+
 	}//mainRobot()
 	
+
+	/**
+     * EvalStatRobot genere les runs et stocke la distance relative entre les solutions goulonne et dynamique
+     * @param pNruns le nombre de runs de l’evaluation statistique
+     * @param pVmax la plus grande valeur pour les lignes et colonnes de la grille
+     * @return D[0 : N runs] qui contiendra pour chaque runla distance relative entre la valeur du chemin de somme maximum et la valeur du chemin glouton.
+     */
+	public static double[] EvalStatRobot(int pNruns, int pVmax) {
+        double[] D = new double[pNruns];
+
+        System.out.println("Les param sont : pNruns = "+pNruns+"  pVmax = "+pVmax+"\n");
+
+        if(pNruns <= 0 || pVmax <= 0){
+            System.out.println("\nLes param doivent etre positifs\n!!!!!!!!!!!!!!!!!!!!!\n");
+            D[0] = -1;
+            return D;       // return une Exception ? 
+        }
+
+        for (int r = 0; r < D.length; r++) {
+			int L = RandomGen.randomInt(1, pVmax); // nombre de lignes
+			int C = RandomGen.randomInt(1, pVmax); // nombre de colonnes
+			
+			int[][] N = new int[L][C]; // grille direction Nord LxC
+			int[][] NE = new int[L][C]; // grille direction Nord-Est LxC
+			int[][] E = new int[L][C]; // grille direction Est LxC
+			// Attribution des coûts de chaque déplacement
+			for(int l=0; l<L; l++){
+				for(int c=0; c<C; c++) {
+					N[l][c] = n(l, c, L, C);
+					NE[l][c] = ne(l, c, L, C);
+					E[l][c] = e(l, c, L, C);
+				}
+			}
+            
+
+            if(info) {
+                System.out.println("Runs numero : "+r);
+				System.out.println("Le nombre de lignes de la grille random : L = "+L);
+				System.out.println("Le nombre de colonnes de la grille random : C = "+C);
+                System.out.println("Le tableau déplacement Nord random : N = "+Arrays.toString(N));
+				System.out.println("Le tableau déplacement Nord-Est random : NE = "+Arrays.toString(NE));
+				System.out.println("Le tableau déplacement Est random : E = "+Arrays.toString(E));
+                System.out.println("La valeur dynamique : calculerM(L, C, N, NE, E)[L-1][C-1] = "+calculerM(L, C, N, NE, E)[L-1][C-1]);
+                System.out.println("La valeur gloutonne : cheminGreedy(L, C, N, NE, E) = "+cheminGreedy(L, C, N, NE, E)+"\n");
+			}
+
+           
+            
+            D[r] = EvalStat.evalMin(calculerM(L, C, N, NE, E)[L-1][C-1], cheminGreedy(L, C, N, NE, E));
+            //On regarde la valeur m(0) qui est le min, on fait le ration puis on attribut le ratio
+            // a D[r], on fait cela Nruns fois
+        }
+        if(info) System.out.println("SVM > EvalStatSVM : D = "+Arrays.toString(D));
+        return D;
+    }//EvalStatSVM()
+
 	
 	//
 	/* Methode Dynamique */
 	//
 
-	static int[][] calculerM(int L, int C){ // une grille L x C
+	static int[][] calculerM(int L, int C, int[][] N, int[][] NE, int[][] E){ // grille LxC
 		int[][] M = new int[L][C]; // de terme général M[l][c] = m(l,c)
 		
 		// Base 
 		M[0][0] = 0;
-		for(int c=1; c<C; c++) M[0][c] = M[0][c-1]+e(0,c-1,L,C); // calcul du coût de la 1ère ligne
-		for(int l=1; l<L; l++) M[l][0] = M[l-1][0]+n(l-1,0,L,C); // calcul du coût de la 1ère colonne
+		for(int c=1; c<C; c++) M[0][c] = M[0][c-1]+E[0][c-1]; // calcul du coût de la 1ère ligne
+		for(int l=1; l<L; l++) M[l][0] = M[l-1][0]+N[l-1][0]; // calcul du coût de la 1ère colonne
 		
 		// Cas général
 		for (int l = 1; l < L; l++) {
 			for (int c = 1; c < C; c++) {
 				M[l][c] = min(
-					M[l][c-1] + e(l,c-1,L,C),
-					M[l-1][c-1] + ne(l-1,c-1,L,C),
-					M[l-1][c] + n(l-1,c,L,C));
+					M[l][c-1] + E[l][c-1],
+					M[l-1][c-1] + N[l-1][c-1],
+					M[l-1][c] + N[l-1][c]);
 			}
 		}
 
 		return M;
 	}//calculerM()
 
-	static void accm(int[][] M, int L, int C, int l, int c){
+	static void accm(int[][] M, int L, int C, int l, int c, int[][] N, int[][] NE, int[][] E){
 	// affiche un chemin de coût minimimum (ccm) de 0,0 à l,c
 		
 		// Base
 		if (l==0 & c==0) {
-			System.out.print("(0,0)");
+			if(info) System.out.print("(0,0)");
 			return;
 		}
 
 		// Cas général
 		else if (l==0) { // dernier mouvement : Est depuis 0,c-1
-			accm(M,L,C,l,c-1);
-			System.out.printf(" -%d-> (%d,%d)", e(l,c-1,L,C),l,c);
+			accm(M,L,C,l,c-1,N,NE,E);
+			if(info) System.out.printf(" -%d-> (%d,%d)", E[l][c-1],l,c);
 		}
 		else if (c==0) { // dernier mouvement : Nord depuis l-1,0
-			accm(M,L,C,l-1,c);
-			System.out.printf(" -%d-> (%d,%d)", n(l-1,c,L,C),l,c);
+			accm(M,L,C,l-1,c,N,NE,E);
+			if(info) System.out.printf(" -%d-> (%d,%d)", N[l-1][c],l,c);
 		}
 		else { // l,c > 0,0
 			// Coûts du pas de déplacement conduisant jusqu'en (l,c)
-			int n=n(l-1,c,L,C), ne=ne(l-1,c-1,L,C), e=e(l,c-1,L,C);
+			int n=N[l-1][c], ne=NE[l-1][c-1], e=E[l][c-1];
 			// Coûts du chemin jusqu'en (l,c) selon le dernier pas de déplacement
 			int Mn = M[l-1][c] + n, Mne = M[l-1][c-1] + ne, Me = M[l][c-1] + e;
 			if (Mn == min(Mn,Me,Mne)) { // dernier mouvement : Nord
-				accm(M,L,C,l-1,c);
-				System.out.printf(" -%d-> (%d,%d)", n(l-1,c,L,C),l,c);
+				accm(M,L,C,l-1,c,N,NE,E);
+				if(info) System.out.printf(" -%d-> (%d,%d)", N[l-1][c],l,c);
 			}
 			else if (Mne == min(Mn,Me,Mne)) { // dernier mouvement : Nord Est
-				accm(M,L,C,l-1,c-1);
-				System.out.printf(" -%d-> (%d,%d)", ne(l-1,c-1,L,C),l,c);
+				accm(M,L,C,l-1,c-1,N,NE,E);
+				if(info) System.out.printf(" -%d-> (%d,%d)", NE[l-1][c-1],l,c);
 			}
 			else if (Me == min(Mn,Me,Mne)) { // dernier mouvement : Est
-				accm(M,L,C,l,c-1);
-				System.out.printf(" -%d-> (%d,%d)", e(l,c-1,L,C),l,c);
+				accm(M,L,C,l,c-1,N,NE,E);
+				if(info) System.out.printf(" -%d-> (%d,%d)", E[l][c-1],l,c);
 			}
 		}
 	}//accm()
@@ -104,60 +181,53 @@ public class Robot{
 	 * cheminGreedy permettant de calculer le chemin du robot à plus faible coût avec la méthode gloutonne
 	 * @param L nombre de lignes de la grille
 	 * @param C nombre de colonnes de la grille
+	 * @param N tableau des directions Nord
+	 * @param NE tableau des directions Nord-Est
+	 * @param E tableau des directions Est
+	 * @return coût du chemin emprunté
 	 */
-	static void cheminGreedy(int L, int C){ // une grille L x C
+	static int cheminGreedy(int L, int C, int[][] N, int[][] NE, int[][] E){ // une grille L x C
 		int cout = 0; // coût de départ
         int l = 0; // départ de la ligne 0
         int c = 0; // départ de la colonne 0
-        System.out.print("(0,0)");
+        if(info) System.out.print("(0,0)");
         while(l < L && c < C) { // tant que le robot est dans la grille
             int dir = 0; // coût de la direction choisie
-            if(l < L-1 && c < C-1 && ne(l, c, L, C) <= n(l, c, L, C) && ne(l, c, L, C) <= e(l, c, L, C)) { // direction faisable et favorable : Nord-Est
-                dir = ne(l, c, L, C);
+            if(l < L-1 && c < C-1 && NE[l][c] <= N[l][c] && NE[l][c] <= E[l][c]) { // direction faisable et favorable : Nord-Est
+                dir = NE[l][c];
                 l++; c++;
             }
-            else if(l < L-1 && n(l, c, L, C) <= e(l, c, L, C)) { // direction faisable et favorable : Nord
-                dir = n(l, c, L, C);
+            else if(l < L-1 && N[l][c] <= E[l][c]) { // direction faisable et favorable : Nord
+                dir = N[l][c];
                 l++;
             }
-            else if(c < C-1) { // direction faisable et favorable : Nord
-                dir = e(l, c, L, C);
+            else if(c < C-1) { // direction faisable et favorable : Est
+                dir = E[l][c];
                 c++;
             }
 			else{ // destination finale atteinte
-				System.out.printf("\nCoût minimum d'un chemin de (0,0) à (%d,%d) = %d\n", L-1, C-1, cout);
-				return;
+				if(info) System.out.printf("\nCoût minimum d'un chemin de (0,0) à (%d,%d) = %d\n", L-1, C-1, cout);
+				return cout;
 			}
             cout += dir; // augmentation du coût du chemin emprunté
-            System.out.printf(" --%d--> (%d,%d)",dir,l,c);
+            if(info) System.out.printf(" --%d--> (%d,%d)",dir,l,c);
         }
+		return -1;
 	}//cheminGreedy()
 
 
-	/* Fonctions de coût des déplacements.
-	1) depuis la case 00, les déplacements N et E coûtent 1, le déplacement NE coûte 0.
-	2) sur la colonne 0, les autres déplacements coûtent 0
-	3) sur la ligne L-1 les déplacements E coûtent 0
-	4) tous les autres déplacements coûtent 1.
-	Chemin de coût minimum : 
-		00 -1-> 10 -0-> ... -0-> (L-1)0 -0-> (L-1)1 -0-> ... -0-> L(L-1)(C-1).
-	Il est de coût 1.
-	*/ 
+	/* Fonctions de coût des déplacements*/ 
 	static int n(int l, int c, int L, int C){ // coût d'un déplacement Nord
 		if (l==L-1) return plusInfini;
-		if (l==0 && c==0) return 1;
-		if (c==0) return 0;
-		return 1;
+		return RandomGen.randomInt(0, 15);
 	}//n()
 	static int ne(int l, int c, int L, int C){ // coût d'un déplacement Nord-Est
 		if (l == L-1 || c == C-1) return plusInfini;
-		if (l==0 && c==0) return 0;
-		return 1;
+		return RandomGen.randomInt(0, 15);
 	}//ne()
 	static int e(int l, int c, int L, int C){ // coût d'un déplacement Est
 		if (c == C-1) return plusInfini;
-		if (l == L-1) return 0;
-		return 1;
+		return RandomGen.randomInt(0, 15);
 	}//e()
 
 
