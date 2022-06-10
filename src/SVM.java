@@ -193,18 +193,14 @@ public class SVM{
 		int tailleSac = 0; // taille actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
 		int valeurSac = 0; // valeur actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
 		for(int i=0; i<valeurTab.length; i++) { // mise en place de l'ajout des objets dans le sac en fonction de leur valeur
-			int objet = 0; // indice faisant correspondre la taille de l'objet dans le tableau T avec sa valeur dans le tableau valeurTab
-			int taille = somme(T); // taille comparative d'objets
-			for(int j=0; j<V.length; j++){ // parcours du tableau V afin de retrouver l'indice initial de l'objet ayant comme valeur valeurTab[i]
-				if(valeurTab[i] == V[j] && T[j] < taille) { // indice initial de l'objet trouvé
-					objet = j;
-					taille = T[j];
+			for(int j=0; j<V.length; j++){ // parcours du tableau V afin de retrouver l'indice initial de l'objet ayant comme valeur valeurTab[i] &&  taille de l'objet <= place restante dans le sac
+				if(valeurTab[i] == V[j] && T[j] <= (C-tailleSac)) { // indice initial de l'objet trouvé
+					tailleSac += T[j]; // augmentation de la taille du sac avec le nouvel objet ajouté
+					valeurSac += valeurTab[i]; // augmentation de la valeur du sac avec le nouvel objet ajouté
+					if(info) System.out.printf(". objet %d : valeur = %d, taille = %d\n", j, valeurTab[i], T[j]);
+					V[j] = 0; // afin d'éviter que l'objet soit choisi plusieurs fois
+					break;
 				}
-			}
-			if(T[objet] <= (C-tailleSac)) { // taille de l'objet <= place restante dans le sac
-				tailleSac += T[objet]; // augmentation de la taille su sac avec le nouvel objet ajouté
-				valeurSac += valeurTab[i]; // augmentation de la valeur su sac avec le nouvel objet ajouté
-				if(info) System.out.printf(". objet %d : valeur = %d, taille = %d\n", objet, valeurTab[i], T[objet]);
 			}
 		}
 		if(info) System.out.printf("--> Valeur totale du sac : %d\n", valeurSac);
@@ -228,27 +224,25 @@ public class SVM{
 		int tailleSac = 0; // taille actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
 		int valeurSac = 0; // valeur actuelle du sac au fur et à mesure où les objets sont ajoutés dedans
 		for(int i=0; i<ratioTab.length; i++) { // mise en place de l'ajout des objets dans le sac en fonction de leur ratio valeur/taille
-			int objet = 0; // indice faisant correspondre la taille et la valeur de l'objet dans les tableaux T et V avec son ratio valeur/taille dans le tableau ratioTab
-			int valeur = 0; // valeur comparative d'objets
 			for(int j=0; j<V.length; j++){ // parcours du tableau V afin de retrouver l'indice initial de l'objet ayant comme valeur valeurTab[i]
 				if(T[j] != 0) { // cas génaral
-					if(ratioTab[i] == ((float) V[j]/T[j]) && valeur < V[j]) { // indice initial de l'objet trouvé
-						objet = j;
-						valeur = V[j];
+					if(ratioTab[i] == ((float) V[j]/T[j]) && T[j] <= (C-tailleSac)) { // indice initial de l'objet trouvé && taille de l'objet <= place restante dans le sac
+						tailleSac += T[j]; // augmentation de la taille su sac avec le nouvel objet ajouté
+						valeurSac += V[j]; // augmentation de la valeur su sac avec le nouvel objet ajouté
+						if(info) System.out.printf(". objet %d : ratio = %s, valeur = %d, taille = %d\n", j, ratioTab[i], V[j], T[j]);
+						V[j] = 0; // afin d'éviter que l'objet soit choisi plusieurs fois
+						break;
 					}
 				}
 				else { // cas taille nulle
 					if(ratioTab[i] == (float) V[j]) { // indice initial de l'objet trouvé
-						objet = j;
+						valeurSac += V[j]; // augmentation de la valeur su sac avec le nouvel objet ajouté
+						if(info) System.out.printf(". objet %d : ratio = %s, valeur = %d, taille = %d\n", j, ratioTab[i], V[j], T[j]);
+						V[j] = 0; // afin d'éviter que l'objet soit choisi plusieurs fois
+						break;
 					}
 				}
 			}
-			if(T[objet] <= (C-tailleSac)) { // taille de l'objet <= place restante dans le sac
-				tailleSac += T[objet]; // augmentation de la taille su sac avec le nouvel objet ajouté
-				valeurSac += V[objet]; // augmentation de la valeur su sac avec le nouvel objet ajouté
-				if(info) System.out.printf(". objet %d : ratio = %s, valeur = %d, taille = %d\n", objet, ratioTab[i], V[objet], T[objet]);
-			}
-			V[objet] = 0;
 		}
 		if(info) System.out.printf("--> Valeur totale du sac : %d\n", valeurSac);
 		return valeurSac;

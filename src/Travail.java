@@ -52,7 +52,7 @@ class Travail{
 		
 		/* Runs */
         System.out.println("Evaluation statistique de Travail : ");
-        double[] out = EvalStatTravail(50, 100);
+        double[] out = EvalStatTravail(5000, 100);
         //System.out.println("out : " + Arrays.toString(out)+"\n");
 
         System.out.println("medianne = "+EvalStat.mediane(out));

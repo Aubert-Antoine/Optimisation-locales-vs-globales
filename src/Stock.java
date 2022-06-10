@@ -49,7 +49,7 @@ public class Stock {
 
         /* Runs */
         System.out.println("Evaluation statistique de Stock : ");
-        double[] out = EvalStatStock(50, 100);
+        double[] out = EvalStatStock(5000, 100);
         //System.out.println("out : " + Arrays.toString(out)+"\n");
 
         System.out.println("medianne = "+EvalStat.mediane(out));
