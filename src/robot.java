@@ -15,7 +15,7 @@ public class Robot{
 	 * @throws IOException
 	 */
 	public static void mainRobot() throws IOException{
-		System.out.println("\n\nExercice : le petit robot");
+		System.out.println("\n\nExercice : le petit robot\n");
 
 		/* ancienne version cas particulier : ne marche plus à cause de l'ajout aléatoire dans calculerM, accm et cheminGreedy */
 		
@@ -38,7 +38,7 @@ public class Robot{
 
 
 		/* Runs */
-        System.out.println("Evaluation statistique de Robot : ");
+        System.out.println("Evaluation statistique de Robot :\n");
         double[] out = EvalStatRobot(5000, 100);
         //System.out.println("out : " + Arrays.toString(out)+"\n");
 
@@ -48,7 +48,7 @@ public class Robot{
 
         EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "Robot.csv");
 
-        System.out.println("\n\n\nFIN de ROBOT\n\n\n");
+        System.out.println("\n\nFIN de ROBOT\n\n\n");
 
 	}//mainRobot()
 	
@@ -71,8 +71,8 @@ public class Robot{
         }
 
         for (int r = 0; r < D.length; r++) {
-			int L = RandomGen.randomInt(1, pVmax); // nombre de lignes à 3 min car sinon problème pour la taille du tableau
-			int C = RandomGen.randomInt(1, pVmax); // nombre de colonnes à 3 min car sinon problème pour la taille du tableau
+			int L = RandomGen.randomInt(3, pVmax); // nombre de lignes à 3 min car sinon problème pour la taille du tableau
+			int C = RandomGen.randomInt(3, pVmax); // nombre de colonnes à 3 min car sinon problème pour la taille du tableau
 			
 			int[][] N = new int[L][C]; // grille direction Nord LxC
 			int[][] NE = new int[L][C]; // grille direction Nord-Est LxC

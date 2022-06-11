@@ -13,7 +13,7 @@ public class Stock {
      * @throws IOException
      */
     public static void mainStock() throws IOException{
-		System.out.println("\n\nExercice : répartition optimale d'un stock sur un ensemble d’entrepôts");
+		System.out.println("\n\nExercice : répartition optimale d'un stock sur un ensemble d'entrepôts\n");
 
         /* cas particulier */
 
@@ -48,7 +48,7 @@ public class Stock {
 
 
         /* Runs */
-        System.out.println("Evaluation statistique de Stock : ");
+        System.out.println("Evaluation statistique de Stock :\n");
         double[] out = EvalStatStock(5000, 100);
         //System.out.println("out : " + Arrays.toString(out)+"\n");
 

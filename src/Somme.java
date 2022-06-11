@@ -264,7 +264,7 @@ public class Somme {
 
     
     public static void mainSomme() throws IOException{
-        System.out.println("Hello, World! from Somme Class \n\n");
+        System.out.println("\n\nExercice : chemin de somme maximum\n");
 
         //** Evaluation avec run unique et avec un tableaux deterministe*/
 
@@ -282,7 +282,7 @@ public class Somme {
 
         //** Evaluation des runs multiples et avec des tableaux random*/
 
-        System.out.println("Evaluation statistique de Somme : ");
+        System.out.println("Evaluation statistique de Somme :\n");
         double[] out = EvalStatSomme(100, 5000, 100);
         // System.out.println("out : " + Arrays.toString(out)+"\n");
 
@@ -293,7 +293,7 @@ public class Somme {
 
         EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "Somme.csv");
 
-        System.out.println("\n\nFIN de SOMME \n\n\n");
+        System.out.println("\n\nFIN de SOMME\n\n\n");
     }
     
 }//Somme Class

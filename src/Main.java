@@ -7,8 +7,9 @@
 public class Main {
   public static void main(String[] Args) throws Exception { 
 
-    System.out.println("Main Class : ");
-    System.out.println("    main() ");
+    System.out.println("\n\n\nMain Class : main()\n\n\n");
+
+    System.out.println("");
 
     System.out.println("    \nEXEMPLE 1 : Robot    ");
     Robot.mainRobot();
@@ -26,9 +27,11 @@ public class Main {
     Travail.mainTravail();
     System.out.println("");
 
-    System.out.println("    \nEXEMPLE 5 : Somme   \n ");
+    System.out.println("    \nEXEMPLE 5 : Somme    ");
     Somme.mainSomme();
     System.out.println("");
+
+    System.out.println("\nFIN MAIN CLASS\n\n\n");
 
   }
 }

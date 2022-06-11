@@ -13,7 +13,7 @@ class Travail{
      * @throws IOException
      */
 	public static void mainTravail() throws IOException{
-        System.out.println("\n\nExercice : répartition optimale d'un temps de travail sur un ensemble d'unités");
+        System.out.println("\n\nExercice : répartition optimale d'un temps de travail sur un ensemble d'unités\n");
 
 		/* cas particulier */
         
@@ -51,7 +51,7 @@ class Travail{
 
 		
 		/* Runs */
-        System.out.println("Evaluation statistique de Travail : ");
+        System.out.println("Evaluation statistique de Travail :\n");
         double[] out = EvalStatTravail(5000, 100);
         //System.out.println("out : " + Arrays.toString(out)+"\n");
 
@@ -61,7 +61,7 @@ class Travail{
 
         EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "Travail.csv");
 
-        System.out.println("\n\n\nFIN de TRAVAIL\n\n\n");
+        System.out.println("\n\nFIN de TRAVAIL\n\n\n");
 
 	}//mainTravail()
 
