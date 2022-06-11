@@ -8,7 +8,7 @@ public class Somme {
     private static final boolean info = false;
 
     /**
-     * MakeTrig() retourne un tableau, qui contient les valeurs du triangle
+     * MakeTrig() retourne un tableau, qui contient les valeurs du triangle du projet euler
      * @return le tableau de ref du projet Euler
      */
     public static int[] MakeTrig() {
@@ -72,7 +72,7 @@ public class Somme {
 
             return ((l+2)*(l+1)/2)+p;
             
-            }
+            }//else
         }//g()
 
         /**
@@ -97,6 +97,7 @@ public class Somme {
 
     /**
      * calculerM(pTabRef) est la fonction qui calcule dynamiquement TabSomme, le tableau de somme cumulée max vis a vis de pTabRef 
+     * Strategie iterative
      * @param pTabRef Tableau dont on cherche le chemin de somme max
      * @return  TabSomme le Tableau de somme max cummulée
      */
@@ -105,15 +106,13 @@ public class Somme {
         int indiceDeb = pTabRef.length-1-nbNiveaux;             //indice de debut de somme
         int[] TabSomme = Arrays.copyOf(pTabRef, pTabRef.length);
 
-        //System.out.println("avec i depart = "+indiceDeb+" et i se decremente en parcourant pTAbRef. C'est un indice");
-        for (int i = indiceDeb; i >= 0; i--) {  //Pourquoi >= ? prb pour les Runs
+        for (int i = indiceDeb; i >= 0; i--) { 
             TabSomme[i] = Math.max(TabSomme[g(pTabRef, i)], TabSomme[d(pTabRef, i)])+pTabRef[i];      //prb pTabRef n'eset pas la somme donc pas de memoisation
             // On fait la somme de la valeur à l'indice courant + du max de la ligne inf
-            // pas d'influence entre g(pTabRef) et g(TabSomme) ? de meme pour + pTabRef[i] ?
             
             if(debug) System.out.println("i = "+i+" et TabSomme[i] = "+TabSomme[i]);
 
-        }
+        }//for
 
         if(info) System.out.println("TabSomme : "+Arrays.toString(TabSomme));
 
@@ -127,7 +126,7 @@ public class Somme {
     /**
      * calculeTabSMGlouton est la fonction de calcule du chemin de somme max selon le pTabRef
      * @param pTabRef tableau du quel on cherche le chemin de somme max
-     * @return  TabSM est le chemin 
+     * @return  TabSM est le chemin --> /!\ pas la somme cumulé des chemins /!\ 
      */
     public static int[] calculeTabSMGlouton(int[] pTabRef) {
         int nbNiveaux = niveau(pTabRef);
@@ -147,7 +146,7 @@ public class Somme {
             int maxgd = Math.max(pTabRef[ig], pTabRef[id]);
             if(maxgd == pTabRef[ig]) i = ig;
             else i = id;
-            TabSM[j] = maxgd;       // si on veut la somme cumulee on +TabSM[j-1]
+            TabSM[j] = maxgd; 
         }
 
         if(info)System.out.println("\nTabSM en mode glouton : "+Arrays.toString(TabSM));
@@ -158,7 +157,7 @@ public class Somme {
 
     /**
      * acsm affiche un chemin de somme maximum commencant en i.
-     * Methode recurcive
+     * Methode recurcive --> pour connaitre la valeur a l'indice courant -> [(Val n-1) - val n]
      * @param M est le tableau de somme max cumulee 
      * @param T est le tableau triangle cree par makeTrig()
      * @param i indice de debut d'affichage
@@ -188,7 +187,8 @@ public class Somme {
 
 
     /**
-     * niveau renvoit le nombre de niveaux du tableau passé en param
+     * niveau renvoit le nombre de niveaux du tableau passé en param 
+     * /!\ commence a 1 /!\
      * @param pTabRef tableau dont on chrche le nb de niveau
      * @return le nb de niveau en int
      */
@@ -204,13 +204,12 @@ public class Somme {
                 else if(niveau == pTabRef.length) System.out.println("Somme > niveau : le if n'est pas catch");
             }
         }//else
-        System.out.println("Somme > niveau : le else n'est pas catch");
         return -1;
     }//niveau()
 
     /**
      * fait la somme d'un tableau
-     * @author R.Natovitch
+     * @author R.Natovitcz
      * @param T
      * @return
      */
@@ -223,10 +222,11 @@ public class Somme {
 
     /**
      * EvalStatSomme genere les runs et stock la distance relative entre les solution goulonne et dynamique
+     * Renvoit des double pour plus de precision
      * @param pLmax le nombre de niveaux maximum
      * @param pNruns le nombre de runs de l’evaluation statistique
      * @param pVmax la plus grande valeur pouvant être presente dans le triangle
-     * @return D[0 : N runs] qui contiendra pour chaque runla distance relative entre la valeur du chemin de somme maximum et la valeur du chemin glouton.
+     * @return D[0 : N runs] qui contiendra pour chaque run la distance relative entre la valeur du chemin de somme maximum et la valeur du chemin glouton.
      */
     public static double[] EvalStatSomme(int pLmax, int pNruns, int pVmax) {
         double[] D = new double[pNruns];
@@ -262,7 +262,12 @@ public class Somme {
         return D;
     }//EvalStatSomme()
 
-    
+    /**
+     * mainSomme() permet l'execution du programme somme. 
+     * 1ere partie => 1 run 
+     * 2eme partie => n runs
+     * @throws IOException
+     */
     public static void mainSomme() throws IOException{
         System.out.println("\n\nExercice : chemin de somme maximum\n");
 
@@ -294,6 +299,6 @@ public class Somme {
         EcrireValeursGaussiennesDansFichier.EcrireGdansF(out, "Somme.csv");
 
         System.out.println("\n\nFIN de SOMME\n\n\n");
-    }
+    }//mainSomme()
     
 }//Somme Class

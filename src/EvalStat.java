@@ -4,6 +4,7 @@ import java.util.Random;
 
 /**
  * EvalStat est la classe qui s'occupe des evaluations statistique des ex du projet.
+ * Resultats en double pour plus de precision
  */
 public class EvalStat {
 
@@ -28,10 +29,11 @@ public class EvalStat {
     }
 
 
-    //la mediane, la moyenne, et l’ecart-type des distances relatives.
+    /*la mediane, la moyenne, et l’ecart-type des distances relatives.*/
 
     /**
      * mediane return la mediane du tableau passé en param
+     * appel a qs pour trier le tableau dans l'ordre croissant
      * @param pTabRef
      * @return
      */
@@ -69,6 +71,12 @@ public class EvalStat {
     }
 
 
+    /**
+     * @author R.Natowicz
+     * @param T
+     * @param i
+     * @param j
+     */
     static void qs(double[] T, int i, int j){ 
 		if (j-i <= 1) return ; // le sous-tableau T[i:j] est croissant
 		// ici : j-i >= 2
@@ -79,6 +87,14 @@ public class EvalStat {
 
 	static Random rand = new Random();
 
+
+    /**
+     * @author R.Natowicz
+     * @param T
+     * @param i
+     * @param j
+     * @return
+     */
 	static int segmenter(double[] T, int i, int j){
 	/* Calcule une permutation des valeurs de T[i:j] vérifiant T[i:k] <= T[k] < T[k+1:j], et retourne k
 	Fonction construite sur la propriété I(k,j') : T[i:k] <= T[k] < T[k+1:j']
@@ -101,13 +117,15 @@ public class EvalStat {
 		return k;				
 	}//segmenter()
 
+    /**
+     * @author R.Natowicz
+     * @param T
+     * @param i
+     * @param j
+     */ 
 	static void permuter(double[] T, int i, int j){
 		double ti = T[i];
 		T[i] = T[j];
 		T[j] = ti;
 	}//permuter()
-
-    public static void mainEvalStat(){
-        System.out.println("Hello, World! from EvalStat Class");
-    }
 }
