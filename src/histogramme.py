@@ -46,20 +46,23 @@ import os
 
 # absPass = "D:\D_Perso\travail\Optimisation-locales-vs-globales\histogramme"
 
+
+
+
 def histogramme(fileName) : 
 	DR = [] # distances relatives 
 
-	# pathInPut = "./csv/"+fileName+".CSV"
-	# pathOutPut = "./histogramme/"+fileName+".PNG"
+	csvPath = './csv/{}.jpg'.format(os.path.basename(fileName[:-4]))
+	plotName = './histogramme/{}.jpg'.format(os.path.basename(fileName[:-4]))
 
-	with open(fileName+".CSV") as csvfile:		# fileName+".CSV"
+	with open(csvPath+".CSV") as csvfile:		# fileName+".CSV"
 		reader = csv.reader(csvfile)
 		for row in reader:
 			dr = row[0]
 			DR.append(float(dr))
 	plt.ylim(0, 10)
 	h = plt.hist(DR,bins=len(DR))
-	plt.savefig(fileName+"PNG")  # os.path.join(absPass,fileName)+
+	plt.savefig(plotName)  # os.path.join(absPass,fileName)+
 	plt.close()
 	csvfile.close
 
