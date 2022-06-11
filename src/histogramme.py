@@ -60,7 +60,7 @@ def histogramme(fileName) :
 		for row in reader:
 			dr = row[0]
 			DR.append(float(dr))
-	plt.ylim(0, 40)						
+	plt.ylim(0, 25)						# modif l'arg n ° 2 pour choisir la taille des ordonnées					
 	h = plt.hist(DR,bins=len(DR))
 	plt.savefig(plotName)  # os.path.join(absPass,fileName)+
 	plt.close()
@@ -74,6 +74,6 @@ def main() :
 	
 	fileName = sys.argv[1]
 	histogramme(fileName)
-	print("l'histogramme est dans le fichier " + fileName+".PNG")
+	print("l'histogramme est dans le dossier optimisation-locales-vs-globales/histogramme/" + fileName[:-4]+".jpg")
 
 main()

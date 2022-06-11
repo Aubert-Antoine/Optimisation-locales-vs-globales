@@ -1,0 +1,120 @@
+Main Class : main()
+
+
+
+
+    
+EXEMPLE 1 : Robot    
+
+
+Exercice : le petit robot
+
+Evaluation statistique de Robot :
+
+Les param sont : pNruns = 5000  pVmax = 100
+
+medianne = 0.7327586206896551
+moyenne = 0.7304540029829765
+ecart type = 0.30167225318721796
+
+
+FIN de ROBOT
+
+
+
+
+    
+EXEMPLE 2 : SVM      
+
+
+Exercice : sac de valeur maximum
+
+
+Evaluation statistique de SVM :
+
+
+CAS AVEC METHODE GLOUTONNE PAR VALEUR
+
+Les param sont : pTailleTabmax = 100  pNruns = 5000  pVmax = 100
+
+medianne = 0.1753846153846154
+moyenne = 0.19119180013883494
+ecart type = 0.15714803989695353
+
+
+CAS AVEC METHODE GLOUTONNE PAR DENSITE DE VALEURS
+
+Les param sont : pTailleTabmax = 100  pNruns = 5000  pVmax = 100
+
+medianne = 0.0011723329425556857
+moyenne = 0.005407746765780748
+ecart type = 0.010537611055870389
+
+
+FIN de SVM
+
+
+
+
+
+EXEMPLE 3 : Stock
+
+
+Exercice : répartition optimale d'un stock sur un ensemble d'entrepôts
+
+Evaluation statistique de Stock :
+
+Les param sont : pNruns = 5000  pVmax = 100
+
+medianne = 0.05917159763313609
+moyenne = 0.127603171434514
+ecart type = 0.19206532970267898
+
+
+FIN de STOCK
+
+
+
+
+
+EXEMPLE 4 : Travail
+
+
+Exercice : répartition optimale d'un temps de travail sur un ensemble d'unités
+
+Evaluation statistique de Travail :
+
+Les param sont : pNruns = 5000  pVmax = 100
+
+medianne = 0.980400534045394
+moyenne = 0.9507889591860985
+ecart type = 0.10957657419472122
+
+
+FIN de TRAVAIL
+
+
+
+
+
+EXEMPLE 5 : Somme
+
+
+Exercice : chemin de somme maximum
+
+Evaluation statistique de Somme :
+
+Les param sont : pLmax = 100  pNruns = 5000  pVmax = 100
+
+medianne = 0.08335887220349372
+moyenne = 0.08328176953340713
+ecart type = 0.048684739650170596
+
+
+FIN de SOMME
+
+
+
+
+
+FIN MAIN CLASS
