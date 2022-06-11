@@ -60,7 +60,7 @@ def histogramme(fileName) :
 		for row in reader:
 			dr = row[0]
 			DR.append(float(dr))
-	plt.ylim(0, 10)
+	plt.ylim(0, 40)						
 	h = plt.hist(DR,bins=len(DR))
 	plt.savefig(plotName)  # os.path.join(absPass,fileName)+
 	plt.close()
