@@ -19,7 +19,7 @@ public class Robot{
 
 		/* ancienne version cas particulier : ne marche plus à cause de l'ajout aléatoire dans calculerM, accm et cheminGreedy */
 		
-		// int L = 5, C = 7; // grille 5 x 7
+		// int L = 5, C = 7; // grille 5 x 7.
 		// System.out.printf("Grille à %d lignes et %d colonnes",L,C);
 		
 		// // Méthode Dynamique

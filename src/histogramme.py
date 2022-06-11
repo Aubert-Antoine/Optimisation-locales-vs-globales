@@ -49,17 +49,17 @@ import os
 def histogramme(fileName) : 
 	DR = [] # distances relatives 
 
-	pathInPut = "./csv/"+fileName+".CSV"
-	pathOutPut = "./histogramme/"+fileName+".PNG"
+	# pathInPut = "./csv/"+fileName+".CSV"
+	# pathOutPut = "./histogramme/"+fileName+".PNG"
 
-	with open(pathInPut) as csvfile:		# fileName+".CSV"
+	with open(fileName) as csvfile:		# fileName+".CSV"
 		reader = csv.reader(csvfile)
 		for row in reader:
 			dr = row[0]
 			DR.append(float(dr))
 	plt.ylim(0, 10)
 	h = plt.hist(DR,bins=len(DR))
-	plt.savefig(pathOutPut)  # os.path.join(absPass,fileName)+
+	plt.savefig(fileName)  # os.path.join(absPass,fileName)+
 	plt.close()
 	csvfile.close
 
