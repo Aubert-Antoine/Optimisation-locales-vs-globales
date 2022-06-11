@@ -17,26 +17,6 @@ public class Robot{
 	public static void mainRobot() throws IOException{
 		System.out.println("\n\nExercice : le petit robot\n");
 
-		/* ancienne version cas particulier : ne marche plus à cause de l'ajout aléatoire dans calculerM, accm et cheminGreedy */
-		
-		// int L = 5, C = 7; // grille 5 x 7.
-		// System.out.printf("Grille à %d lignes et %d colonnes",L,C);
-		
-		// // Méthode Dynamique
-		// System.out.println("\n\nMETHODE DYNAMIQUE");
-		// int[][] M = calculerM(L,C);
-		// System.out.println("Tableau M des coûts minimum :");
-		// afficher(M);
-		// System.out.printf("Coût minimum d'un chemin de (0,0) à (%d,%d) = %d\n",L-1,C-1,M[L-1][C-1]);
-		// accm(M,L,C,L-1,C-1); // affichage d'un chemin de coût min de 0,0 à L-1,C-1
-		
-		// // Méthode Greedy
-		// System.out.println("\n\nMETHODE GREEDY");
-		// cheminGreedy(L, C); // affichage d'un chemin de coût min de 0,0 à L-1,C-1
-		
-		// System.out.println();
-
-
 		/* Runs */
         System.out.println("Evaluation statistique de Robot :\n");
         double[] out = EvalStatRobot(5000, 100);
