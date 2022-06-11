@@ -3,7 +3,7 @@
 This repository is an academic project, the objective is to compare dynamic and greedy algorithms.
 
 @author Antoine Aubert
-@authot Pauline Gouillart
+@author Pauline Gouillart
 
 ## Folder Structure
 
