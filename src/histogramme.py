@@ -53,7 +53,7 @@ def histogramme(fileName) :
 	DR = [] # distances relatives 
 
 	csvPath = './csv/{}.csv'.format(os.path.basename(fileName[:-4]))
-	plotName = './histogramme/{}.jpg'.format(os.path.basename(fileName[:-4]))
+	plotPath = './histogramme/{}.jpg'.format(os.path.basename(fileName[:-4]))
 
 	with open(csvPath) as csvfile:		# fileName+".CSV"
 		reader = csv.reader(csvfile)
@@ -62,7 +62,7 @@ def histogramme(fileName) :
 			DR.append(float(dr))
 	plt.ylim(0, 25)						# modif l'arg n ° 2 pour choisir la taille des ordonnées					
 	h = plt.hist(DR,bins=len(DR))
-	plt.savefig(plotName)  # os.path.join(absPass,fileName)+
+	plt.savefig(plotPath)  # os.path.join(absPass,fileName)+
 	plt.close()
 	csvfile.close
 
