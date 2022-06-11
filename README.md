@@ -18,3 +18,13 @@ The workspace contains two folders by default, where:
 ## info
 
 There are 2 booleans, "debug" and "info" which give a text output if they are true.
+
+## execution 
+### csv 
+main() -> optimisation-locales-vs-globales/csv
+
+### Histogramme
+In cmd : 
+- `cd path/optimisation-locales-vs-globales`
+- `python src/histogramme.py "CLASS NAME"`
+
