@@ -52,10 +52,10 @@ import os
 def histogramme(fileName) : 
 	DR = [] # distances relatives 
 
-	csvPath = './csv/{}.jpg'.format(os.path.basename(fileName[:-4]))
+	csvPath = './csv/{}.csv'.format(os.path.basename(fileName[:-4]))
 	plotName = './histogramme/{}.jpg'.format(os.path.basename(fileName[:-4]))
 
-	with open(csvPath+".CSV") as csvfile:		# fileName+".CSV"
+	with open(csvPath) as csvfile:		# fileName+".CSV"
 		reader = csv.reader(csvfile)
 		for row in reader:
 			dr = row[0]
